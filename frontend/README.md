@@ -1,6 +1,6 @@
 # buildgreen
 
-A new Flutter project.
+The new Flutter project.
 
 ## Getting Started
 
