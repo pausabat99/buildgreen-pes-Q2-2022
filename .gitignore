@@ -26,8 +26,8 @@
 .dart_tool/
 .pub-cache/
 .pub/
-/build/
-/windows/
+./frontend/build/
+./frontend/windows/
 
 
 # Web related
