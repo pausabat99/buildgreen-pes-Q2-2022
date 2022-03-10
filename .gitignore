@@ -26,8 +26,11 @@
 .dart_tool/
 .pub-cache/
 .pub/
-./frontend/build/
-./frontend/windows/
+/frontend/build
+/frontend/windows
+/frontend/web
+/frontend/ios
+/frontend/android
 
 
 # Web related
