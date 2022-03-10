@@ -6,5 +6,5 @@
 * Daniel Franco Baena (@danifb)
 * Max Tiessler Aguirre (@MaxTiessler )
 * Carlos Balaguer Moreno (@carlosbalaguer5)
-* Gabriela Stoykova (@gabrielastoykova)
+* Gabriela Stoykova (@gabrielastoykova) kujg
 * Gorka González Gómez (@gorkagg10) ✅
