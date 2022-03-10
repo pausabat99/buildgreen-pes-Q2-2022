@@ -7,4 +7,4 @@
 * Max Tiessler Aguirre (@MaxTiessler )
 * Carlos Balaguer Moreno (@carlosbalaguer5)
 * Gabriela Stoykova (@gabrielastoykova)
-* Gorka González Gómez (@gorkagg10)
+* Gorka González Gómez (@gorkagg10) ✅
