@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/mainScreen.dart';
-import 'screens/mapaScreen.dart';
+import 'screens/main_screen.dart';
+import 'screens/mapa_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const Mapa(),
+      home: const MapaScreen(),
     );
   }
 }
