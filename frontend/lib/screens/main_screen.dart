@@ -28,9 +28,9 @@ class _HomeWidgetState extends State<HomeWidget> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-          BottomNavigationBarItem(icon: Icon(Icons.leaderboard), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.location_city_outlined), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: ""),
         ],
         showSelectedLabels: false,
         showUnselectedLabels: false,
