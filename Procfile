@@ -1,1 +1,1 @@
-web: gunicorn buildgreen-pes-Q2-2022.wsgi
+web: gunicorn buildgreen.wsgi
