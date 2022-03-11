@@ -1,1 +1,1 @@
-web: gunicorn buildgreen.wsgi
+web: gunicorn backend.wsgi
