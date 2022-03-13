@@ -10,17 +10,21 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Mapa",
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Mapa')),
-        body: Center(
-          child: SizedBox(
-            child: Image.asset('./lib/assets/mapa.png'),
-            height: 500,
-            width: 300,
-          ),
-        ),
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: ListView(
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            child: const TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Password',
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
