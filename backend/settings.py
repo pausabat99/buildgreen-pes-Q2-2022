@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0z$6ygsr-o8pb#zxo(+s9wpfb6#7%6@dtbph3ky%d*ay+s2^2w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'buildgreen.herokuapp.com'] #added for heroku
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic' #for postgres whitenoise
+    "pages.apps.PagesConfig",  # added for testing
 ]
 
 MIDDLEWARE = [
