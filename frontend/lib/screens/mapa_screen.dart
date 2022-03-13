@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 class MapaScreen extends StatefulWidget {
@@ -10,19 +12,30 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: ListView(
+    return Scaffold(
+      body: Column(
         children: <Widget>[
           Container(
             alignment: Alignment.center,
+            height: 50,
+            width: 50,
+            child: const Text('Mapa'),
+          ),
+          Container(
+            alignment: Alignment.center,
             child: const TextField(
-              obscureText: true,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
-                labelText: 'Password',
+                labelText: 'Filtrar',
               ),
             ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            height: 500,
+            width: 300,
+            color: Colors.blueAccent,
+            child: const Text('Aqui va el mapa'),
           )
         ],
       ),
