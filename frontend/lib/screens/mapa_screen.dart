@@ -35,7 +35,7 @@ class _MapaScreenState extends State<MapaScreen> {
             height: 500,
             width: 300,
             color: Colors.blueAccent,
-            child: const Text('Aqui va el mapa'),
+            child: const Image(image: AssetImage("images/foto_mapa.png"))
           )
         ],
       ),
