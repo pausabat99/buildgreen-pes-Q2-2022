@@ -10,6 +10,18 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   TextEditingController filterController = TextEditingController();
 
+  
+  Widget mapaWidget(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      height: 500,
+      width: 300,
+      color: Colors.lightGreen,
+      child: const Image(image: AssetImage("images/foto_mapa.png"))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +30,12 @@ class _MapaScreenState extends State<MapaScreen> {
         child: ListView(
           children: <Widget>[
             Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: const Text(
-                'Mapa',
-                style: TextStyle(fontSize: 20),
-            )),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Mapa',
+                  style: TextStyle(fontSize: 20),
+                )),
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -34,14 +46,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              height: 500,
-              width: 300,
-              color: Colors.blueAccent,
-              child: const Image(image: AssetImage("images/foto_mapa.png"))
-            )
+            mapaWidget()
           ],
         ),
       ),
