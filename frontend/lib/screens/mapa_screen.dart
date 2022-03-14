@@ -10,45 +10,43 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   TextEditingController filterController = TextEditingController();
 
-  
-  Widget mapaWidget(BuildContext context) {
+  Widget mapaWidget() {
     return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      height: 500,
-      width: 300,
-      color: Colors.lightGreen,
-      child: const Image(image: AssetImage("images/foto_mapa.png"))
-    );
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 30),
+        child: const Image(image: AssetImage("images/mapa.png")));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Mapa',
-                  style: TextStyle(fontSize: 20),
-                )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: filterController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Filtrar',
-                ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+              alignment: Alignment.topLeft,
+              margin: const EdgeInsets.fromLTRB(25, 40, 0, 0),
+              child: const Text(
+                'MAPA',
+                style: TextStyle(fontSize: 20),
+                //añadir la FontFamily que sea commún para todos
+              )),
+          Container(
+            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.fromLTRB(15, 10, 0, 0),
+            child: TextField(
+              controller: filterController,
+              style: const TextStyle(fontSize: 20),
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                labelText: 'Filtrar',
               ),
             ),
-            mapaWidget()
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: mapaWidget(),
+          )
+        ],
       ),
     );
   }
