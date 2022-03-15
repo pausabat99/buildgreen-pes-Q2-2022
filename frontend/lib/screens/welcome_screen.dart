@@ -1,45 +1,14 @@
 import 'package:flutter/material.dart';
 import './login_screen.dart';
 import './signup_screen.dart';
-
+import "../widgets/general_buttom.dart";
 class WelcomeScreen extends StatelessWidget {
 
   static const routeName = '/welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
-  
 
-  Widget authentificationButton(String title, Color textColor, BuildContext ctx, StatefulWidget screen) {
-    return Container(
-      height: 80,
-      width: double.infinity,
-      padding: const EdgeInsets.only(top: 25, left: 50, right: 50),
-      child: ElevatedButton(
         
-        style:ElevatedButton.styleFrom(
-          primary: Colors.teal.withAlpha(0),
-          onPrimary: Colors.white.withAlpha(0),
-          shadowColor: Colors.black.withOpacity(0.15),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
-          side: const BorderSide(
-            
-            color: Colors.white,
-            width: 3,
-            
-            ),
-          elevation: 1
-        ),
-        onPressed: () {
-          Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-            return screen;
-          }));
-        },
-        child: Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +45,10 @@ class WelcomeScreen extends StatelessWidget {
                       children: <Widget>[
                         // background profilePic start
                         Container(
-                           padding: EdgeInsets.only(top: screenHeight*0.33, left: 0, right: 0),
+                           padding: EdgeInsets.only(top: screenHeight*0.25, left: 50, right: 50),
 
                           decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topRight:  Radius.circular(15),
-                              topLeft:  Radius.circular(15),
-                            ),
                             image: DecorationImage(
-                              fit: BoxFit.fitHeight,
                               image: AssetImage(
                                 "images/build_green_logo.png",
                               ),
@@ -95,16 +59,37 @@ class WelcomeScreen extends StatelessWidget {
                       ]
                     ),
                     const Expanded(child: Text(""),),
-                    Align(
+                    Container(
+                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                       alignment: Alignment.bottomCenter,
-                        child : authentificationButton('Sign In', Colors.green, context, const LogInScreen()),
+                        child : GeneralButton(
+                          title: 'Entrar', 
+                          textColor: Colors.green , 
+                          action: () => {Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) {
+                                  return const LogInScreen();
+                                  }
+ 
+                              )
+                           )
+                          }
+                        ),
                     ),
-                    Align(
+                    Container(
+                      padding: EdgeInsets.fromLTRB(50, 0, 50, 150),
                       alignment: Alignment.bottomCenter,
-                        child : authentificationButton('Sign Up', Colors.lightGreen, context, const SignUpScreen()),
+                      child : GeneralButton(
+                          title: 'Registrarse', 
+                          textColor: Colors.lightGreen , 
+                          action: () => {Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) {
+                                  return const SignUpScreen();
+                                  }
+                              )
+                           )
+                          }
+                        ),
                     ),
-                     const Padding(padding:  EdgeInsets.only(top: 100),),
-
                   ],
                 ),
               ),

@@ -1,4 +1,11 @@
+import 'dart:convert';
+import 'dart:async';
+
+import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../widgets/input_form.dart';
+import '../widgets/general_buttom.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({ Key? key }) : super(key: key);
@@ -9,83 +16,98 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
 
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+
+  Future<void> logInAccount() async {
+    final response = await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
+      headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+      'email': emailController.text,
+      'password': passwordController.text,
+      },
+      ),
+    );
+
+    final responseJson = jsonDecode(response.body);
+  }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
       return Material (
-        child: Container(
-        padding: const EdgeInsets.all(20),
-        child: ListView(
-          children: <Widget>[
+        child: Stack(
+          children: [
+            // background colors start
             Container(
-                alignment: Alignment.center,
-                //padding: const EdgeInsets.all(10),
-                child: const Image(image: AssetImage("images/build_green_logo.png"))
-            ),
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 20),
-                )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: nameController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'User Name',
-                ),
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 39, 170, 83),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text('Forgot Password',),
-            ),
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: const Text('Login'),
-                  onPressed: () {
-                    //print(nameController.text);
-                    //print(passwordController.text);
-                  },
-                )
-            ),
-            Row(
-              children: <Widget>[
-                const Text('Does not have account?'),
-                TextButton(
-                  child: const Text(
-                    'Sign in',
-                    style: TextStyle(fontSize: 20),
+            Transform.scale(
+              scale: 1.4,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: RotationTransition(
+                  turns: const AlwaysStoppedAnimation(-15 / 360),
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    height: screenHeight * 0.25,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                    color: Colors.white,
+                    ),
                   ),
-                  onPressed: () {
-                    //signup screen
-                  },
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.center,
+                ),
+              ),
             ),
-          ],
-        ),
+            Container(
+            alignment: Alignment.bottomRight,
+            padding: const EdgeInsets.all(25),
+            child: Image(
+              image: const AssetImage('images/build_green_logo.png'),
+              height: screenHeight * 0.125,
+            ),
+          ),
+          // background colors end
+          // form start
+          Container(
+            padding: const EdgeInsets.all(50),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  alignment: Alignment.topLeft,
+                  child: Text("Log in",
+                  textAlign: TextAlign.left, 
+                  style: Theme.of(context).textTheme.headline1,
+                  ),
+                ),
+                
+                InputForm(controller: emailController, hintLabel: "Email"),
+                
+                InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
+                
+                const Padding(padding: EdgeInsets.only(top: 20)),
+
+                const Padding(padding: EdgeInsets.only(top: 20)),
+                
+                GeneralButton(
+                    title: "Entrar",
+                    action: logInAccount,
+                    textColor: Colors.white,
+                    )
+              ],
+            ),
+          )
+          // form end
+        ],
       ),
     );
   }
