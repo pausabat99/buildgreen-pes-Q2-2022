@@ -60,7 +60,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const Expanded(child: Text(""),),
                     Container(
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
                       alignment: Alignment.bottomCenter,
                         child : GeneralButton(
                           title: 'Entrar', 
@@ -79,6 +79,7 @@ class WelcomeScreen extends StatelessWidget {
                       padding: EdgeInsets.fromLTRB(50, 0, 50, 150),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
+                          
                           title: 'Registrarse', 
                           textColor: Colors.lightGreen , 
                           action: () => {Navigator.of(context).push(

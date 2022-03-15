@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../widgets/input_form.dart';
-import '../widgets/general_buttom.dart';
+import 'package:buildgreen/widgets/input_form.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({ Key? key }) : super(key: key);
@@ -100,11 +100,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   alignment: Alignment.topLeft,
-                  child: Text("Registro",
-                  textAlign: TextAlign.left, 
-                  style: Theme.of(context).textTheme.headline1,
+                  child: Row(
+                    
+                    children: [
+                      ElevatedButton(
+                        
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.teal.withAlpha(0),
+                          onPrimary: Colors.white.withAlpha(0),
+                          shadowColor: Colors.black.withOpacity(0.15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          side: const BorderSide(
+                            color: Colors.white,
+                            width: 3,
+                          ),
+                          elevation: 1
+                        ),
+                        onPressed: () => {Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) {
+                                  return const WelcomeScreen();
+                                  }
+                              )
+                           )
+                          },
+                        child: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                          size: 45,),
+                      ),
+
+
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 0 , 0, 0),
+                        child: Text("Registro",
+                          textAlign: TextAlign.left, 
+                          style: Theme.of(context).textTheme.headline1,
+                          
+                        ),
+                      ),
+                    ]
                   ),
                 ),
+                
                 Row(children: <Widget>[
                   InputForm(controller: nameController, hintLabel: 'Nombre'),
                   

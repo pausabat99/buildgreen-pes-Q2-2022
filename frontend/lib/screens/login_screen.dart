@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:buildgreen/screens/signup_screen.dart';
+import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../widgets/input_form.dart';
-import '../widgets/general_buttom.dart';
+import 'package:buildgreen/widgets/input_form.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({ Key? key }) : super(key: key);
@@ -84,9 +85,47 @@ class _LogInScreenState extends State<LogInScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   alignment: Alignment.topLeft,
-                  child: Text("Log in",
-                  textAlign: TextAlign.left, 
-                  style: Theme.of(context).textTheme.headline1,
+                  child: Row(
+                    
+                    children: [
+                      ElevatedButton(
+                        
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.teal.withAlpha(0),
+                          onPrimary: Colors.white.withAlpha(0),
+                          shadowColor: Colors.black.withOpacity(0.15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          side: const BorderSide(
+                            color: Colors.white,
+                            width: 3,
+                          ),
+                          elevation: 1
+                        ),
+                        onPressed: () => {Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) {
+                                  return const WelcomeScreen();
+                                  }
+                              )
+                           )
+                          },
+                        child: const Icon(
+                          Icons.arrow_back_rounded,
+                          color: Colors.white,
+                          size: 45,),
+                      ),
+
+
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(20, 0 , 0, 0),
+                        child: Text("Log in",
+                          textAlign: TextAlign.left, 
+                          style: Theme.of(context).textTheme.headline1,
+                          
+                        ),
+                      ),
+                    ]
                   ),
                 ),
                 
@@ -102,7 +141,28 @@ class _LogInScreenState extends State<LogInScreen> {
                     title: "Entrar",
                     action: logInAccount,
                     textColor: Colors.white,
-                    )
+                ),
+
+                const Padding(padding: EdgeInsets.all(10)),
+                Text("o", style: Theme.of(context).textTheme.bodyText1,),
+                const Padding(padding: EdgeInsets.all(10)),
+                TextButton(
+                  onPressed: () => {Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) {
+                                  return const SignUpScreen();
+                                  }
+                              )
+                           )
+                          },
+                  child: Text(
+                    "Registrarse",
+                    style: TextStyle(
+                      color: Colors.lightGreen.shade100,
+                      fontSize: 18
+                    ),
+                  ),
+                ),
+
               ],
             ),
           )
