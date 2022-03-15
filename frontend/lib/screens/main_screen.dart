@@ -1,5 +1,48 @@
 import 'package:flutter/material.dart';
 
+
+class HomeWidget extends StatefulWidget {
+  const HomeWidget({ Key? key ,}) : super(key: key);
+  
+  @override
+  State<HomeWidget> createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
+
+  int _selectedIndex = 0;
+  PageController pageController = PageController();
+
+  void onTapNavBar(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      body: PageView(
+        controller: pageController,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: ""),
+        ],
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _selectedIndex,
+        onTap: onTapNavBar,
+      ),
+      
+    );
+    
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
