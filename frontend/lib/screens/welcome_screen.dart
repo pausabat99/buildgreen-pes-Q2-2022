@@ -1,10 +1,11 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import './login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
 
   static const routeName = '/welcome_screen';
+
+  const WelcomeScreen({Key? key}) : super(key: key);
   
 
   Widget authentificationButton(String title, Color textColor, BuildContext ctx) {
@@ -31,7 +32,7 @@ class WelcomeScreen extends StatelessWidget {
         ),
         onPressed: () {
           Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-            return Container(child: const LogInScreen());
+            return const LogInScreen();
           }));
         },
         child: Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),),
