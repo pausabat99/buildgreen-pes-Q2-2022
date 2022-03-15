@@ -28,6 +28,7 @@
 build/
 flutter_build/
 windows/
+chrome-device/
 
 # Web related
 lib/generated_plugin_registrant.dart

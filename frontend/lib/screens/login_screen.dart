@@ -8,12 +8,14 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-      return Container(
+      return Material (
+        child: Container(
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
@@ -84,6 +86,7 @@ class _LogInScreenState extends State<LogInScreen> {
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 }

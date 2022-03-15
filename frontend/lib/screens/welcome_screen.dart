@@ -12,7 +12,7 @@ class WelcomeScreen extends StatelessWidget {
     return Container(
       height: 80,
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 25, left: 24, right: 24),
+      padding: const EdgeInsets.only(top: 25, left: 50, right: 50),
       child: ElevatedButton(
         
         style:ElevatedButton.styleFrom(
@@ -102,7 +102,7 @@ class WelcomeScreen extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                         child : authentificationButton('Sign Up', Colors.lightGreen, context),
                     ),
-                     Padding(padding:  EdgeInsets.only(top: screenHeight*0.1),),
+                     const Padding(padding:  EdgeInsets.only(top: 100),),
 
                   ],
                 ),
