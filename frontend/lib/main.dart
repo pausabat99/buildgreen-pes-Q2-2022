@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/mainScreen.dart';
-import 'screens/simLista.dart';
+import 'screens/main_screen.dart';
+import 'screens/sim_lista.dart';
 void main() {
   runApp(const MyApp());
 }
