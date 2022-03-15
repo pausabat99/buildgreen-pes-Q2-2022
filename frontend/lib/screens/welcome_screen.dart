@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './login_screen.dart';
+import './signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
 
@@ -8,7 +9,7 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
   
 
-  Widget authentificationButton(String title, Color textColor, BuildContext ctx) {
+  Widget authentificationButton(String title, Color textColor, BuildContext ctx, StatefulWidget screen) {
     return Container(
       height: 80,
       width: double.infinity,
@@ -32,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
         ),
         onPressed: () {
           Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-            return const LogInScreen();
+            return screen;
           }));
         },
         child: Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),),
@@ -96,11 +97,11 @@ class WelcomeScreen extends StatelessWidget {
                     const Expanded(child: Text(""),),
                     Align(
                       alignment: Alignment.bottomCenter,
-                        child : authentificationButton('Sign In', Colors.green, context),
+                        child : authentificationButton('Sign In', Colors.green, context, const LogInScreen()),
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                        child : authentificationButton('Sign Up', Colors.lightGreen, context),
+                        child : authentificationButton('Sign Up', Colors.lightGreen, context, const SignUpScreen()),
                     ),
                      const Padding(padding:  EdgeInsets.only(top: 100),),
 
