@@ -29,7 +29,7 @@ build/
 flutter_build/
 windows/
 chrome-device/
-
+.dart_tool/
 # Web related
 lib/generated_plugin_registrant.dart
 
