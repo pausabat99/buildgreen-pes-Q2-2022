@@ -19,35 +19,43 @@ class _MapaScreenState extends State<MapaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.fromLTRB(25, 40, 0, 0),
-              child: const Text(
-                'MAPA',
-                style: TextStyle(fontSize: 20),
-                //añadir la FontFamily que sea commún para todos
-              )),
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.fromLTRB(15, 10, 0, 0),
-            child: TextField(
-              controller: filterController,
-              style: const TextStyle(fontSize: 20),
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                labelText: 'Filtrar',
+    return Stack(
+      children: <Widget>[
+        Container(
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.fromLTRB(25, 40, 0, 0),
+            child: const Text(
+              'MAPA',
+              style: TextStyle(color: Colors.black, 
+                              fontSize: 40,
+                              decoration: TextDecoration.none),
+              //añadir la FontFamily que sea commún para todos
+            )),
+        Container(
+          margin: const EdgeInsets.fromLTRB(25, 120, 0, 0),
+          height: 30,
+          width: 360,
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15),
+                topLeft: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
               ),
-            ),
+              color: Colors.lightGreen),
+          child: const Text(
+            'Filtrar',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white,
+                            fontSize: 20,
+                            decoration: TextDecoration.none),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: mapaWidget(),
-          )
-        ],
-      ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: mapaWidget(),
+        )
+      ],
     );
   }
 }
