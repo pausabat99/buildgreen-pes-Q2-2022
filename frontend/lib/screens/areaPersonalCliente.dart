@@ -78,10 +78,19 @@ class AreaPersonalCliente extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: Image(
-                          image: AssetImage("images/admin.png"),
-                          height: 70,
-                          width: 70,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              right: 50,
+                              top: 10,
+                            ),
+                            child: Image(
+                              image: AssetImage("images/admin.png"),
+                              height: 70,
+                              width: 70,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -169,24 +178,37 @@ class AreaPersonalCliente extends StatelessWidget {
                           padding: const EdgeInsets.all(10.0),
 
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: const <Widget>[
-                              Expanded(
-                                child: Image(
-                                  image: AssetImage("images/euro.png"),
-                                  height: 50,
-                                  width: 50,
+                              Flexible(
+                                flex: 1,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Image(
+                                    image: AssetImage("images/euro.png"),
+                                    height: 50,
+                                    width: 50,
+                                  ),
                                 ),
                               ),
-                              Expanded(
-                                child: Text(
-                                  'Ver precios a tiempo real',
-                                  style: TextStyle(fontSize: 20),
+                              Flexible(
+                                flex: 10,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Ver precios a tiempo real',
+                                    style: TextStyle(fontSize: 20),
+                                  ),
                                 ),
                               ),
-                              Expanded(
-                                child: Icon(Icons.arrow_forward_ios,
-                                    color: Color.fromARGB(255, 94, 95, 94)),
-                              ),
+                              Flexible(
+                                flex: 3,
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(Icons.arrow_forward_ios,
+                                      color: Color.fromARGB(255, 94, 95, 94)),
+                                ),
+                              )
                             ],
                           ),
                           decoration: BoxDecoration(
