@@ -66,8 +66,15 @@ class AreaPersonalCliente extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const <Widget>[
                       Expanded(
-                        child: Text(
-                          'AREA PERSONAL',
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 50,
+                          ),
+                          child: Text(
+                            'ÁREA PERSONAL',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 40),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -83,10 +90,16 @@ class AreaPersonalCliente extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const <Widget>[
                       Expanded(
-                        child: Text(
-                          'Carrer de Rosello, 1 \n 08029 Barcelona',
+                          child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 50,
                         ),
-                      ),
+                        child: Text(
+                          'Carrer de Rosello, 1\n08029 Barcelona',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      )),
                     ],
                   ),
                   Row(
@@ -132,8 +145,15 @@ class AreaPersonalCliente extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const <Widget>[
                       Expanded(
-                        child: Text(
-                          'Precios a tiempo real',
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 50,
+                          ),
+                          child: Text(
+                            'Precios a tiempo real',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
                     ],
@@ -160,6 +180,7 @@ class AreaPersonalCliente extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   'Ver precios a tiempo real',
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ),
                               Expanded(
@@ -180,8 +201,15 @@ class AreaPersonalCliente extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const <Widget>[
                       Expanded(
-                        child: Text(
-                          'Consumo energetico',
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 50,
+                          ),
+                          child: Text(
+                            'Consumo energetico',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                         ),
                       ),
                     ],
