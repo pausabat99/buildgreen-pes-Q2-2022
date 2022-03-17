@@ -1,3 +1,4 @@
+import 'package:buildgreen/widgets/item_electrodomestico.dart';
 import 'package:flutter/material.dart';
 class SimuladorList extends StatefulWidget {
   const SimuladorList({ Key? key }) : super(key: key);
@@ -9,15 +10,23 @@ class SimuladorList extends StatefulWidget {
 class _SimuladorListState extends State<SimuladorList> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
+    return Material(
+      child: Stack(
+        children: [
+          Container(
+            color: Colors.green,
+          ),
+          Column(
+
+            children: <Widget>[
+              ItemElectrodomestico(title: "Hello world"),
+              ItemElectrodomestico(title: "Hello world"),
+              ItemElectrodomestico(title: "Hello world"),
+              ItemElectrodomestico(title: "Hello world"),
+              ItemElectrodomestico(title: "Hello world"),
+            ],
+          ),
+        ],
       ),
     );
   }
