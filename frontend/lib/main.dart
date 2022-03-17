@@ -1,8 +1,4 @@
-import 'package:buildgreen/screens/login_screen.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/main_screen.dart';
-import 'screens/mapa_screen.dart';
 import 'screens/welcome_screen.dart';
 
 void main() {

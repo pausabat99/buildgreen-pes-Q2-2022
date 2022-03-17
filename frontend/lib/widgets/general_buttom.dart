@@ -9,7 +9,7 @@ class GeneralButton extends StatelessWidget{
 
   final String title;
   final Color textColor;
-  final action;
+  final Function() action;
 
   @override 
   Widget build(BuildContext context){
