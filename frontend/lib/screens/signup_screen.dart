@@ -1,52 +1,57 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
 
-class LogInScreen extends StatefulWidget {
-  const LogInScreen({ Key? key }) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({ Key? key }) : super(key: key);
 
   @override
-  State<LogInScreen> createState() => _LogInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LogInScreenState extends State<LogInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController apellidoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  /*
-  Future<void> logInAccount() async {
+
+  String? _character = "client";
+
+  Future<void> createAccount() async {
     final response = await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
+      'username': nameController.text,
+      'surname': apellidoController.text,
       'email': emailController.text,
       'password': passwordController.text,
+      'type': _character.toString(),
       },
       ),
     );
+
     final responseJson = jsonDecode(response.body);
   }
-  */
-  void logInAccount()  { 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) {
-        return const MainScreen();
-        }
-      )
-    );
-  }
-  
 
+  Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.selected,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.green;
+      }
+      return Colors.white;
+  }
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -57,7 +62,7 @@ class _LogInScreenState extends State<LogInScreen> {
             Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 39, 170, 83),
+                color: Color.fromARGB(255, 27, 119, 58),
               ),
             ),
             Transform.scale(
@@ -128,8 +133,8 @@ class _LogInScreenState extends State<LogInScreen> {
 
 
                       Container(
-                        padding: const EdgeInsets.fromLTRB(20, 0 , 0, 0),
-                        child: Text("Log in",
+                        padding: EdgeInsets.fromLTRB(20, 0 , 0, 0),
+                        child: Text("Registro",
                           textAlign: TextAlign.left, 
                           style: Theme.of(context).textTheme.headline1,
                           
@@ -139,40 +144,80 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
                 
+                Row(children: <Widget>[
+                  InputForm(controller: nameController, hintLabel: 'Nombre'),
+                  
+                  InputForm(controller: apellidoController, hintLabel: "Apellidos"),
+                  ],
+                ),
+                
                 InputForm(controller: emailController, hintLabel: "Email"),
                 
                 InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
                 
                 const Padding(padding: EdgeInsets.only(top: 20)),
-
-                const Padding(padding: EdgeInsets.only(top: 20)),
                 
-                GeneralButton(
-                    title: "Entrar",
-                    action: logInAccount,
-                    textColor: Colors.white,
+                Container(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+                  alignment: Alignment.centerLeft,
+                  
+                  child: const Text(
+                      "Tipo de usuario",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 15,
+                      ),
+                    ),
                 ),
 
-                const Padding(padding: EdgeInsets.all(10)),
-                Text("o", style: Theme.of(context).textTheme.bodyText1,),
-                const Padding(padding: EdgeInsets.all(10)),
-                TextButton(
-                  onPressed: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const SignUpScreen();
-                                  }
-                              )
-                           )
-                          },
-                  child: Text(
-                    "Registrarse",
-                    style: TextStyle(
-                      color: Colors.lightGreen.shade100,
-                      fontSize: 18
-                    ),
+              const Divider(
+                thickness: 2, // thickness of the line
+                indent: 20, // empty space to the leading edge of divider.
+                endIndent: 20, // empty space to the trailing edge of the divider.
+                color: Colors.white70, // The color to use when painting the line.
+                height: 5, // The divider's height extent.
+              ),
+                
+                ListTile(
+                  title: Text(
+                    'Cliente',
+                    style: Theme.of(context).textTheme.bodyText1
+                  ),
+
+                  leading: Radio<String>(
+                    value: "client",
+                    fillColor: MaterialStateProperty.resolveWith(getColor),
+                    groupValue: _character,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _character = value;
+                      });
+                    },
                   ),
                 ),
 
+                ListTile(
+                  title: Text(
+                    'Administrador de propiedades',
+                    style: Theme.of(context).textTheme.bodyText1
+                  ),
+                  leading: Radio<String>(
+                    fillColor: MaterialStateProperty.resolveWith(getColor),
+                    value: "prop_admin",
+                    groupValue: _character,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _character = value;
+                      });
+                    },
+                  ),
+                ),
+
+                GeneralButton(
+                    title: "Crear Cuenta",
+                    action: createAccount,
+                    textColor: Colors.white,
+                    )
               ],
             ),
           )

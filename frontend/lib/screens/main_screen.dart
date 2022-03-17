@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({ Key? key ,}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({ Key? key ,}) : super(key: key);
   
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _MainScreenState extends State<MainScreen> {
 
   int _selectedIndex = 0;
   PageController pageController = PageController();
