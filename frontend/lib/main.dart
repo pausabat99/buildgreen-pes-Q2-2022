@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/welcome_screen.dart';
+import 'screens/areaPersonalCliente.dart';
 
 void main() {
   runApp(const MyApp());
