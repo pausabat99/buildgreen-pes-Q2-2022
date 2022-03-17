@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
@@ -20,7 +21,7 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-
+  /*
   Future<void> logInAccount() async {
     final response = await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
@@ -33,9 +34,18 @@ class _LogInScreenState extends State<LogInScreen> {
       },
       ),
     );
-
     final responseJson = jsonDecode(response.body);
   }
+  */
+  void logInAccount()  { 
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) {
+        return const MainScreen();
+        }
+      )
+    );
+  }
+  
 
   @override
   Widget build(BuildContext context) {
