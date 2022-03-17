@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
-import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,14 +20,15 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  /*
-  Future<void> logInAccount() async {
+  
+  Future<void> logInReqAccount() async {
     final response = await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
+      'username': 'miko',
       'email': emailController.text,
       'password': passwordController.text,
       },
@@ -36,7 +36,7 @@ class _LogInScreenState extends State<LogInScreen> {
     );
     final responseJson = jsonDecode(response.body);
   }
-  */
+  
   void logInAccount()  { 
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) {
@@ -113,13 +113,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                           elevation: 1
                         ),
-                        onPressed: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const WelcomeScreen();
-                                  }
-                              )
-                           )
-                          },
+                        onPressed: () => {Navigator.pop(context)},
                         child: const Icon(
                           Icons.arrow_back_rounded,
                           color: Colors.white,

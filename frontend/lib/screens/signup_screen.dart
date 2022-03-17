@@ -118,13 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           elevation: 1
                         ),
-                        onPressed: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const WelcomeScreen();
-                                  }
-                              )
-                           )
-                          },
+                        onPressed: () => {Navigator.pop(context)},
                         child: const Icon(
                           Icons.arrow_back_rounded,
                           color: Colors.white,
