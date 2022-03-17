@@ -39,13 +39,13 @@ class WelcomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(top: 100, left: 0, right: 0),
+                      padding: const EdgeInsets.only(top: 75, left: 0, right: 0),
                     ),
                     Stack(
                       children: <Widget>[
                         // background profilePic start
                         Container(
-                           padding: EdgeInsets.only(top: screenHeight*0.25, left: 50, right: 50),
+                           padding: EdgeInsets.only(top: screenHeight*0.35, left: 50, right: 50),
 
                           decoration: const BoxDecoration(
                             image: DecorationImage(

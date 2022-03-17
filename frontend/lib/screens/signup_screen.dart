@@ -213,8 +213,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
 
-                const Padding(padding: EdgeInsets.only(top: 20)),
-                
                 GeneralButton(
                     title: "Crear Cuenta",
                     action: createAccount,
