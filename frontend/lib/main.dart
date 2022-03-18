@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'classes/user_preferences.dart';
 import 'screens/welcome_screen.dart';
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await UserPreferences.init();
   runApp(const MyApp());
 }
 

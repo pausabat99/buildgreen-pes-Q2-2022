@@ -1,17 +1,43 @@
+import 'package:buildgreen/screens/main_screen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './login_screen.dart';
 import './signup_screen.dart';
 import "../widgets/general_buttom.dart";
+
 class WelcomeScreen extends StatelessWidget {
 
   static const routeName = '/welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
 
+  Future<void> logInReqAccount(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("_user_token") != null){
+     final http.Response response = await http.get(
+      Uri.parse('https://buildgreen.herokuapp.com/user/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+        },
+      );
+
+      final responseJson = jsonDecode(response.body);
+      if (responseJson['user_info'] != null) {
+        Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const MainScreen(); } ) );
+      }
+    }
+  }
+
         
 
   @override
   Widget build(BuildContext context) {
+    logInReqAccount(context);
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(

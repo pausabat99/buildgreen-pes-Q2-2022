@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
@@ -7,6 +8,9 @@ import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({ Key? key }) : super(key: key);
@@ -19,23 +23,43 @@ class _LogInScreenState extends State<LogInScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  String output = "hola";
 
   
+
+
   Future<void> logInReqAccount() async {
-    final response = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if(prefs.getString("_user_token") != null){
+     final http.Response response = await http.get(
+      Uri.parse('https://buildgreen.herokuapp.com/user/'),
       headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-      'username': 'miko',
-      'email': emailController.text,
-      'password': passwordController.text,
-      },
-      ),
-    );
-    final responseJson = jsonDecode(response.body);
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+        },
+      );
+      setState(() {
+        output = response.body;
+      });
+    }
+
+    else {
+      final response = await http.post(
+        Uri.parse('https://buildgreen.herokuapp.com/login/'),
+        // Send authorization headers to the backend.
+        body: {
+          'username': emailController.text,
+          'password': passwordController.text,
+        },
+      );
+      setState(() {
+        output = response.body;
+      });
+      
+      final responseJson = jsonDecode(response.body);
+      prefs.setString('_user_token', responseJson['token']);
+    }
   }
+
   
   void logInAccount()  { 
     Navigator.of(context).push(
@@ -143,7 +167,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 
                 GeneralButton(
                     title: "Entrar",
-                    action: logInAccount,
+                    action: logInReqAccount,
                     textColor: Colors.white,
                 ),
 
@@ -166,6 +190,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ),
+                Text(output),
 
               ],
             ),

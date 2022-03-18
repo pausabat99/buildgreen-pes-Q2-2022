@@ -21,25 +21,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  String output = "Hola";
 
   String? _character = "client";
 
   Future<void> createAccount() async {
     final response = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/api-token-auth'),
+      Uri.parse('https://buildgreen.herokuapp.com/signup/'),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
       'username': nameController.text,
-      'surname': apellidoController.text,
+      //'lastname': apellidoController.text,
       'email': emailController.text,
       'password': passwordController.text,
-      'type': _character.toString(),
+      //'type': _character.toString(),
       },
       ),
     );
-
+    setState(() {
+      output = response.body;
+    });
     final responseJson = jsonDecode(response.body);
   }
 
@@ -211,7 +214,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     title: "Crear Cuenta",
                     action: createAccount,
                     textColor: Colors.white,
-                    )
+                ),
+                Text(output),
               ],
             ),
           )

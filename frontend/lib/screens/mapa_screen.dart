@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -33,6 +36,16 @@ class _MapaScreenState extends State<MapaScreen> {
     );
   }
 
+  Future<void> logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final response = await http.post(
+        Uri.parse('https://buildgreen.herokuapp.com/logout/'),
+        // Send authorization headers to the backend.
+        headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+        },
+      );
+  }
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -57,7 +70,8 @@ class _MapaScreenState extends State<MapaScreen> {
           ),
           Container(
             child: mapaWidget(),
-          )
+          ),
+          TextButton(onPressed: logOut, child: Text('Log out')),
         ]
       )
     );
