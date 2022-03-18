@@ -1,3 +1,4 @@
+import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
@@ -34,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
       body: PageView(
         controller: pageController,
         children: const <Widget>[
-          LogInScreen(),
+          AreaPersonalCliente(),
           SignUpScreen(),
           MapaScreen(),
         ]
