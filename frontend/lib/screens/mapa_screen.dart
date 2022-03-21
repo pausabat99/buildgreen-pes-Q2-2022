@@ -10,56 +10,68 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   TextEditingController filterController = TextEditingController();
 
-  Widget mapaWidget() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-      child: const Image(image: AssetImage("images/mapa.png")));
-  }
-
-  Widget filtraWidget() {
-    return Material(
-      // ignore: avoid_unnecessary_containers
-      child: Container(
-        child: TextField(
-          controller: filterController,
-          decoration: const InputDecoration(
-            icon: Icon(Icons.search),
-            hintText: 'Filtrar',
-            border: OutlineInputBorder(),
-          ),
-        )
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: ListView(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            margin: const EdgeInsets.fromLTRB(50, 40, 0, 0),
-            child: const Text(
-              'MAPA',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 40,
-                  decoration: TextDecoration.none),
+    return Scaffold(
+        body: Stack(children: <Widget>[
+      Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.white,
+            Colors.lightGreen,
+          ],
+        )),
+      ),
+      Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            Row(children: const <Widget>[
+              Expanded(
+                child: Text(
+                  'MAPA',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 40,
+                      decoration: TextDecoration.none),
+                ),
+              ),
+              Expanded(
+                child: Image(
+                  image: AssetImage("images/admin.png"),
+                  height: 70,
+                  width: 70,
+                ),
+              )
+            ]),
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 30, 30, 30),
+              child: TextField(
+                controller: filterController,
+                decoration: const InputDecoration(
+                  //border: OutlineInputBorder(),
+                  hintText: 'Filtrar',
+                  icon: Icon(Icons.search),
+                ),
+              )
             ),
-          ),
-          Container(
-            alignment: Alignment.topCenter,
-            margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-            padding: const EdgeInsets.all(30),
-            child: filtraWidget(),
-          ),
-          Container(
-            child: mapaWidget(),
-          )
-        ]
-      )
-    );
+            Container(
+              //este es el contenedor del MAPA
+              height: 550,
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(12),
+              )
+            )
+          ],
+        ),
+      ),
+    ]));
   }
 }
