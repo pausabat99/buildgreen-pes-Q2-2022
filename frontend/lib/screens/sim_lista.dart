@@ -10,27 +10,26 @@ class SimuladorList extends StatefulWidget {
 }
 
 class _SimuladorListState extends State<SimuladorList> {
-  final List<String> electrodomesticos = ["Elec1", "Elec2"];
+  final List<String> electrodomesticos = ["Elec1", "Elec2","Elec3","Elec4"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: 
           SizedBox(
-            height: 200.0,
+            height: double.infinity,
             child: Column(
-              
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
                 SizedBox(
-                  height: 0,
+                  height: 100, 
                   child: Text(
                     'SIMULACIÓN',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)
                   ),
                 ),
                 SizedBox(
-                  height: 200.0,
+                  height: 400,
                   child: ListView.separated(
                     itemCount : electrodomesticos.length,
                     itemBuilder:  (BuildContext context, int index) {
@@ -38,6 +37,19 @@ class _SimuladorListState extends State<SimuladorList> {
                     } ,
                     padding: const EdgeInsets.all(8),
                     separatorBuilder: (BuildContext context, int index) => const Divider(),
+                  ),
+                ),
+                SizedBox(
+                  height: 100,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                      //padding: EdgeInsets.all(10)
+                    ),
+                    onPressed: () {
+                      
+                     },
+                    child: Text('Añadir'),
                   ),
                 ),
               ],
