@@ -12,15 +12,20 @@ class ItemElectrodomestico extends StatelessWidget {
 
  @override
  Widget build(BuildContext context){
-   return Padding(
-                padding: const EdgeInsets.all(8.0),
+   return Container(
+                padding: const EdgeInsets.only(
+                    top: 5,
+                    bottom: 10,
+                    left: 50,
+                    right: 50),
                 child: Container(
-                  alignment: Alignment.topCenter,
-                  padding: const EdgeInsets.all(10),
+                  height: 80.0,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(20),
                   child: Text(title),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               );
