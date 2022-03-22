@@ -33,7 +33,7 @@ class _LogInScreenState extends State<LogInScreen> {
   Future<void> logInReqAccount() async {
     
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("_user_token") != null){
+    /*if(prefs.getString("_user_token") != null){
      final http.Response response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/user/'),
       headers: <String, String>{
@@ -44,17 +44,25 @@ class _LogInScreenState extends State<LogInScreen> {
         output = response.body;
       });
     }
-    
+    */
 
-    else {
+    if (true) {
       debugPrint("RRequesting");
+      debugPrint(prefs.getString('_user_token'));
       final response = await http.post(
-        Uri.parse('https://buildgreen.herokuapp.com/login/'),
+        Uri.parse('https://buildgreen.herokuapp.com/properties/'),
         //Uri.parse('https://google.com/'),
+        headers: {
+          HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
+        },
         body: {
+          'address': emailController.text,
+          'property_type': "apt"//,passwordController.text,
+        }
+        /*body: {
           'username': emailController.text,
           'password': passwordController.text,
-        },
+        },*/
       );
       debugPrint(response.statusCode.toString());
       setState(() {
@@ -62,7 +70,7 @@ class _LogInScreenState extends State<LogInScreen> {
       });
       
       final responseJson = jsonDecode(response.body);
-      prefs.setString('_user_token', responseJson['token']);
+      //prefs.setString('_user_token', responseJson['token']);
     }
   }
 

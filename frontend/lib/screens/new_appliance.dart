@@ -87,8 +87,8 @@ class _NewApplianceState extends State<NewAppliance> {
                     InputForm(controller: nameController, hintLabel: 'Nombre'),
                     DropdownButton<String>(
                       value: dropdownValue,
-                      icon: const Icon(Icons.arrow_downward),
-                      style: const TextStyle(color: Colors.white),
+                      icon: const Icon(Icons.arrow_downward, color: Colors.white,),
+                      style: Theme.of(context).textTheme.bodyText1,
                       underline: Container(
                         height: 3,
                         color: Colors.white,
@@ -139,7 +139,9 @@ class _NewApplianceState extends State<NewAppliance> {
 
                   GeneralButton(
                       title: "Agregar nuevo",
-                      action: createAccount,
+                      action: () {int count = 0;
+                                  Navigator.of(context).popUntil((_) => count++ >= 2);
+                                  },
                       textColor: Colors.white,
                   ),
                   Text(output),

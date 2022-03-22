@@ -17,7 +17,7 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    /*SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
      final http.Response response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/user/'),
@@ -30,7 +30,7 @@ class WelcomeScreen extends StatelessWidget {
       if (responseJson['user_info'] != null) {
         Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const MainScreen(); } ) );
       }
-    }
+    }*/
   }
 
         
