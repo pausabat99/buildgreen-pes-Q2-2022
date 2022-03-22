@@ -1,3 +1,4 @@
+import 'package:buildgreen/screens/new_appliance.dart';
 import 'package:flutter/material.dart';
 
 import 'classes/user_preferences.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
-      home: const SimuladorList(),
+      home: const NewAppliance(),
     );
   }
 }

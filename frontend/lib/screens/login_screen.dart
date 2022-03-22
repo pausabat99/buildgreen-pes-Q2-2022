@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -99,29 +100,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Row(
                     
                     children: [
-                      ElevatedButton(
-                        
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal.withAlpha(0),
-                          onPrimary: Colors.white.withAlpha(0),
-                          shadowColor: Colors.black.withOpacity(0.15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          side: const BorderSide(
-                            color: Colors.white,
-                            width: 3,
-                          ),
-                          elevation: 1
-                        ),
-                        onPressed: () => {Navigator.pop(context)},
-                        child: const Icon(
-                          Icons.arrow_back_rounded,
-                          color: Colors.white,
-                          size: 45,),
-                      ),
-
-
+                      const CustomBackButton(),
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 0 , 10, 0),
                         child: Text("Log in",

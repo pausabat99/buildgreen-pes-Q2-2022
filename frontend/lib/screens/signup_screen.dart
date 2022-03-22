@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:buildgreen/screens/welcome_screen.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -80,29 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       
                       children: [
-                        ElevatedButton(
-                          
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal.withAlpha(0),
-                            onPrimary: Colors.white.withAlpha(0),
-                            shadowColor: Colors.black.withOpacity(0.15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            side: const BorderSide(
-                              color: Colors.white,
-                              width: 3,
-                            ),
-                            elevation: 1
-                          ),
-                          onPressed: () => {Navigator.pop(context)},
-                          child: const Icon(
-                            Icons.arrow_back_rounded,
-                            color: Colors.white,
-                            size: 45,),
-                        ),
-
-
+                        const CustomBackButton(),
                         Container(
                           padding: const EdgeInsets.fromLTRB(10, 0 , 0, 0),
                           child: Text("Sign Up",
