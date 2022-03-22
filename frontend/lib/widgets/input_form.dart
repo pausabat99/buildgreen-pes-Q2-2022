@@ -24,7 +24,7 @@ class InputForm extends StatelessWidget {
   Widget build(BuildContext context){
     return Flexible(
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20,10,20,10),
+        padding: const EdgeInsets.all(5,),
         child: TextField(
           obscureText: obscureText,
           controller: controller,

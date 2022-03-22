@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Arial',
         
         textTheme: const TextTheme(
-          headline1: TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold, color: Colors.white),
+          headline1: TextStyle(fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.white),
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-          bodyText1: TextStyle(fontSize: 20.0, color: Colors.white),
+          bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
         ),
 
         primarySwatch: Colors.green,

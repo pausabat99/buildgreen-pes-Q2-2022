@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
+import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
 
   Future<void> logInReqAccount() async {
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
      final http.Response response = await http.get(
@@ -41,16 +43,19 @@ class _LogInScreenState extends State<LogInScreen> {
         output = response.body;
       });
     }
+    
 
     else {
+      debugPrint("RRequesting");
       final response = await http.post(
         Uri.parse('https://buildgreen.herokuapp.com/login/'),
-        // Send authorization headers to the backend.
+        //Uri.parse('https://google.com/'),
         body: {
           'username': emailController.text,
           'password': passwordController.text,
         },
       );
+      debugPrint(response.statusCode.toString());
       setState(() {
         output = response.body;
       });
@@ -78,38 +83,10 @@ class _LogInScreenState extends State<LogInScreen> {
         child: Stack(
           children: [
             // background colors start
-            Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 39, 170, 83),
-              ),
+            BackgroundForm(
+              screenHeight: screenHeight,
+              backColor: const Color.fromARGB(255, 39, 170, 83),
             ),
-            Transform.scale(
-              scale: 1.4,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: RotationTransition(
-                  turns: const AlwaysStoppedAnimation(-15 / 360),
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    height: screenHeight * 0.25,
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                    color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.all(25),
-            child: Image(
-              image: const AssetImage('images/build_green_logo.png'),
-              height: screenHeight * 0.125,
-            ),
-          ),
           // background colors end
           // form start
           Container(
@@ -146,7 +123,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
 
                       Container(
-                        padding: const EdgeInsets.fromLTRB(20, 0 , 0, 0),
+                        padding: const EdgeInsets.fromLTRB(10, 0 , 10, 0),
                         child: Text("Log in",
                           textAlign: TextAlign.left, 
                           style: Theme.of(context).textTheme.headline1,
@@ -201,3 +178,4 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 }
+
