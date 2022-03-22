@@ -47,8 +47,8 @@ class _SimuladorListState extends State<SimuladorList> {
                       //padding: EdgeInsets.all(10)
                     ),
                     onPressed: () {
-                      
-                     },
+                       
+                    },
                     child: Text('Añadir'),
                   ),
                 ),
