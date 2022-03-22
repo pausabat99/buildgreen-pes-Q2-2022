@@ -19,19 +19,36 @@ class ItemElectrodomestico extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.all(10),
-              child: Text(title),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              )),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(title),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                )),
           ),
           Expanded(
             child: IconButton(
-            onPressed: () {},
-            alignment: Alignment.centerRight,
-            icon: const Icon(Icons.delete)),
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('¡ATENCIÓN!'),
+                    content: const Text('¿Quieres borrar este electrodoméstico?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancelar'),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                icon: const Icon(Icons.delete)),
           ),
         ],
       ),
