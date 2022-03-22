@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'classes/user_preferences.dart';
 import 'screens/welcome_screen.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await UserPreferences.init();
+
   runApp(const MyApp());
 }
 
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen(),
+      home: const SimuladorList(),
     );
   }
 }
