@@ -85,27 +85,32 @@ class _NewApplianceState extends State<NewAppliance> {
                   
                   Row(children: <Widget>[
                     InputForm(controller: nameController, hintLabel: 'Nombre'),
-                    DropdownButton<String>(
-                      value: dropdownValue,
-                      icon: const Icon(Icons.arrow_downward, color: Colors.white,),
-                      style: Theme.of(context).textTheme.bodyText1,
-                      underline: Container(
-                        height: 3,
-                        color: Colors.white,
+                    const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
+                    Transform.translate(
+                      offset: const Offset(0, 12),
+                      child: DropdownButton<String>(
+                        alignment: Alignment.topCenter,
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_downward, color: Colors.white,),
+                        style: Theme.of(context).textTheme.bodyText1,
+                        underline: Container(
+                          height: 3,
+                          color: Colors.white,
+                        ),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!;
+                          });
+                        },
+                        items: <String>['Horno', 'Two', 'Free', 'Four']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        dropdownColor: Colors.green,
                       ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!;
-                        });
-                      },
-                      items: <String>['Horno', 'Two', 'Free', 'Four']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      dropdownColor: Colors.green,
                     ),
                     //InputForm(controller: apellidoController, hintLabel: "Apellidos"),
                     ],
