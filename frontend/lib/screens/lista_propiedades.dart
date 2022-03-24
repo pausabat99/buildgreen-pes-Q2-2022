@@ -184,7 +184,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                             ),
                           ),
                           style: TextButton.styleFrom(
-                              primary: Color.fromARGB(255, 3, 68, 28)),
+                              primary: const Color.fromARGB(255, 3, 68, 28)),
                           onPressed: () {
                             addItemToList();
                           },

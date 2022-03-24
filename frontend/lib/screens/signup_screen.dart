@@ -38,6 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'last_name': apellidoController.text,
       'email': emailController.text,
       'password': passwordController.text,
+      'is_admin': '0',
       },
       ),
     );
@@ -46,7 +47,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
       output = response.body;
     });
     final responseJson = jsonDecode(response.body);
+    if (responseJson['user_info'] != null){
+      final response = await http.post(
+        Uri.parse('https://buildgreen.herokuapp.com/login/'),
+        body: {
+          'username': nameController.text,
+          'password': passwordController.text, 
+        }
+      );
+      debugPrint(response.body);
+      setState(() {
+        output = response.body;
+      });
+      
+      final responseJson = jsonDecode(response.body);
+      //
+    }
+    else {
+      debugPrint("NUUU");
+    }
   }
+
+  
 
   Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{

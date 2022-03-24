@@ -1,3 +1,4 @@
+import 'package:buildgreen/screens/new_appliance.dart';
 import 'package:flutter/material.dart';
 import 'classes/user_preferences.dart';
 import 'screens/welcome_screen.dart';

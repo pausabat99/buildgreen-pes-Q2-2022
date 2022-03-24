@@ -58,7 +58,7 @@ class _NewApplianceState extends State<NewAppliance> {
       return Colors.white;
   }
 
-  String dropdownValue = 'Horno';
+  String dropdownValue = 'Televisión';
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class _NewApplianceState extends State<NewAppliance> {
                   ),
                   
                   Row(children: <Widget>[
-                    InputForm(controller: nameController, hintLabel: 'Nombre'),
+                    InputForm(controller: nameController, hintLabel: 'Modelo'),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Transform.translate(
                       offset: const Offset(0, 12),
@@ -102,7 +102,7 @@ class _NewApplianceState extends State<NewAppliance> {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['Horno', 'Two', 'Free', 'Four']
+                        items: <String>['Televisión', 'Horno', 'Nevera']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
@@ -116,31 +116,13 @@ class _NewApplianceState extends State<NewAppliance> {
                     ],
                   ),
                   
-                  InputForm(controller: emailController, hintLabel: "Precio"),
                   
-                  InputForm(controller: passwordController, hintLabel: "Consumo"),
+                  InputForm(controller: passwordController, hintLabel: "Marca"),
+
+
+                  InputForm(controller: emailController, hintLabel: "Precio [€]"),
                   
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                        "Medidas",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 15,
-                        ),
-                      ),
-                  ),
-                  
-                  Row(children: <Widget>[
-                    InputForm(controller: nameController, hintLabel: 'Alto'),
-                    InputForm(controller: nameController, hintLabel: 'Ancho'),
-                    InputForm(controller: nameController, hintLabel: 'Largo'),
-                    //InputForm(controller: apellidoController, hintLabel: "Apellidos"),
-                    ],
-                  ),
-                  InputForm(controller: passwordController, hintLabel: "Peso"),
+                  InputForm(controller: passwordController, hintLabel: "Consumo [kW]"),
 
                   GeneralButton(
                       title: "Agregar nuevo",

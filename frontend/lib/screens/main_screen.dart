@@ -1,8 +1,6 @@
 import 'package:buildgreen/screens/area_personal_cliente.dart';
-import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
-import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 
