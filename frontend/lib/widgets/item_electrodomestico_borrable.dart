@@ -11,6 +11,39 @@ class ItemElectrodomesticoBorrable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        child: _buildPanel(),
+      ),
+    );
+  }
+
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      children: <ExpansionPanel>[
+        ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            isExpanded = false;
+            return const ListTile(
+            // leading: item.iconpic,
+            title: const Text(
+              "First",
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.w400,
+              ),
+            ));
+          },
+      body: new Text("school"),
+      isExpanded: false,
+        )
+      ],
+    );
+  }
+
+  /*@override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 5, bottom: 10, left: 50, right: 50),
       height: 80.0,
@@ -53,5 +86,5 @@ class ItemElectrodomesticoBorrable extends StatelessWidget {
         ],
       ),
     );
-  }
+  }*/
 }
