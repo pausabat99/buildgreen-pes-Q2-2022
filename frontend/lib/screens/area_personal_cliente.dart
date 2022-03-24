@@ -83,19 +83,24 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                          width: 190.0,
-                          height: 190.0,
-                          margin: const EdgeInsets.all(50.0),
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Align(
-                            alignment: Alignment.topRight,
-                            child: Icon(Icons.arrow_forward_ios,
-                                color: Color.fromARGB(255, 94, 95, 94)),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            borderRadius: BorderRadius.circular(12),
+                        child: GestureDetector(
+                          onTap: () {
+                            print('GestureDetector onTap Called');
+                          },
+                          child: Container(
+                            width: 190.0,
+                            height: 190.0,
+                            margin: const EdgeInsets.all(50.0),
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Align(
+                              alignment: Alignment.topRight,
+                              child: Icon(Icons.arrow_forward_ios,
+                                  color: Color.fromARGB(255, 94, 95, 94)),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),

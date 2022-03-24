@@ -1,6 +1,7 @@
 import 'package:buildgreen/screens/new_appliance.dart';
 import 'package:flutter/material.dart';
-
+import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'screens/lista_propiedades.dart';
 import 'classes/user_preferences.dart';
 import 'screens/welcome_screen.dart';
 Future main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
-      home: const NewAppliance(),
+      home: const WelcomeScreen(),
     );
   }
 }
