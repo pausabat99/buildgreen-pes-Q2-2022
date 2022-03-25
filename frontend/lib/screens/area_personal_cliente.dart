@@ -236,6 +236,35 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                       ),
                     ],
                   ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 50,
+                            ), // use Spacer
+                          ),
+                        ),
+                      ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: TextButton.icon(
+                            icon: const Icon(Icons.power_settings_new),
+                            label: const Text(
+                              'Sign Out',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                                primary: Color.fromARGB(255, 3, 68, 28)),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ])
                 ],
               ),
             GeneralButton(
