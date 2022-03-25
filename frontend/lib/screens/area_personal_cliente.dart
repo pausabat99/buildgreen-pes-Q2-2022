@@ -242,10 +242,13 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
               ),
             ),
             GeneralButton(
-                    title: "Entrar",
+                    title: "Log out",
                     action: onPressedLogOut,
                     textColor: Colors.red,
             ),
+            const Padding(padding: EdgeInsets.only(
+              top: 20
+            ))
           ],
         ),
     );

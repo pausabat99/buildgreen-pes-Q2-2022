@@ -33,7 +33,7 @@ class _MapaScreenState extends State<MapaScreen> {
               ),
               Expanded(
                 child: Image(
-                  image: AssetImage("images/admin.png"),
+                  image: AssetImage("assets/images/admin.png"),
                   height: 70,
                   width: 70,
                 ),
