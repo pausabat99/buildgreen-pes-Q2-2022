@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,7 +19,7 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
-    /*SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
      final http.Response response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/user/'),
@@ -30,7 +32,10 @@ class WelcomeScreen extends StatelessWidget {
       if (responseJson['user_info'] != null) {
         Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const MainScreen(); } ) );
       }
-    }*/
+      else {
+        await prefs.remove("_user_token");
+      }
+    }
   }
 
         
@@ -50,9 +55,9 @@ class WelcomeScreen extends StatelessWidget {
               colors: [
                 Colors.white,
                 Colors.lightGreen,
-              ],
-            )
-          ),
+                ],
+              )
+            ),
           ),
 
           Column(
@@ -90,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                         child : GeneralButton(
                           title: 'Entrar', 
-                          textColor: Colors.green , 
+                          textColor: Colors.white , 
                           action: () => {Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) {
                                   return const LogInScreen();
@@ -102,12 +107,12 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 150),
+                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 150),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
                           
                           title: 'Registrarse', 
-                          textColor: Colors.lightGreen , 
+                          textColor: Colors.white , 
                           action: () => {Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) {
                                   return const SignUpScreen();

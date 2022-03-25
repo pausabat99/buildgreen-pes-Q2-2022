@@ -19,7 +19,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
 
   void _navigateToNextScreen(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AreaPersonalCliente()));
+        .push(MaterialPageRoute(builder: (context) => const AreaPersonalCliente()));
   }
 
   void addItemToList() {
@@ -33,7 +33,6 @@ class _ListaPropiedades extends State<ListaPropiedades> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Stack(
       children: <Widget>[

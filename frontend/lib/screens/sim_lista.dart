@@ -19,7 +19,6 @@ class _SimuladorListState extends State<SimuladorList> {
           SizedBox(
             height: double.infinity,
             child: Column(
-              // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
                 SizedBox(
                   height: 100, 

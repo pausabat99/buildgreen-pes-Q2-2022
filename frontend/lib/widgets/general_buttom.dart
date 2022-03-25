@@ -25,14 +25,14 @@ class GeneralButton extends StatelessWidget{
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
-          side: const BorderSide(
-            color: Colors.white,
+          side: BorderSide(
+            color: textColor,
             width: 3,
           ),
           elevation: 1
         ),
         onPressed: action,
-        child: Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: Colors.white,),),
+        child: Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textColor,),),
       ),
     );
   }

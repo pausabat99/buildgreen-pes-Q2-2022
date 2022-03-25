@@ -1,6 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
 
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
@@ -27,51 +28,35 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController passwordController = TextEditingController();
   String output = "hola";
 
-  
+  bool processing = false;
 
 
   Future<void> logInReqAccount() async {
-    
+    if (processing) return; 
+    processing = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    /*if(prefs.getString("_user_token") != null){
-     final http.Response response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/user/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-        },
+    debugPrint("RRequesting");
+    debugPrint(prefs.getString('_user_token'));
+    final response = await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/login/'),
+      body: {
+        'username': emailController.text,
+        'password': passwordController.text,
+      },
+    );
+    
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['token'] != null){
+      await prefs.setString('_user_token', responseJson['token']);
+      processing = false;
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) {
+        return const MainScreen();
+          }
+        )
       );
-      setState(() {
-        output = response.body;
-      });
     }
-    */
-
-    if (true) {
-      debugPrint("RRequesting");
-      debugPrint(prefs.getString('_user_token'));
-      final response = await http.post(
-        Uri.parse('https://buildgreen.herokuapp.com/properties/'),
-        //Uri.parse('https://google.com/'),
-        headers: {
-          HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
-        },
-        body: {
-          'address': emailController.text,
-          'property_type': "apt"//,passwordController.text,
-        }
-        /*body: {
-          'username': emailController.text,
-          'password': passwordController.text,
-        },*/
-      );
-      debugPrint(response.statusCode.toString());
-      setState(() {
-        output = response.body;
-      });
-      
-      final responseJson = jsonDecode(response.body);
-      //prefs.setString('_user_token', responseJson['token']);
-    }
+    processing = false;
   }
 
   
@@ -125,8 +110,6 @@ class _LogInScreenState extends State<LogInScreen> {
                 
                 InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
                 
-                const Padding(padding: EdgeInsets.only(top: 20)),
-
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 
                 GeneralButton(

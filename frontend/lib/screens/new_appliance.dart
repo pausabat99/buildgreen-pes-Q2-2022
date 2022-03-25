@@ -24,8 +24,6 @@ class _NewApplianceState extends State<NewAppliance> {
 
   String output = "Hola";
 
-  String? _character = "client";
-
   Future<void> createAccount() async {
     final response = await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/signup/'),
@@ -45,7 +43,7 @@ class _NewApplianceState extends State<NewAppliance> {
     setState(() {
       output = response.body;
     });
-    final responseJson = jsonDecode(response.body);
+    //final responseJson = jsonDecode(response.body);
   }
 
   Color getColor(Set<MaterialState> states) {

@@ -29,17 +29,28 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: PageView(
-        controller: pageController,
-        children: const <Widget>[
-          AreaPersonalCliente(),
-          SignUpScreen(),
-          MapaScreen(),
-        ]
+      backgroundColor: Colors.transparent,
+      body: Container(
+          child: PageView(
+                controller: pageController,
+                children: const <Widget>[
+                  AreaPersonalCliente(),
+                  SignUpScreen(),
+                  MapaScreen(),
+                ],
+            ),
+            decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.white,
+                Colors.lightGreen,
+                ],
+              )
+            ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: ""),
