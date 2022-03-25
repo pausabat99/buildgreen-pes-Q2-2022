@@ -30,7 +30,10 @@ class WelcomeScreen extends StatelessWidget {
 
       final responseJson = jsonDecode(response.body);
       if (responseJson['user_info'] != null) {
-        Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const MainScreen(); } ) );
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen())
+      );
       }
       else {
         await prefs.remove("_user_token");
@@ -96,13 +99,10 @@ class WelcomeScreen extends StatelessWidget {
                         child : GeneralButton(
                           title: 'Entrar', 
                           textColor: Colors.white , 
-                          action: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const LogInScreen();
-                                  }
- 
-                              )
-                           )
+                          action: () => {Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => const LogInScreen())
+                                        )
                           }
                         ),
                     ),
@@ -113,12 +113,9 @@ class WelcomeScreen extends StatelessWidget {
                           
                           title: 'Registrarse', 
                           textColor: Colors.white , 
-                          action: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const SignUpScreen();
-                                  }
-                              )
-                           )
+                          action: () => {Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const SignUpScreen()))
                           }
                         ),
                     ),

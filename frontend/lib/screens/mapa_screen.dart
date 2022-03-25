@@ -15,6 +15,7 @@ class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         body: Container(
         padding: const EdgeInsets.all(20),

@@ -68,12 +68,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final responseJson = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('_user_token', responseJson['token']);
-      Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) {
-        return const MainScreen();
-        }
-      )
-    );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen())
+      );
       //
     }
     else {

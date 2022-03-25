@@ -49,11 +49,9 @@ class _LogInScreenState extends State<LogInScreen> {
     if (responseJson['token'] != null){
       await prefs.setString('_user_token', responseJson['token']);
       processing = false;
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) {
-        return const MainScreen();
-          }
-        )
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen())
       );
     }
     processing = false;

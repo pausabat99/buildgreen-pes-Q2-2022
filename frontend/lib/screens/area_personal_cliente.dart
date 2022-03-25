@@ -37,9 +37,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
       backgroundColor: Colors.transparent,
         body: ListView(
           children: [
-            Expanded(
-              flex: 3,
-              child: Column(
+            Column(
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -240,11 +238,10 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                   ),
                 ],
               ),
-            ),
             GeneralButton(
                     title: "Log out",
                     action: onPressedLogOut,
-                    textColor: Colors.red,
+                    textColor: Colors.black,
             ),
             const Padding(padding: EdgeInsets.only(
               top: 20
