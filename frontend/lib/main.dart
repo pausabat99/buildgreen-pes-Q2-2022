@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'screens/mainScreen.dart';
-import 'screens/areaPersonalCliente.dart';
 import 'screens/listaPropiedades.dart';
 
 void main() {
