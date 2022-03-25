@@ -34,6 +34,11 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.transparent,
       body: Container(
           child: PageView(
+                onPageChanged: (value) {
+                  setState(() {
+                     _selectedIndex = value;
+                  });
+                },
                 controller: pageController,
                 children: const <Widget>[
                   AreaPersonalCliente(),

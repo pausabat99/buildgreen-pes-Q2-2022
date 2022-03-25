@@ -54,22 +54,6 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: 50,
-                              top: 10,
-                            ),
-                            child: Image(
-                              image: AssetImage("assets/images/admin.png"),
-                              height: 70,
-                              width: 70,
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   Row(
@@ -247,24 +231,6 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                           ),
                         ),
                       ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: TextButton.icon(
-                            icon: const Icon(Icons.power_settings_new),
-                            label: const Text(
-                              'Sign Out',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                            style: TextButton.styleFrom(
-                                primary: const Color.fromARGB(255, 3, 68, 28)),
-                            onPressed: () {},
-                          ),
-                        ),
-                      ])
                 ],
               ),
             GeneralButton(
