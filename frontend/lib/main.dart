@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'screens/welcome_screen.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 
