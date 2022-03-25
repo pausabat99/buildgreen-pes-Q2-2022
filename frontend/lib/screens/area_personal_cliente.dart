@@ -260,7 +260,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                               ),
                             ),
                             style: TextButton.styleFrom(
-                                primary: Color.fromARGB(255, 3, 68, 28)),
+                                primary: const Color.fromARGB(255, 3, 68, 28)),
                             onPressed: () {},
                           ),
                         ),
