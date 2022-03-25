@@ -5,30 +5,107 @@ import 'package:flutter/material.dart';
 
 class ListaPropiedades extends StatefulWidget {
   const ListaPropiedades({Key? key}) : super(key: key);
+
   @override
   State<ListaPropiedades> createState() => _ListaPropiedades();
 }
 
+//Classe Item Propiedad
+class Item {
+  Item({
+    required this.headerValue,
+    this.isExpanded = false,
+  });
+
+  String headerValue;
+  bool isExpanded;
+}
+
+//Generar propiedades para la Expansion Panel List
+List<Item> generateItems(int numberOfItems) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(headerValue: 'Calle Falsa 123'
+        //expandedValue: 'This is item number $index',
+        );
+  });
+}
+
 class _ListaPropiedades extends State<ListaPropiedades> {
-  final List<String> popiedades = <String>[
-    'Carrer Aragó, 127 08029 Barcelona',
-  ];
-  final List<int> idPropiedad = <int>[1];
+  //Se rellena  la lista de propiedades
+  late List<Item> _data = generateItems(1);
 
   TextEditingController nameController = TextEditingController();
 
-  void _navigateToNextScreen(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => AreaPersonalCliente()));
+  void newPropiety() {
+    setState(() {
+      int lastItemIndex = _data.length;
+      Item nitem = Item(headerValue: 'Nueva Propiedad');
+      _data.insert(lastItemIndex, nitem);
+    });
   }
 
-  void addItemToList() {
-    setState(() {
-      int lastItemIndex = popiedades.length;
-
-      popiedades.insert(lastItemIndex, "Nueva propiedad");
-      idPropiedad.insert(lastItemIndex, Random().nextInt(100));
-    });
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((Item item) {
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              leading: const Image(
+                image: AssetImage("images/propiedadadminverde.png"),
+                height: 100,
+                width: 100,
+              ),
+              title: Text(item.headerValue),
+            );
+          },
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              ListTile(
+                  title: const Text("Abrir Propiedad"),
+                  onTap: () {
+                    setState(() {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AreaPersonalCliente()));
+                    });
+                  }),
+              ListTile(
+                title: const Text("Eliminar Propiedad"),
+                onTap: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('¡ATENCIÓN!'),
+                    content: const Text('¿Quieres borrar esta propiedad?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancelar'),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _data.removeWhere(
+                                (Item currentItem) => item == currentItem);
+                          });
+                          Navigator.pop(context, 'OK');
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          isExpanded: item.isExpanded,
+        );
+      }).toList(),
+    );
   }
 
   @override
@@ -92,6 +169,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                         child: Padding(
                       padding: EdgeInsets.only(
                         left: 50,
+                        bottom: 50,
                       ),
                       child: Text(
                         'Cartera de propiedades',
@@ -105,72 +183,23 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Expanded(
-                        child: GestureDetector(
-                            onTap: () {
-                              _navigateToNextScreen(context);
-                            },
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                padding: const EdgeInsets.all(0),
-                                itemCount: popiedades.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Container(
-                                    height: 140.0,
-                                    margin: const EdgeInsets.only(
-                                        left: 30.0,
-                                        bottom: 20.0,
-                                        top: 20.0,
-                                        right: 30.0),
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        const Flexible(
-                                          flex: 5,
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Image(
-                                              image: AssetImage(
-                                                  "images/propiedadadminverde.png"),
-                                              height: 50,
-                                              width: 50,
-                                            ),
-                                          ),
-                                        ),
-                                        Flexible(
-                                          flex: 12,
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              '${popiedades[index]} ',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 25,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        const Flexible(
-                                          flex: 3,
-                                          child: Align(
-                                            alignment: Alignment.centerRight,
-                                            child: Icon(Icons.arrow_forward_ios,
-                                                color: Color.fromARGB(
-                                                    255, 94, 95, 94)),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  );
-                                })))
+                      child: Container(
+                        child: _buildPanel(),
+                      ),
+                    )
                   ],
                 ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 50,
+                          ), // use Spacer
+                        ),
+                      ),
+                    ]),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
@@ -186,7 +215,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                           style: TextButton.styleFrom(
                               primary: Color.fromARGB(255, 3, 68, 28)),
                           onPressed: () {
-                            addItemToList();
+                            newPropiety();
                           },
                         ),
                       ),
