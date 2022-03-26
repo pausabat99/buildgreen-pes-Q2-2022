@@ -92,6 +92,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "fluttericon",
+      "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4",
       "packageUri": "lib/",
@@ -284,7 +290,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-03-22T14:53:58.522363Z",
+  "generated": "2022-03-26T15:41:18.777941Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }
