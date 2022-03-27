@@ -3,8 +3,6 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
@@ -26,12 +24,11 @@ class _LogInScreenState extends State<LogInScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String output = "hola";
 
   bool processing = false;
 
 
-  Future<void> logInReqAccount() async {
+  Future<void> logInAccount() async {
     if (processing) return; 
     processing = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,24 +46,10 @@ class _LogInScreenState extends State<LogInScreen> {
     if (responseJson['token'] != null){
       await prefs.setString('_user_token', responseJson['token']);
       processing = false;
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen())
-      );
+      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false);
     }
     processing = false;
   }
-
-  
-  void logInAccount()  { 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) {
-        return const MainScreen();
-        }
-      )
-    );
-  }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +87,22 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
                 
-                InputForm(controller: emailController, hintLabel: "Email"),
+                InputForm(
+                  controller: emailController,
+                  hintLabel: "Email",
+                ),
                 
-                InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
+                InputForm(
+                  controller: passwordController,
+                  hintLabel: "Password",
+                  obscureText: true,
+                ),
                 
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 
                 GeneralButton(
                     title: "Entrar",
-                    action: logInReqAccount,
+                    action: logInAccount,
                     textColor: Colors.white,
                 ),
 
@@ -120,13 +110,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 Text("o", style: Theme.of(context).textTheme.bodyText1,),
                 const Padding(padding: EdgeInsets.all(10)),
                 TextButton(
-                  onPressed: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const SignUpScreen();
-                                  }
-                              )
-                           )
-                          },
+                  onPressed: () => {Navigator.pushReplacementNamed(context, '/register')},
                   child: Text(
                     "Registrarse",
                     style: TextStyle(
@@ -135,8 +119,6 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ),
-                Text(output),
-
               ],
             ),
           )

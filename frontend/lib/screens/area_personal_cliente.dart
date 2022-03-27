@@ -29,7 +29,13 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
       HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
     );
-    Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const WelcomeScreen(); } ) );
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const WelcomeScreen(),
+      ),
+      (route) => false,
+    );
   }
   @override
   Widget build(BuildContext context) {

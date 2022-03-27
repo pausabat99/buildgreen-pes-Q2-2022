@@ -1,6 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:buildgreen/screens/main_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -8,8 +7,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './login_screen.dart';
-import './signup_screen.dart';
 import "../widgets/general_buttom.dart";
 
 class WelcomeScreen extends StatelessWidget {
@@ -30,10 +27,7 @@ class WelcomeScreen extends StatelessWidget {
 
       final responseJson = jsonDecode(response.body);
       if (responseJson['user_info'] != null) {
-        Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen())
-      );
+        Navigator.pushNamedAndRemoveUntil(context, '/index', ((route) => false));
       }
       else {
         await prefs.remove("_user_token");
@@ -99,11 +93,7 @@ class WelcomeScreen extends StatelessWidget {
                         child : GeneralButton(
                           title: 'Entrar', 
                           textColor: Colors.white , 
-                          action: () => {Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const LogInScreen())
-                                        )
-                          }
+                          action: () => {Navigator.pushNamed(context, '/login')}
                         ),
                     ),
                     Container(
@@ -113,10 +103,7 @@ class WelcomeScreen extends StatelessWidget {
                           
                           title: 'Registrarse', 
                           textColor: Colors.white , 
-                          action: () => {Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const SignUpScreen()))
-                          }
+                          action: () => {Navigator.pushNamed(context, '/register')}
                         ),
                     ),
                   ],

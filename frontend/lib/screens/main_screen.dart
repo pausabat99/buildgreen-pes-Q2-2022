@@ -2,8 +2,6 @@ import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:flutter/material.dart';
-
-
 class MainScreen extends StatefulWidget {
   const MainScreen({ Key? key ,}) : super(key: key);
   
@@ -60,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.location_city), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: ""),
         ],
         showSelectedLabels: false,
@@ -68,8 +66,6 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _selectedIndex,
         onTap: onTapNavBar,
       ),
-      
     );
-    
   }
 }
