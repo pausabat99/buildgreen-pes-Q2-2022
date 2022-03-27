@@ -2,6 +2,7 @@
 
 import 'package:buildgreen/widgets/item_electrodomestico_borrable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/typicons_icons.dart';
 
 class SimuladorList extends StatefulWidget {
   const SimuladorList({Key? key}) : super(key: key);
@@ -66,7 +67,85 @@ class _SimuladorListState extends State<SimuladorList> {
                           title: Text(item.headerValue),
                         );
                       },
-                      body: ListTile(
+                      body: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            width: double.infinity,
+                            child: Row(
+                              children: [
+                                Align(
+                                    alignment: Alignment.centerLeft,
+                                    widthFactor: 1.9,
+                                    child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(30, 10, 10, 10),
+                                      child: Text('Selecciona el horario:'),
+                                    )),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.fromLTRB(10, 10, 30, 10),
+                                    child: IconButton(
+                                        onPressed: () => showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  AlertDialog(
+                                                title: const Text('¡ATENCIÓN!'),
+                                                content: const Text(
+                                                    '¿Quieres borrar este electrodoméstico?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(context,
+                                                            'Cancelar'),
+                                                    child:
+                                                        const Text('Cancelar'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () => {
+                                                      Navigator.pop(
+                                                          context, 'OK'),
+                                                      setState(() {
+                                                      electrodomesticos.removeWhere(
+                                                          (Item currentItem) => item == currentItem);
+                                                      })
+                                                    },
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        alignment: Alignment.centerRight,
+                                        padding:
+                                            const EdgeInsets.only(right: 20),
+                                        icon: const Icon(Icons.delete)),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Icon(Icons.wb_sunny)),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Icon(Icons.brightness_4),
+                              ),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Icon(Icons.brightness_2),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      /*body: ListTile(
                           title: Text(item.expandedValue),
                           subtitle: const Text(
                               'To delete this panel, tap the trash can icon'),
@@ -76,7 +155,7 @@ class _SimuladorListState extends State<SimuladorList> {
                               electrodomesticos.removeWhere(
                                   (Item currentItem) => item == currentItem);
                             });
-                          }),
+                          }),*/
                       isExpanded: item.isExpanded,
                     );
                   }).toList(),
