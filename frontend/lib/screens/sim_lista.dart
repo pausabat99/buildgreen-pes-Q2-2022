@@ -14,24 +14,29 @@ class SimuladorList extends StatefulWidget {
 // stores ExpansionPanel state information
 class Item {
   Item({
-    required this.expandedValue,
     required this.headerValue,
     this.isExpanded = false,
     required this.id,
+    required this.activeMorning,
+    required this.activeAfternoon,
+    required this.activeNight,
   });
   String id;
-  String expandedValue;
   String headerValue;
   bool isExpanded;
+  bool activeMorning;
+  bool activeAfternoon;
+  bool activeNight;
 }
 
 List<Item> generateItems(int numberOfItems) {
   return List<Item>.generate(numberOfItems, (int index) {
     return Item(
-      id: '$index',
-      headerValue: 'Panel $index',
-      expandedValue: 'This is item number $index',
-    );
+        id: '$index',
+        headerValue: 'Electrodoméstico $index',
+        activeMorning: false,
+        activeAfternoon: false,
+        activeNight: false);
   });
 }
 
@@ -72,14 +77,17 @@ class _SimuladorListState extends State<SimuladorList> {
                           SizedBox(
                             width: double.infinity,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Align(
                                     alignment: Alignment.centerLeft,
-                                    widthFactor: 1.9,
                                     child: Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(30, 10, 10, 10),
-                                      child: Text('Selecciona el horario:'),
+                                      child: Text(
+                                        'Selecciona el horario de uso:',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                     )),
                                 Align(
                                   alignment: Alignment.centerRight,
@@ -107,8 +115,11 @@ class _SimuladorListState extends State<SimuladorList> {
                                                       Navigator.pop(
                                                           context, 'OK'),
                                                       setState(() {
-                                                      electrodomesticos.removeWhere(
-                                                          (Item currentItem) => item == currentItem);
+                                                        electrodomesticos
+                                                            .removeWhere((Item
+                                                                    currentItem) =>
+                                                                item ==
+                                                                currentItem);
                                                       })
                                                     },
                                                     child: const Text('OK'),
@@ -126,52 +137,56 @@ class _SimuladorListState extends State<SimuladorList> {
                             ),
                           ),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Icon(Icons.wb_sunny)),
+                                  child: IconButton(
+                                    icon: Icon(Icons.wb_sunny),
+                                    color: item.activeMorning
+                                        ? Colors.green
+                                        : Colors.black,
+                                    onPressed: () => setState(() {
+                                      item.activeMorning = !item.activeMorning;
+                                    }),
+                                  )),
                               SizedBox(
-                                height: 50,
-                                width: 100,
-                                child: Icon(Icons.brightness_4),
-                              ),
+                                  height: 50,
+                                  width: 100,
+                                  child: IconButton(
+                                      icon: Icon(Icons.brightness_4),
+                                      color: item.activeAfternoon
+                                          ? Colors.green
+                                          : Colors.black,
+                                      onPressed: () => setState(() {
+                                            item.activeAfternoon =
+                                                !item.activeAfternoon;
+                                          }))),
                               SizedBox(
-                                height: 50,
-                                width: 100,
-                                child: Icon(Icons.brightness_2),
-                              )
+                                  height: 50,
+                                  width: 100,
+                                  child: IconButton(
+                                      icon: Icon(Icons.brightness_2),
+                                      color: item.activeNight
+                                          ? Colors.green
+                                          : Colors.black,
+                                      onPressed: () => setState(() {
+                                            item.activeNight =
+                                                !item.activeNight;
+                                          })))
                             ],
                           )
                         ],
                       ),
-                      /*body: ListTile(
-                          title: Text(item.expandedValue),
-                          subtitle: const Text(
-                              'To delete this panel, tap the trash can icon'),
-                          trailing: const Icon(Icons.delete),
-                          onTap: () {
-                            setState(() {
-                              electrodomesticos.removeWhere(
-                                  (Item currentItem) => item == currentItem);
-                            });
-                          }),*/
                       isExpanded: item.isExpanded,
                     );
                   }).toList(),
                 ),
               ),
             ),
-            /*child: ListView.separated(
-                    itemCount : electrodomesticos.length,
-                    itemBuilder:  (BuildContext context, int index) {
-                      return ItemElectrodomesticoBorrable(title: electrodomesticos[index]);
-                    } ,
-                    padding: const EdgeInsets.all(8),
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
-                  ),*/
             SizedBox(
-              height: 100,
+              height: 50,
               child: TextButton(
                 style: ButtonStyle(
                   foregroundColor:
@@ -182,6 +197,18 @@ class _SimuladorListState extends State<SimuladorList> {
                 child: Text('Añadir'),
               ),
             ),
+            SizedBox(
+              height: 50,
+              child: TextButton(
+                style: ButtonStyle(
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
+                  //padding: EdgeInsets.all(10)
+                ),
+                onPressed: () {},
+                child: Text('SIMULAR CONSUMO'),
+              )
+            )
           ],
         ),
       ),
