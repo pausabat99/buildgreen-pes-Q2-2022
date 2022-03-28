@@ -1,27 +1,35 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:buildgreen/widgets/item_electrodomestico_borrable.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttericon/typicons_icons.dart';
+import 'dart:convert';
 
-class SimuladorList extends StatefulWidget {
-  const SimuladorList({Key? key}) : super(key: key);
+import 'package:buildgreen/screens/new_appliance.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
+
+import '../widgets/general_buttom.dart';
+
+class ListaSimulacion extends StatefulWidget {
+  const ListaSimulacion({Key? key}) : super(key: key);
 
   @override
-  State<SimuladorList> createState() => _SimuladorListState();
+  State<ListaSimulacion> createState() => _ListaSimulacion();
 }
 
-// stores ExpansionPanel state information
+// Clase item electrodoméstico
 class Item {
   Item({
     required this.headerValue,
     this.isExpanded = false,
-    required this.id,
-    required this.activeMorning,
-    required this.activeAfternoon,
-    required this.activeNight,
+    this.id,
+    this.activeMorning = false,
+    this.activeAfternoon = false,
+    this.activeNight = false,
   });
-  String id;
+  String? id;
   String headerValue;
   bool isExpanded;
   bool activeMorning;
@@ -29,199 +37,231 @@ class Item {
   bool activeNight;
 }
 
-List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
+//Generar electrodomésticos para la Expansion Panel List
+Future<List<Item>> generateItems() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final response = await http.get(
+    Uri.parse(
+        'https://buildgreen.herokuapp.com/appliances+?e6e2a970-6a5a-4040-b24e-581098427dc3'), //esto esta hardcodeado
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader:
+          "Token " + prefs.getString("_user_token"),
+    },
+  );
+
+  final responseJson = jsonDecode(response.body);
+  debugPrint(response.body);
+  return List<Item>.generate(responseJson.length, (int index) {
+    final appliance = responseJson[index];
     return Item(
-        id: '$index',
-        headerValue: 'Electrodoméstico $index',
-        activeMorning: false,
-        activeAfternoon: false,
-        activeNight: false);
+        headerValue: appliance['appliance'].model, id: appliance['uuid']);
   });
 }
 
-class _SimuladorListState extends State<SimuladorList> {
-  final List<Item> electrodomesticos = generateItems(15);
+List<Item> generateItems2(int numberOfItems) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      headerValue: "nombreFalso 4k",
+    );
+  });
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.white,
-            Colors.lightGreen,
-          ],
-        )),
-        child: SizedBox(
-          height: double.infinity,
-          child: Column(
-            // ignore: prefer_const_literals_to_create_immutables
-            children: <Widget>[
-              SizedBox(
+class _ListaSimulacion extends State<ListaSimulacion> {
+  List<Item> _data = [];
+
+  _ListaSimulacion() {
+    generateItems().then((val) => setState(() {
+          _data = val;
+        }));
+  }
+
+  Future<void> newAppliance() async {
+    /*
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+      },
+      body: {
+        "address": "Calle Ejemplo "+ _data.length.toString(),
+        "property_type": "apt"
+      },
+    );
+
+    setState(() {
+      int lastItemIndex = _data.length;
+      Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
+      _data.insert(lastItemIndex, nitem);
+    });
+    */
+  }
+
+  Future <void> deleteAppliance(Item item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response = await http.delete(
+      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+      },
+      body: <String, String> {
+        'uuid': item.id.toString(),
+      } 
+    );
+
+    debugPrint(response.body);
+
+  }
+
+  void simulate() {
+
+  }
+
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((Item item) {
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              leading: const Image(
+                image: AssetImage("assets/images/propiedadadminverde.png"),
                 height: 100,
-                child: Text('SIMULACIÓN',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)),
+                width: 100,
               ),
-              SizedBox(
-                height: 400,
-                child: SingleChildScrollView(
-                  child: ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      setState(() {
-                        electrodomesticos[index].isExpanded = !isExpanded;
-                      });
-                    },
-                    children: electrodomesticos.map<ExpansionPanel>((Item item) {
-                      return ExpansionPanel(
-                        headerBuilder: (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: Text(item.headerValue),
-                          );
+              title: Text(item.headerValue),
+            );
+          },
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              ListTile(
+                title: const Text('Ver Electrodoméstico'),
+                onTap: () {}, //que navege a la ventana de ver electrodoméstico
+              ),
+              ListTile(
+                title: const Text('Eliminar Electrodoméstico'),
+                onTap: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('¡ATENCIÓN!'),
+                    content: const Text('¿Quieres borrar esta propiedad?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancelar'),
+                        child: const Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          //await deleteProperty(item); falta por implementar
+                          setState(() {
+                            _data.removeWhere(
+                                (Item currentItem) => item == currentItem);
+                          });
+                          Navigator.pop(context, 'OK');
                         },
-                        body: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              width: double.infinity,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(30, 10, 10, 10),
-                                        child: Text(
-                                          'Selecciona el horario de uso:',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      )),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(10, 10, 30, 10),
-                                      child: IconButton(
-                                          onPressed: () => showDialog<String>(
-                                                context: context,
-                                                builder: (BuildContext context) =>
-                                                    AlertDialog(
-                                                  title: const Text('¡ATENCIÓN!'),
-                                                  content: const Text(
-                                                      '¿Quieres borrar este electrodoméstico?'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(context,
-                                                              'Cancelar'),
-                                                      child:
-                                                          const Text('Cancelar'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () => {
-                                                        Navigator.pop(
-                                                            context, 'OK'),
-                                                        setState(() {
-                                                          electrodomesticos
-                                                              .removeWhere((Item
-                                                                      currentItem) =>
-                                                                  item ==
-                                                                  currentItem);
-                                                        })
-                                                      },
-                                                      child: const Text('OK'),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                          alignment: Alignment.centerRight,
-                                          padding:
-                                              const EdgeInsets.only(right: 20),
-                                          icon: const Icon(Icons.delete)),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                SizedBox(
-                                    height: 50,
-                                    width: 100,
-                                    child: IconButton(
-                                      icon: Icon(Icons.wb_sunny),
-                                      color: item.activeMorning
-                                          ? Colors.green
-                                          : Colors.black,
-                                      onPressed: () => setState(() {
-                                        item.activeMorning = !item.activeMorning;
-                                      }),
-                                    )),
-                                SizedBox(
-                                    height: 50,
-                                    width: 100,
-                                    child: IconButton(
-                                        icon: Icon(Icons.brightness_4),
-                                        color: item.activeAfternoon
-                                            ? Colors.green
-                                            : Colors.black,
-                                        onPressed: () => setState(() {
-                                              item.activeAfternoon =
-                                                  !item.activeAfternoon;
-                                            }))),
-                                SizedBox(
-                                    height: 50,
-                                    width: 100,
-                                    child: IconButton(
-                                        icon: Icon(Icons.brightness_2),
-                                        color: item.activeNight
-                                            ? Colors.green
-                                            : Colors.black,
-                                        onPressed: () => setState(() {
-                                              item.activeNight =
-                                                  !item.activeNight;
-                                            })))
-                              ],
-                            )
-                          ],
-                        ),
-                        isExpanded: item.isExpanded,
-                      );
-                    }).toList(),
+                        child: const Text('OK'),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(
-                height: 50,
-                child: TextButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green),
-                    //padding: EdgeInsets.all(10)
-                  ),
-                  onPressed: () {},
-                  child: Text('Añadir'),
-                ),
-              ),
-              SizedBox(
-                height: 50,
-                child: TextButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.green),
-                    //padding: EdgeInsets.all(10)
-                  ),
-                  onPressed: () {},
-                  child: Text('SIMULAR CONSUMO'),
+              ListTile(
+                title: Text('Selecciona el horario de uso:'),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: IconButton(
+                          icon: Icon(Icons.wb_sunny),
+                          color: item.activeMorning ? Colors.green : Colors.black,
+                          onPressed: () => setState(() {
+                            item.activeMorning = !item.activeMorning;
+                          }),
+                        )),
+                    SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: IconButton(
+                            icon: Icon(Icons.brightness_4),
+                            color: item.activeAfternoon
+                                ? Colors.green
+                                : Colors.black,
+                            onPressed: () => setState(() {
+                                  item.activeAfternoon = !item.activeAfternoon;
+                                }))),
+                    SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: IconButton(
+                            icon: Icon(Icons.brightness_2),
+                            color: item.activeNight ? Colors.green : Colors.black,
+                            onPressed: () => setState(() {
+                                  item.activeNight = !item.activeNight;
+                                })))
+                  ]
                 )
               )
             ],
           ),
-        ),
+          isExpanded: item.isExpanded,
+        );
+      }).toList(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: ListView(
+        children: [
+          Column(children: <Widget>[
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                top: 10,
+              ),
+              child: const Text(
+                'Simulación',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              ),
+            ),
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                bottom: 50,
+              ),
+              child: const Text(
+                'Electrodomésticos',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+            Container(
+              child: _buildPanel(),
+            ),
+            GeneralButton(
+                title: "Añadir electrodoméstico",
+                textColor: Colors.white,
+                action: newAppliance),
+            GeneralButton(
+                title: "SIMULAR CONSUMO",
+                textColor: Colors.white,
+                action: simulate),
+            const Padding(padding: EdgeInsets.only(bottom: 30))
+          ]),
+        ],
       ),
     );
   }
