@@ -43,7 +43,7 @@ Future<List<Item>> generateItems() async {
 
   final response = await http.get(
     Uri.parse(
-        'https://buildgreen.herokuapp.com/appliances+?e6e2a970-6a5a-4040-b24e-581098427dc3'), //esto esta hardcodeado
+        'https://buildgreen.herokuapp.com/appliances?property=b064d823-b578-4cb4-8a6a-9bbc60f6e5b5'), //esto esta hardcodeado
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -55,7 +55,8 @@ Future<List<Item>> generateItems() async {
   return List<Item>.generate(responseJson.length, (int index) {
     final appliance = responseJson[index];
     return Item(
-        headerValue: appliance['appliance'].model, id: appliance['uuid']);
+        headerValue: appliance['appliance']['brand'] + ' ' + appliance['appliance']['model'],
+        id: appliance['uuid']);
   });
 }
 
@@ -77,26 +78,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   Future<void> newAppliance() async {
-    /*
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-      },
-      body: {
-        "address": "Calle Ejemplo "+ _data.length.toString(),
-        "property_type": "apt"
-      },
-    );
-
-    setState(() {
-      int lastItemIndex = _data.length;
-      Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
-      _data.insert(lastItemIndex, nitem);
-    });
-    */
+    
   }
 
   Future <void> deleteAppliance(Item item) async {
@@ -105,6 +87,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
     final response = await http.delete(
       Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
       headers: <String, String>{
+        //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 toke hardcodeado
+        //HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
       body: <String, String> {
@@ -132,7 +116,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
               leading: const Image(
-                image: AssetImage("assets/images/propiedadadminverde.png"),
+                image: AssetImage("assets/images/electrodomestico.png"),
                 height: 100,
                 width: 100,
               ),
@@ -143,11 +127,40 @@ class _ListaSimulacion extends State<ListaSimulacion> {
             shrinkWrap: true,
             children: [
               ListTile(
-                title: const Text('Ver Electrodoméstico'),
-                onTap: () {}, //que navege a la ventana de ver electrodoméstico
+                title: Text('Selecciona el horario de uso:'),
+                trailing: SizedBox(
+                  width: 150,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.wb_sunny),
+                        color: item.activeMorning ? Colors.green : Colors.black,
+                        onPressed: () => setState(() {
+                          item.activeMorning = !item.activeMorning;
+                        }),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.brightness_4),
+                        color: item.activeAfternoon
+                            ? Colors.green
+                            : Colors.black,
+                        onPressed: () => setState(() {
+                              item.activeAfternoon = !item.activeAfternoon;
+                        }
+                        )
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.brightness_2),
+                        color: item.activeNight ? Colors.green : Colors.black,
+                        onPressed: () => setState(() {
+                              item.activeNight = !item.activeNight;
+                            }))
+                    ]
+                  ),
+                )
               ),
               ListTile(
-                title: const Text('Eliminar Electrodoméstico'),
+                title: const Text('Borrar'),
                 onTap: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
@@ -172,46 +185,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     ],
                   ),
                 ),
-              ),
-              ListTile(
-                title: Text('Selecciona el horario de uso:'),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                        height: 50,
-                        width: 100,
-                        child: IconButton(
-                          icon: Icon(Icons.wb_sunny),
-                          color: item.activeMorning ? Colors.green : Colors.black,
-                          onPressed: () => setState(() {
-                            item.activeMorning = !item.activeMorning;
-                          }),
-                        )),
-                    SizedBox(
-                        height: 50,
-                        width: 100,
-                        child: IconButton(
-                            icon: Icon(Icons.brightness_4),
-                            color: item.activeAfternoon
-                                ? Colors.green
-                                : Colors.black,
-                            onPressed: () => setState(() {
-                                  item.activeAfternoon = !item.activeAfternoon;
-                                }))),
-                    SizedBox(
-                        height: 50,
-                        width: 100,
-                        child: IconButton(
-                            icon: Icon(Icons.brightness_2),
-                            color: item.activeNight ? Colors.green : Colors.black,
-                            onPressed: () => setState(() {
-                                  item.activeNight = !item.activeNight;
-                                })))
-                  ]
-                )
               )
-            ],
+            ]
           ),
           isExpanded: item.isExpanded,
         );
@@ -233,7 +208,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 top: 10,
               ),
               child: const Text(
-                'Simulación',
+                'SIMULACIÓN',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
