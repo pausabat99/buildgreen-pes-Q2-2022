@@ -1,3 +1,4 @@
+import 'package:buildgreen/classes/navigator_keys.dart';
 import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
+      navigatorKey: NavigatorKeys.navigatorKeyMain,
       home: const WelcomeScreen(),
     );
   }

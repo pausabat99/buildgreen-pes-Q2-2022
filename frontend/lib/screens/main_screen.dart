@@ -1,3 +1,4 @@
+import 'package:buildgreen/classes/navigator_keys.dart';
 import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
@@ -13,6 +14,18 @@ class _MainScreenState extends State<MainScreen> {
 
   int _selectedIndex = 0;
   PageController pageController = PageController();
+  
+  GlobalKey<NavigatorState> _navigatorKey() {
+    switch (_selectedIndex) {
+      case 0:
+        return NavigatorKeys.bottomNavigationBarFirstItem;
+      case 1:
+        return NavigatorKeys.bottomNavigationBarSecondItem;
+      default:
+        return NavigatorKeys.bottomNavigationBarThirdtItem;
+    }
+  }
+  
   void onTapNavBar(int index){
     setState(() {
       _selectedIndex = index;
