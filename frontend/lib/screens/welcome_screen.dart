@@ -1,4 +1,5 @@
-import 'package:buildgreen/screens/main_screen.dart';
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -6,8 +7,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import './login_screen.dart';
-import './signup_screen.dart';
 import "../widgets/general_buttom.dart";
 
 class WelcomeScreen extends StatelessWidget {
@@ -28,7 +27,10 @@ class WelcomeScreen extends StatelessWidget {
 
       final responseJson = jsonDecode(response.body);
       if (responseJson['user_info'] != null) {
-        Navigator.of(context).push( MaterialPageRoute(builder: (_) { return const MainScreen(); } ) );
+        Navigator.pushNamedAndRemoveUntil(context, '/index', ((route) => false));
+      }
+      else {
+        await prefs.remove("_user_token");
       }
     }
   }
@@ -50,9 +52,9 @@ class WelcomeScreen extends StatelessWidget {
               colors: [
                 Colors.white,
                 Colors.lightGreen,
-              ],
-            )
-          ),
+                ],
+              )
+            ),
           ),
 
           Column(
@@ -76,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage(
-                                "images/build_green_logo.png",
+                                "assets/images/build_green_logo.png",
                               ),
                             ),
                           ),
@@ -90,31 +92,18 @@ class WelcomeScreen extends StatelessWidget {
                       alignment: Alignment.bottomCenter,
                         child : GeneralButton(
                           title: 'Entrar', 
-                          textColor: Colors.green , 
-                          action: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const LogInScreen();
-                                  }
- 
-                              )
-                           )
-                          }
+                          textColor: Colors.white , 
+                          action: () => {Navigator.pushNamed(context, '/login')}
                         ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(50, 0, 50, 150),
+                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 150),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
                           
                           title: 'Registrarse', 
-                          textColor: Colors.lightGreen , 
-                          action: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const SignUpScreen();
-                                  }
-                              )
-                           )
-                          }
+                          textColor: Colors.white , 
+                          action: () => {Navigator.pushNamed(context, '/register')}
                         ),
                     ),
                   ],

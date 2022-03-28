@@ -1,9 +1,9 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
 
-import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -24,57 +24,32 @@ class _LogInScreenState extends State<LogInScreen> {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String output = "hola";
 
-  
+  bool processing = false;
 
 
-  Future<void> logInReqAccount() async {
-    
+  Future<void> logInAccount() async {
+    if (processing) return; 
+    processing = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("_user_token") != null){
-     final http.Response response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/user/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-        },
-      );
-      setState(() {
-        output = response.body;
-      });
-    }
-    
-
-    else {
-      debugPrint("RRequesting");
-      final response = await http.post(
-        Uri.parse('https://buildgreen.herokuapp.com/login/'),
-        //Uri.parse('https://google.com/'),
-        body: {
-          'username': emailController.text,
-          'password': passwordController.text,
-        },
-      );
-      debugPrint(response.statusCode.toString());
-      setState(() {
-        output = response.body;
-      });
-      
-      final responseJson = jsonDecode(response.body);
-      prefs.setString('_user_token', responseJson['token']);
-    }
-  }
-
-  
-  void logInAccount()  { 
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) {
-        return const MainScreen();
-        }
-      )
+    debugPrint("RRequesting");
+    debugPrint(prefs.getString('_user_token'));
+    final response = await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/login/'),
+      body: {
+        'username': emailController.text,
+        'password': passwordController.text,
+      },
     );
+    
+    final responseJson = jsonDecode(response.body);
+    if (responseJson['token'] != null){
+      await prefs.setString('_user_token', responseJson['token']);
+      processing = false;
+      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false);
+    }
+    processing = false;
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -99,29 +74,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Row(
                     
                     children: [
-                      ElevatedButton(
-                        
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.teal.withAlpha(0),
-                          onPrimary: Colors.white.withAlpha(0),
-                          shadowColor: Colors.black.withOpacity(0.15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          side: const BorderSide(
-                            color: Colors.white,
-                            width: 3,
-                          ),
-                          elevation: 1
-                        ),
-                        onPressed: () => {Navigator.pop(context)},
-                        child: const Icon(
-                          Icons.arrow_back_rounded,
-                          color: Colors.white,
-                          size: 45,),
-                      ),
-
-
+                      const CustomBackButton(),
                       Container(
                         padding: const EdgeInsets.fromLTRB(10, 0 , 10, 0),
                         child: Text("Log in",
@@ -134,17 +87,22 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                 ),
                 
-                InputForm(controller: emailController, hintLabel: "Email"),
+                InputForm(
+                  controller: emailController,
+                  hintLabel: "Email",
+                ),
                 
-                InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
+                InputForm(
+                  controller: passwordController,
+                  hintLabel: "Password",
+                  obscureText: true,
+                ),
                 
-                const Padding(padding: EdgeInsets.only(top: 20)),
-
                 const Padding(padding: EdgeInsets.only(top: 20)),
                 
                 GeneralButton(
                     title: "Entrar",
-                    action: logInReqAccount,
+                    action: logInAccount,
                     textColor: Colors.white,
                 ),
 
@@ -152,13 +110,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 Text("o", style: Theme.of(context).textTheme.bodyText1,),
                 const Padding(padding: EdgeInsets.all(10)),
                 TextButton(
-                  onPressed: () => {Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) {
-                                  return const SignUpScreen();
-                                  }
-                              )
-                           )
-                          },
+                  onPressed: () => {Navigator.pushReplacementNamed(context, '/register')},
                   child: Text(
                     "Registrarse",
                     style: TextStyle(
@@ -167,8 +119,6 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                   ),
                 ),
-                Text(output),
-
               ],
             ),
           )

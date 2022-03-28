@@ -1,12 +1,16 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:buildgreen/screens/welcome_screen.dart';
+import 'package:buildgreen/screens/main_screen.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({ Key? key }) : super(key: key);
@@ -38,6 +42,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       'last_name': apellidoController.text,
       'email': emailController.text,
       'password': passwordController.text,
+      'is_admin': 'False',
+      'license_num': '',
       },
       ),
     );
@@ -46,7 +52,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
       output = response.body;
     });
     final responseJson = jsonDecode(response.body);
+    if (responseJson['user_info'] != null){
+      final response = await http.post(
+        Uri.parse('https://buildgreen.herokuapp.com/login/'),
+        body: {
+          'username': nameController.text,
+          'password': passwordController.text, 
+        }
+      );
+      debugPrint(response.body);
+      setState(() {
+        output = response.body;
+      });
+      
+      final responseJson = jsonDecode(response.body);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('_user_token', responseJson['token']);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen())
+      );
+      //
+    }
+    else {
+      debugPrint("NUUU");
+    }
   }
+
+  
 
   Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -80,29 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Row(
                       
                       children: [
-                        ElevatedButton(
-                          
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.teal.withAlpha(0),
-                            onPrimary: Colors.white.withAlpha(0),
-                            shadowColor: Colors.black.withOpacity(0.15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            side: const BorderSide(
-                              color: Colors.white,
-                              width: 3,
-                            ),
-                            elevation: 1
-                          ),
-                          onPressed: () => {Navigator.pop(context)},
-                          child: const Icon(
-                            Icons.arrow_back_rounded,
-                            color: Colors.white,
-                            size: 45,),
-                        ),
-
-
+                        const CustomBackButton(),
                         Container(
                           padding: const EdgeInsets.fromLTRB(10, 0 , 0, 0),
                           child: Text("Sign Up",
@@ -141,13 +152,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                   ),
 
-                /*const Divider(
-                  thickness: 2, // thickness of the line
-                  indent: 5, // empty space to the leading edge of divider.
-                  endIndent: 5, // empty space to the trailing edge of the divider.
-                  color: Colors.white70, // The color to use when painting the line.
-                  height: 5, // The divider's height extent.
-                ),*/
                   
                 ListTile(
                   title: Text(

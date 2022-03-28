@@ -1,11 +1,8 @@
+import 'package:buildgreen/classes/navigator_keys.dart';
 import 'package:buildgreen/screens/area_personal_cliente.dart';
-import 'package:buildgreen/screens/login_screen.dart';
+import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
-import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-
-
 class MainScreen extends StatefulWidget {
   const MainScreen({ Key? key ,}) : super(key: key);
   
@@ -17,6 +14,18 @@ class _MainScreenState extends State<MainScreen> {
 
   int _selectedIndex = 0;
   PageController pageController = PageController();
+  
+  GlobalKey<NavigatorState> _navigatorKey() {
+    switch (_selectedIndex) {
+      case 0:
+        return NavigatorKeys.bottomNavigationBarFirstItem;
+      case 1:
+        return NavigatorKeys.bottomNavigationBarSecondItem;
+      default:
+        return NavigatorKeys.bottomNavigationBarThirdtItem;
+    }
+  }
+  
   void onTapNavBar(int index){
     setState(() {
       _selectedIndex = index;
@@ -31,20 +40,38 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: PageView(
-        controller: pageController,
-        children: const <Widget>[
-          AreaPersonalCliente(),
-          SignUpScreen(),
-          MapaScreen(),
-        ]
+      resizeToAvoidBottomInset: false,
+      
+      backgroundColor: Colors.transparent,
+      body: Container(
+          child: PageView(
+                onPageChanged: (value) {
+                  setState(() {
+                     _selectedIndex = value;
+                  });
+                },
+                controller: pageController,
+                children: const <Widget>[
+                  AreaPersonalCliente(),
+                  ListaPropiedades(),
+                  MapaScreen(),
+                ],
+            ),
+            decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.white,
+                Colors.lightGreen,
+                ],
+              )
+            ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics_rounded), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.location_city), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.map_rounded), label: ""),
         ],
         showSelectedLabels: false,
@@ -52,8 +79,6 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _selectedIndex,
         onTap: onTapNavBar,
       ),
-      
     );
-    
   }
 }

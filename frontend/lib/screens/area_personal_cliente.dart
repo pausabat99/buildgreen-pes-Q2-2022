@@ -1,4 +1,13 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
+import 'package:buildgreen/screens/welcome_screen.dart';
+import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
@@ -7,28 +16,34 @@ class AreaPersonalCliente extends StatefulWidget {
 }
 
 class _AreaPersonalCliente extends State<AreaPersonalCliente> {
+
+  bool processing = false;
+
+  Future<void> onPressedLogOut() async {
+    if (processing) return;
+    processing = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await http.post(
+    Uri.parse('https://buildgreen.herokuapp.com/logout/'),
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+      },
+    );
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const WelcomeScreen(),
+      ),
+      (route) => false,
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Stack(
-      children: <Widget>[
-        Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.white,
-              Colors.lightGreen,
-            ],
-          )),
-        ),
-        ListView(
+      backgroundColor: Colors.transparent,
+        body: ListView(
           children: [
-            Expanded(
-              flex: 3,
-              child: Column(
+            Column(
                 children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,22 +57,6 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                             'ÁREA PERSONAL',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 40),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              right: 50,
-                              top: 10,
-                            ),
-                            child: Image(
-                              image: AssetImage("images/admin.png"),
-                              height: 70,
-                              width: 70,
-                            ),
                           ),
                         ),
                       ),
@@ -83,19 +82,22 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
-                        child: Container(
-                          width: 190.0,
-                          height: 190.0,
-                          margin: const EdgeInsets.all(50.0),
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Align(
-                            alignment: Alignment.topRight,
-                            child: Icon(Icons.arrow_forward_ios,
-                                color: Color.fromARGB(255, 94, 95, 94)),
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            borderRadius: BorderRadius.circular(12),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 190.0,
+                            height: 190.0,
+                            margin: const EdgeInsets.all(50.0),
+                            padding: const EdgeInsets.all(10.0),
+                            child: const Align(
+                              alignment: Alignment.topRight,
+                              child: Icon(Icons.arrow_forward_ios,
+                                  color: Color.fromARGB(255, 94, 95, 94)),
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                         ),
                       ),
@@ -111,7 +113,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                                 color: Color.fromARGB(255, 94, 95, 94)),
                           ),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
@@ -140,7 +142,6 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                     children: <Widget>[
                       Expanded(
                         child: Container(
-                          //width: 190.0,
                           height: 70.0,
                           margin: const EdgeInsets.all(50.0),
                           padding: const EdgeInsets.all(10.0),
@@ -153,7 +154,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Image(
-                                    image: AssetImage("images/euro.png"),
+                                    image: AssetImage("assets/images/euro.png"),
                                     height: 50,
                                     width: 50,
                                   ),
@@ -180,7 +181,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
@@ -215,22 +216,39 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                           child: const Image(
                             fit: BoxFit.fill,
                             image: AssetImage(
-                                "images/cual_es_el_gasto_en_electricidad2.png"),
+                                "assets/images/cual_es_el_gasto_en_electricidad2.png"),
                           ),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
                       ),
                     ],
                   ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const <Widget>[
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 50,
+                            ), // use Spacer
+                          ),
+                        ),
+                      ]),
                 ],
               ),
+            GeneralButton(
+                    title: "Log out",
+                    action: onPressedLogOut,
+                    textColor: Colors.black,
             ),
+            const Padding(padding: EdgeInsets.only(
+              top: 20
+            ))
           ],
         ),
-      ],
-    ));
+    );
   }
 }

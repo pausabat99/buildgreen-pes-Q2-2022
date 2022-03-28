@@ -1,8 +1,7 @@
-import 'dart:io';
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -13,33 +12,12 @@ class MapaScreen extends StatefulWidget {
 class _MapaScreenState extends State<MapaScreen> {
   TextEditingController filterController = TextEditingController();
 
-  Future<void> logOut() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await http.post(
-        Uri.parse('https://buildgreen.herokuapp.com/logout/'),
-        // Send authorization headers to the backend.
-        headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-        },
-      );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(children: <Widget>[
-      Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.white,
-            Colors.lightGreen,
-          ],
-        )),
-      ),
-      Container(
+      resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        body: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: <Widget>[
@@ -56,7 +34,7 @@ class _MapaScreenState extends State<MapaScreen> {
               ),
               Expanded(
                 child: Image(
-                  image: AssetImage("images/admin.png"),
+                  image: AssetImage("assets/images/admin.png"),
                   height: 70,
                   width: 70,
                 ),
@@ -83,10 +61,9 @@ class _MapaScreenState extends State<MapaScreen> {
                 borderRadius: BorderRadius.circular(12),
               )
             ),
-            TextButton(onPressed: logOut, child: const Text('Log out'))
           ],
         ),
       ),
-    ]));
+    );
   }
 }
