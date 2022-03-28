@@ -1,7 +1,10 @@
 import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
+import 'package:buildgreen/screens/resultados_simulacion.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'package:buildgreen/screens/sim_lista.dart';
+import 'package:buildgreen/screens/resultados_simulacion.dart';
 
 import 'package:flutter/material.dart';
 
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
-      home: const AreaPersonalCliente(),
+      home: const ResultadosSimulacion(),
     );
   }
 }
