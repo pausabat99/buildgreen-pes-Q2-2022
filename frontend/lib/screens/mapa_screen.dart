@@ -53,7 +53,7 @@ class _MapaScreenState extends State<MapaScreen> {
             ),
             Container(
               //este es el contenedor del MAPA
-              height: 550,
+              height: 400,
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
