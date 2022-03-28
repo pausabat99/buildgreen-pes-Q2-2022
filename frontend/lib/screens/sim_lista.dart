@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:buildgreen/widgets/item_electrodomestico_borrable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttericon/typicons_icons.dart';
 
 class SimuladorList extends StatefulWidget {
   const SimuladorList({Key? key}) : super(key: key);
@@ -21,6 +19,7 @@ class Item {
     required this.activeAfternoon,
     required this.activeNight,
   });
+
   String id;
   String headerValue;
   bool isExpanded;
@@ -46,17 +45,7 @@ class _SimuladorListState extends State<SimuladorList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.white,
-            Colors.lightGreen,
-          ],
-        )),
-        child: SizedBox(
+      body: SizedBox(
           height: double.infinity,
           child: Column(
             // ignore: prefer_const_literals_to_create_immutables
@@ -159,8 +148,10 @@ class _SimuladorListState extends State<SimuladorList> {
                                           : Colors.black,
                                       onPressed: () => setState(() {
                                         item.activeMorning = !item.activeMorning;
-                                      }),
-                                    )),
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 SizedBox(
                                     height: 50,
                                     width: 100,
@@ -172,7 +163,11 @@ class _SimuladorListState extends State<SimuladorList> {
                                         onPressed: () => setState(() {
                                               item.activeAfternoon =
                                                   !item.activeAfternoon;
-                                            }))),
+                                      },
+                                    ),
+                                  ),
+                                ),
+
                                 SizedBox(
                                     height: 50,
                                     width: 100,
@@ -184,7 +179,10 @@ class _SimuladorListState extends State<SimuladorList> {
                                         onPressed: () => setState(() {
                                               item.activeNight =
                                                   !item.activeNight;
-                                            })))
+                                      },
+                                    ),
+                                  ),
+                                )
                               ],
                             )
                           ],
@@ -222,7 +220,6 @@ class _SimuladorListState extends State<SimuladorList> {
             ],
           ),
         ),
-      ),
     );
   }
 }
