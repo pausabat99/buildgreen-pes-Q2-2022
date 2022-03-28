@@ -12,6 +12,7 @@ import 'dart:io';
 
 import '../widgets/general_buttom.dart';
 
+
 class ListaSimulacion extends StatefulWidget {
   const ListaSimulacion({Key? key}) : super(key: key);
 
@@ -29,7 +30,9 @@ class Item {
     this.activeAfternoon = false,
     this.activeNight = false,
   });
+
   String? id;
+
   String headerValue;
   bool isExpanded;
   bool activeMorning;
@@ -70,6 +73,7 @@ List<Item> generateItems2(int numberOfItems) {
 
 class _ListaSimulacion extends State<ListaSimulacion> {
   List<Item> _data = [];
+
 
   _ListaSimulacion() {
     generateItems().then((val) => setState(() {

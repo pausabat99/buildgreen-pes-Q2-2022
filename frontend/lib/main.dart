@@ -7,7 +7,6 @@ import 'package:buildgreen/screens/sim_lista.dart';
 
 import 'package:flutter/material.dart';
 
-import 'screens/welcome_screen.dart';
 
 void main()  {
   runApp(const MyApp());
@@ -42,7 +41,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       navigatorKey: NavigatorKeys.navigatorKeyMain,
-      home: const WelcomeScreen(),
+      home: const SimuladorList(),
     );
   }
 }
