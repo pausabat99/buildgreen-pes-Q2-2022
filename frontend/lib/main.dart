@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       navigatorKey: NavigatorKeys.navigatorKeyMain,
-      home: const SimuladorList(),
+      home: const ListaSimulacion(),
     );
   }
 }

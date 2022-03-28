@@ -12,7 +12,6 @@ import 'dart:io';
 
 import '../widgets/general_buttom.dart';
 
-
 class ListaSimulacion extends StatefulWidget {
   const ListaSimulacion({Key? key}) : super(key: key);
 
@@ -25,13 +24,13 @@ class Item {
   Item({
     required this.headerValue,
     this.isExpanded = false,
-    this.id,
+    required this.id,
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
   });
 
-  String? id;
+  String id;
 
   String headerValue;
   bool isExpanded;
@@ -58,22 +57,15 @@ Future<List<Item>> generateItems() async {
   return List<Item>.generate(responseJson.length, (int index) {
     final appliance = responseJson[index];
     return Item(
-        headerValue: appliance['appliance']['brand'] + ' ' + appliance['appliance']['model'],
+        headerValue: appliance['appliance']['brand'] +
+            ' ' +
+            appliance['appliance']['model'],
         id: appliance['uuid']);
-  });
-}
-
-List<Item> generateItems2(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: "nombreFalso 4k",
-    );
   });
 }
 
 class _ListaSimulacion extends State<ListaSimulacion> {
   List<Item> _data = [];
-
 
   _ListaSimulacion() {
     generateItems().then((val) => setState(() {
@@ -81,32 +73,47 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         }));
   }
 
-  Future<void> newAppliance() async {
-    
-  }
+  Future<void> newAppliance() async {}
 
-  Future <void> deleteAppliance(Item item) async {
+  Future<void> deleteAppliance(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final response = await http.delete(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
-      headers: <String, String>{
-        //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 toke hardcodeado
-        //HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-      },
-      body: <String, String> {
-        'uuid': item.id.toString(),
-      } 
-    );
+        Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+        headers: <String, String>{
+          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 toke hardcodeado
+          //HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
+        },
+        body: <String, String>{
+          'uuid': item.id.toString(),
+        });
 
     debugPrint(response.body);
-
   }
 
-  void simulate() {
+  Future<void> updateSchedule(Item item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    final response = await http.patch(
+        Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
+            item.id.toString()),
+        headers: <String, String>{
+          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
+        },
+        body: <String, String>{
+          'morning': item.activeMorning.toString(),
+          'noon': item.activeAfternoon.toString(),
+          'night': item.activeNight.toString(),
+        });
+
+    debugPrint(response.body);
   }
+
+  void simulate() {}
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -127,71 +134,70 @@ class _ListaSimulacion extends State<ListaSimulacion> {
               title: Text(item.headerValue),
             );
           },
-          body: ListView(
-            shrinkWrap: true,
-            children: [
-              ListTile(
+          body: ListView(shrinkWrap: true, children: [
+            ListTile(
                 title: Text('Selecciona el horario de uso:'),
                 trailing: SizedBox(
                   width: 150,
-                  child: Row(
-                    children: [
-                      IconButton(
+                  child: Row(children: [
+                    IconButton(
                         icon: Icon(Icons.wb_sunny),
                         color: item.activeMorning ? Colors.green : Colors.black,
-                        onPressed: () => setState(() {
-                          item.activeMorning = !item.activeMorning;
+                        onPressed: () async {
+                          await updateSchedule(item);
+                          setState(() {
+                            item.activeMorning = !item.activeMorning;
+                          });
                         }),
-                      ),
-                      IconButton(
+                    IconButton(
                         icon: Icon(Icons.brightness_4),
-                        color: item.activeAfternoon
-                            ? Colors.green
-                            : Colors.black,
-                        onPressed: () => setState(() {
-                              item.activeAfternoon = !item.activeAfternoon;
-                        }
-                        )
-                      ),
-                      IconButton(
+                        color:
+                            item.activeAfternoon ? Colors.green : Colors.black,
+                        onPressed: () async {
+                          await updateSchedule(item);
+                          setState(() {
+                            item.activeAfternoon = !item.activeAfternoon;
+                          });
+                        }),
+                    IconButton(
                         icon: Icon(Icons.brightness_2),
                         color: item.activeNight ? Colors.green : Colors.black,
-                        onPressed: () => setState(() {
-                              item.activeNight = !item.activeNight;
-                            }))
-                    ]
-                  ),
-                )
-              ),
-              ListTile(
-                title: const Text('Borrar'),
-                onTap: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('¡ATENCIÓN!'),
-                    content: const Text('¿Quieres borrar esta propiedad?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancelar'),
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
                         onPressed: () async {
-                          //await deleteProperty(item); falta por implementar
+                          await updateSchedule(item);
                           setState(() {
-                            _data.removeWhere(
-                                (Item currentItem) => item == currentItem);
+                            item.activeNight = !item.activeNight;
                           });
-                          Navigator.pop(context, 'OK');
-                        },
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
+                        })
+                  ]),
+                )),
+            ListTile(
+              title: const Text('Borrar'),
+              onTap: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('¡ATENCIÓN!'),
+                  content: const Text('¿Quieres borrar esta propiedad?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancelar'),
+                      child: const Text('Cancelar'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        //await deleteProperty(item); falta por implementar
+                        setState(() {
+                          _data.removeWhere(
+                              (Item currentItem) => item == currentItem);
+                        });
+                        Navigator.pop(context, 'OK');
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
                 ),
-              )
-            ]
-          ),
+              ),
+            )
+          ]),
           isExpanded: item.isExpanded,
         );
       }).toList(),
