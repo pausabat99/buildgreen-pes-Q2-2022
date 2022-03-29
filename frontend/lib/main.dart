@@ -4,7 +4,6 @@ import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:flutter/material.dart';
 
 
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
+
       home: const WelcomeScreen()
     );
   }
