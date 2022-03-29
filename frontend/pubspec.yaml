@@ -50,6 +50,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   restart_app: ^1.1.0
+  animated_flip_counter: ^0.2.4
   loader_overlay: ^2.0.6
 
 # For information on the generic Dart part of this file, see the

@@ -1,12 +1,13 @@
-import 'dart:convert';
 import 'dart:async';
-
+import 'package:http/http.dart' as http;
+import 'dart:io';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewAppliance extends StatefulWidget {
   const NewAppliance({ Key? key }) : super(key: key);
@@ -17,33 +18,40 @@ class NewAppliance extends StatefulWidget {
 
 class _NewApplianceState extends State<NewAppliance> {
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController apellidoController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController modeloController = TextEditingController();
+  TextEditingController marcaController = TextEditingController();
+  TextEditingController precioController = TextEditingController();
+  TextEditingController consumoController = TextEditingController();
+
+  final backendtranslate = <String, String>{
+    "Televisión":"tv",
+    "Nevera":"fridge",
+    "Horno":"oven",
+  };
+  String dropdownValue = 'Televisión';
 
   String output = "Hola";
 
-  Future<void> createAccount() async {
-    final response = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/signup/'),
+  Future<void> moveToPropiedades() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //prefs.setString('_actual_property', item.uuid);
+
+    await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
       headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
       },
-      body: jsonEncode(<String, String>{
-      'username': nameController.text,
-      'first_name': nameController.text,
-      'last_name': apellidoController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-      },
-      ),
+      body: <String, String>{
+      "property":  prefs.getString('_actual_property'),
+      "appliance_type": backendtranslate[dropdownValue].toString(),
+      "model":  modeloController.text,
+      "brand": marcaController.text,
+      "cons":  consumoController.text,
+      "price": precioController.text,
+      }
     );
-    debugPrint(response.body);
-    setState(() {
-      output = response.body;
-    });
-    //final responseJson = jsonDecode(response.body);
+    int count = 0;
+    Navigator.of(context).popUntil((_) => count++ >= 2);
   }
 
   Color getColor(Set<MaterialState> states) {
@@ -55,8 +63,6 @@ class _NewApplianceState extends State<NewAppliance> {
       }
       return Colors.white;
   }
-
-  String dropdownValue = 'Televisión';
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,7 @@ class _NewApplianceState extends State<NewAppliance> {
                   ),
                   
                   Row(children: <Widget>[
-                    InputForm(controller: nameController, hintLabel: 'Modelo'),
+                    InputForm(controller: modeloController, hintLabel: 'Modelo'),
                     const Padding(padding: EdgeInsets.fromLTRB(10, 0, 0, 0)),
                     Transform.translate(
                       offset: const Offset(0, 12),
@@ -115,18 +121,16 @@ class _NewApplianceState extends State<NewAppliance> {
                   ),
                   
                   
-                  InputForm(controller: passwordController, hintLabel: "Marca"),
+                  InputForm(controller: marcaController, hintLabel: "Marca"),
 
 
-                  InputForm(controller: emailController, hintLabel: "Precio [€]"),
+                  InputForm(controller: precioController, hintLabel: "Precio [€]"),
                   
-                  InputForm(controller: passwordController, hintLabel: "Consumo [kW]"),
+                  InputForm(controller: consumoController, hintLabel: "Consumo [kW]"),
 
                   GeneralButton(
                       title: "Agregar nuevo",
-                      action: () {int count = 0;
-                                  Navigator.of(context).popUntil((_) => count++ >= 2);
-                                  },
+                      action: moveToPropiedades,
                       textColor: Colors.white,
                   ),
                   Text(output),

@@ -60,7 +60,10 @@ Future<List<Item>> generateItems() async {
         headerValue: appliance['appliance']['brand'] +
             ' ' +
             appliance['appliance']['model'],
-        id: appliance['uuid']);
+        id: appliance['uuid'],
+        activeAfternoon: appliance['noon'],
+        activeMorning: appliance['morning'],
+        activeNight: appliance['night']);
   });
 }
 
@@ -73,7 +76,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         }));
   }
 
-  Future<void> newAppliance() async {}
+  Future<void> newAppliance() async {
+    Navigator.of(context).pushNamed('/all_appliances');
+  }
 
   Future<void> deleteAppliance(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -81,8 +86,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
     final response = await http.delete(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
         headers: <String, String>{
-          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 toke hardcodeado
-          //HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString("_user_token"),
         },
@@ -98,7 +101,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
     final response = await http.patch(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
-            item.id.toString()),
+            item.id.toString()+'/'),
         headers: <String, String>{
           //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
           HttpHeaders.authorizationHeader:
@@ -109,8 +112,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
           'noon': item.activeAfternoon.toString(),
           'night': item.activeNight.toString(),
         });
-
-    debugPrint(response.body);
   }
 
   void simulate() {}
@@ -144,29 +145,31 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                         icon: Icon(Icons.wb_sunny),
                         color: item.activeMorning ? Colors.green : Colors.black,
                         onPressed: () async {
-                          await updateSchedule(item);
                           setState(() {
                             item.activeMorning = !item.activeMorning;
                           });
+                          await updateSchedule(item);
+                          
                         }),
                     IconButton(
                         icon: Icon(Icons.brightness_4),
                         color:
                             item.activeAfternoon ? Colors.green : Colors.black,
                         onPressed: () async {
-                          await updateSchedule(item);
                           setState(() {
                             item.activeAfternoon = !item.activeAfternoon;
                           });
+                          await updateSchedule(item);
+                          
                         }),
                     IconButton(
                         icon: Icon(Icons.brightness_2),
                         color: item.activeNight ? Colors.green : Colors.black,
                         onPressed: () async {
-                          await updateSchedule(item);
                           setState(() {
                             item.activeNight = !item.activeNight;
                           });
+                          await updateSchedule(item);
                         })
                   ]),
                 )),
@@ -176,7 +179,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   title: const Text('¡ATENCIÓN!'),
-                  content: const Text('¿Quieres borrar esta propiedad?'),
+                  content: const Text('¿Quieres borrar este electrodoméstico de tu propiedad?'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Cancelar'),

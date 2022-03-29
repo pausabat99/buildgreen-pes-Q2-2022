@@ -86,7 +86,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   
   Future<void> newProperty() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-  
+
     await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/properties/'),
       headers: <String, String>{

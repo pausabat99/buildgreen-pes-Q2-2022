@@ -42,7 +42,6 @@ class _MainScreenState extends State<MainScreen> {
                 controller: pageController,
                 children: const <Widget>[
                   AreaPersonalCliente(),
-                  //ListaSimulacion(),
                   ListaPropiedades(),
                   MapaScreen(),
                 ],
