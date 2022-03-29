@@ -80,8 +80,8 @@ class _ListaPropiedades extends State<ListaPropiedades> {
 
   Future<void> moveToAppliances(Item item) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('_actual_property', item.uuid);  
-    Navigator.pushNamed(context, '/sim');
+    await prefs.setString('_actual_property', item.uuid);  
+    await Navigator.pushNamed(context, '/sim');
   }
   
   Future<void> newProperty() async {
