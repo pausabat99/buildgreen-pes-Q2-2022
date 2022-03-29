@@ -117,14 +117,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   void simulate() {}
 
-  double calculateHeight() {
-    var items = _data.length;
-    if (items == 0) {
-      return 0.0;
-    } else {
-      return 350.0;
-    }
-  }
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -222,53 +214,77 @@ class _ListaSimulacion extends State<ListaSimulacion> {
       body: Container(
         child: Column(
           children: [
-            Column(children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                  left: 50,
-                  top: 30,
-                ),
-                child: CustomBackButton(
-                  buttonColor: Colors.black,
-                ),
+            /// BACK BUTTON
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                top: 30,
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                  left: 50,
-                  top: 10,
-                ),
-                child: const Text(
-                  'SIMULACIÓN',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-                ),
+              child: CustomBackButton(
+                buttonColor: Colors.black,
               ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(
-                  left: 50,
-                  bottom: 10,
-                ),
-                child: const Text(
-                  'Electrodomésticos',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
+            ),
+            /// TITLE
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                top: 10,
               ),
-              SizedBox(
-                height: calculateHeight(),
-                child: ListView(
+              child: const Text(
+                'SIMULACIÓN',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              ),
+            ),
+            /// Subtitle
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                bottom: 10,
+              ),
+              child: const Text(
+                'Electrodomésticos',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+            // get the screen height
+
+            Container(
+              height: MediaQuery.of(context).size.height - 300,
+              decoration:BoxDecoration(
+                gradient: LinearGradient(
+                  colors:<Color>[
+                    Colors.green,
+                    Colors.lightGreen
+                  ]
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    blurStyle: BlurStyle.normal
+                  ),
+                ],
+              ),
+              
+              child: ListView(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
-                  children: [_buildPanel()],
-                ),
+                  children: [
+                    _buildPanel(),
+                    GeneralButton(
+                      title: "Añadir electrodoméstico",
+                      textColor: Colors.white,
+                      action: newAppliance,
+                    ),
+                    Padding(padding: EdgeInsets.all(15))
+                  ],
               ),
-              GeneralButton(
-                  title: "Añadir electrodoméstico",
-                  textColor: Colors.white,
-                  action: newAppliance),
-              const Padding(padding: EdgeInsets.only(bottom: 30))
-            ]),
+              
+            ),
+            
+            const Padding(padding: EdgeInsets.only(bottom: 15)),
             Align(
                 alignment: Alignment.bottomCenter,
                 child: GeneralButton(
