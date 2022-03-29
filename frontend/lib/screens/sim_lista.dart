@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:buildgreen/screens/new_appliance.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,10 +43,10 @@ class Item {
 //Generar electrodomésticos para la Expansion Panel List
 Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-
+  final String property = prefs.getString('_actual_property');
   final response = await http.get(
     Uri.parse(
-        'https://buildgreen.herokuapp.com/appliances?property=b064d823-b578-4cb4-8a6a-9bbc60f6e5b5'), //esto esta hardcodeado
+        'https://buildgreen.herokuapp.com/appliances?property='+property), //esto esta hardcodeado
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -201,46 +201,68 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: ListView(
-        children: [
-          Column(children: <Widget>[
-            Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.only(
-                left: 50,
-                top: 10,
+      body: Container(
+        child: ListView(
+          children: [
+            Column(children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  top: 30,
+                ),
+                child: CustomBackButton(
+                buttonColor: Colors.black,
+                  ),
               ),
-              child: const Text(
-                'SIMULACIÓN',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  top: 10,
+                ),
+                child: const Text(
+                  'SIMULACIÓN',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                ),
               ),
-            ),
-            Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.only(
-                left: 50,
-                bottom: 50,
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  bottom: 50,
+                ),
+                child: const Text(
+                  'Electrodomésticos',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
               ),
-              child: const Text(
-                'Electrodomésticos',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              Container(
+                child: _buildPanel(),
               ),
-            ),
-            Container(
-              child: _buildPanel(),
-            ),
-            GeneralButton(
-                title: "Añadir electrodoméstico",
-                textColor: Colors.white,
-                action: newAppliance),
-            GeneralButton(
-                title: "SIMULAR CONSUMO",
-                textColor: Colors.white,
-                action: simulate),
-            const Padding(padding: EdgeInsets.only(bottom: 30))
-          ]),
-        ],
+              GeneralButton(
+                  title: "Añadir electrodoméstico",
+                  textColor: Colors.white,
+                  action: newAppliance),
+              GeneralButton(
+                  title: "SIMULAR CONSUMO",
+                  textColor: Colors.white,
+                  action: simulate),
+              const Padding(padding: EdgeInsets.only(bottom: 30))
+            ]),
+          ],
+        ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
+              ],
+            )
+          ),
       ),
     );
   }
