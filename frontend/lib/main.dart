@@ -1,9 +1,9 @@
 
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
-import 'package:buildgreen/screens/login_screen.dart';
+import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/new_appliance.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
+import 'package:buildgreen/screens/forms/new_appliance.dart';
+import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';

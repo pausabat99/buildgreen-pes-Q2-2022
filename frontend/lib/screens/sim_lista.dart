@@ -176,7 +176,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   title: const Text('¡ATENCIÓN!'),
-                  content: const Text('¿Quieres borrar esta propiedad?'),
+                  content: const Text('¿Quieres borrar este electrodoméstico de tu propiedad?'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Cancelar'),
