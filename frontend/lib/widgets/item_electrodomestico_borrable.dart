@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ItemElectrodomesticoBorrable extends StatelessWidget {
@@ -35,7 +34,7 @@ class ItemElectrodomesticoBorrable extends StatelessWidget {
               ),
             ));
           },
-      body: Text("school"),
+      body: const Text("school"),
       isExpanded: false,
         )
       ],
