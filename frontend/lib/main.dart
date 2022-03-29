@@ -1,6 +1,8 @@
 
+import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
+import 'package:buildgreen/screens/new_appliance.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
       '/register': (context) => const SignUpScreen(),
       '/index': (context) => const MainScreen(),
       '/sim':(context) => const ListaSimulacion(),
+      '/all_appliances': (context) => const ElectrodomesticoList(),
+      '/new_appliance': (context) => const NewAppliance(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',

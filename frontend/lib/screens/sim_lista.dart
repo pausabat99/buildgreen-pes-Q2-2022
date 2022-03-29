@@ -73,7 +73,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         }));
   }
 
-  Future<void> newAppliance() async {}
+  Future<void> newAppliance() async {
+    Navigator.of(context).pushNamed('/all_appliances');
+  }
 
   Future<void> deleteAppliance(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -81,8 +83,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
     final response = await http.delete(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
         headers: <String, String>{
-          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 toke hardcodeado
-          //HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString("_user_token"),
         },
