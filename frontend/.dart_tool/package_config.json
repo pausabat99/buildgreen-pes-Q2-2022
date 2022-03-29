@@ -2,6 +2,12 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "animated_flip_counter",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/animated_flip_counter-0.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "async",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2",
       "packageUri": "lib/",
@@ -148,6 +154,12 @@
     {
       "name": "meta",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "number_slide_animation",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/number_slide_animation-0.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
