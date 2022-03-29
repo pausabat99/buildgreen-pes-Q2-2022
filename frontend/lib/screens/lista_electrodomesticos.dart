@@ -63,8 +63,7 @@ Future<List<Item>> generateItems() async{
         brand: property['brand'],
         cons: property['cons'].toString(),
         price: property['price'].toString(),
-        //expandedValue: 'This is item number $index',
-        );
+    );
   });
 }
 
@@ -103,7 +102,10 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   }
   
   Future<void> newProperty() async {
-    Navigator.pushNamed(context, '/new_appliance');
+    setState(() {
+      Navigator.pushNamed(context, '/new_appliance');  
+    });
+    
   }
 
   Widget _buildPanel()  {

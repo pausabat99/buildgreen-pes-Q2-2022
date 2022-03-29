@@ -69,6 +69,7 @@ Future<List<Item>> generateItems() async {
 
 class _ListaSimulacion extends State<ListaSimulacion> {
   List<Item> _data = [];
+  var value = "";
 
   _ListaSimulacion() {
     generateItems().then((val) => setState(() {
@@ -77,7 +78,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   Future<void> newAppliance() async {
-    Navigator.of(context).pushNamed('/all_appliances');
+    await Navigator.of(context).pushNamed('/all_appliances');
+    _data = await generateItems();
+    setState(() {});
   }
 
   Future<void> deleteAppliance(Item item) async {
@@ -99,19 +102,20 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final response = await http.patch(
-        Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
-            item.id.toString()+'/'),
-        headers: <String, String>{
-          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
-          HttpHeaders.authorizationHeader:
-              "Token " + prefs.getString("_user_token"),
-        },
-        body: <String, String>{
-          'morning': item.activeMorning.toString(),
-          'noon': item.activeAfternoon.toString(),
-          'night': item.activeNight.toString(),
-        });
+    await http.patch(
+      Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
+          item.id.toString()+'/'),
+      headers: <String, String>{
+        //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
+        HttpHeaders.authorizationHeader:
+            "Token " + prefs.getString("_user_token"),
+      },
+      body: <String, String>{
+        'morning': item.activeMorning.toString(),
+        'noon': item.activeAfternoon.toString(),
+        'night': item.activeNight.toString(),
+      },
+    );
   }
 
   void simulate() {
@@ -172,7 +176,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                             item.activeNight = !item.activeNight;
                           });
                           await updateSchedule(item);
-                        })
+                        }),
                   ]),
                 )),
             ListTile(
@@ -226,7 +230,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 buttonColor: Colors.black,
                   ),
               ),
-              
+              Text(value),
               Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.only(
@@ -251,6 +255,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
               ),
               Container(
                 child: _buildPanel(),
+
               ),
               GeneralButton(
                   title: "Añadir electrodoméstico",
