@@ -189,7 +189,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        //await deleteProperty(item); falta por implementar
+                        await deleteAppliance(item);
                         setState(() {
                           _data.removeWhere(
                               (Item currentItem) => item == currentItem);
