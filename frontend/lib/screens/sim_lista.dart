@@ -44,8 +44,8 @@ Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final String property = prefs.getString('_actual_property');
   final response = await http.get(
-    Uri.parse(
-        'https://buildgreen.herokuapp.com/appliances?property='+property), //esto esta hardcodeado
+    Uri.parse('https://buildgreen.herokuapp.com/appliances?property=' +
+        property), //esto esta hardcodeado
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -101,7 +101,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
     final response = await http.patch(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
-            item.id.toString()+'/'),
+            item.id.toString() +
+            '/'),
         headers: <String, String>{
           //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
           HttpHeaders.authorizationHeader:
@@ -115,6 +116,15 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   void simulate() {}
+
+  double calculateHeight() {
+    var items = _data.length;
+    if (items == 0) {
+      return 0.0;
+    } else {
+      return 350.0;
+    }
+  }
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -149,7 +159,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                             item.activeMorning = !item.activeMorning;
                           });
                           await updateSchedule(item);
-                          
                         }),
                     IconButton(
                         icon: Icon(Icons.brightness_4),
@@ -160,7 +169,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                             item.activeAfternoon = !item.activeAfternoon;
                           });
                           await updateSchedule(item);
-                          
                         }),
                     IconButton(
                         icon: Icon(Icons.brightness_2),
@@ -179,7 +187,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   title: const Text('¡ATENCIÓN!'),
-                  content: const Text('¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                  content: const Text(
+                      '¿Quieres borrar este electrodoméstico de tu propiedad?'),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () => Navigator.pop(context, 'Cancelar'),
@@ -211,7 +220,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: ListView(
+        child: Column(
           children: [
             Column(children: <Widget>[
               Container(
@@ -221,10 +230,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                   top: 30,
                 ),
                 child: CustomBackButton(
-                buttonColor: Colors.black,
-                  ),
+                  buttonColor: Colors.black,
+                ),
               ),
-              
               Container(
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.only(
@@ -240,38 +248,45 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 alignment: Alignment.topLeft,
                 padding: const EdgeInsets.only(
                   left: 50,
-                  bottom: 50,
+                  bottom: 10,
                 ),
                 child: const Text(
                   'Electrodomésticos',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
               ),
-              Container(
-                child: _buildPanel(),
+              SizedBox(
+                height: calculateHeight(),
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: [_buildPanel()],
+                ),
               ),
               GeneralButton(
                   title: "Añadir electrodoméstico",
                   textColor: Colors.white,
                   action: newAppliance),
-              GeneralButton(
-                  title: "SIMULAR CONSUMO",
-                  textColor: Colors.white,
-                  action: simulate),
               const Padding(padding: EdgeInsets.only(bottom: 30))
             ]),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: GeneralButton(
+                    title: "SIMULAR CONSUMO",
+                    textColor: Colors.white,
+                    action: simulate),
+              ),
           ],
         ),
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.white,
-              Colors.lightGreen,
-              ],
-            )
-          ),
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.white,
+            Colors.lightGreen,
+          ],
+        )),
       ),
     );
   }
