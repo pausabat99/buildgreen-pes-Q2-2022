@@ -23,7 +23,7 @@ Future<List<double>> updateConsumption() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances?property=8dac0567-982c-4784-a2ee-a05307d38977&sim'),
+      Uri.parse('https://buildgreen.herokuapp.com/appliances?property='+prefs.getString('_actual_property')+'&sim'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
