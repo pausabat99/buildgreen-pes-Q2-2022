@@ -1,8 +1,6 @@
-import 'package:buildgreen/classes/navigator_keys.dart';
 import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
-import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:flutter/material.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({ Key? key ,}) : super(key: key);
@@ -16,28 +14,18 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   PageController pageController = PageController();
   
-  GlobalKey<NavigatorState> _navigatorKey() {
-    switch (_selectedIndex) {
-      case 0:
-        return NavigatorKeys.bottomNavigationBarFirstItem;
-      case 1:
-        return NavigatorKeys.bottomNavigationBarSecondItem;
-      default:
-        return NavigatorKeys.bottomNavigationBarThirdtItem;
-    }
-  }
-  
   void onTapNavBar(int index){
     setState(() {
       _selectedIndex = index;
       pageController.animateToPage(
         index,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 700),
         curve: Curves.easeInOut,
-      );
-    });
-
+        );
+      },
+    );
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,21 +42,21 @@ class _MainScreenState extends State<MainScreen> {
                 controller: pageController,
                 children: const <Widget>[
                   AreaPersonalCliente(),
-                  ListaSimulacion(),
-                  //ListaPropiedades(),
+                  //ListaSimulacion(),
+                  ListaPropiedades(),
                   MapaScreen(),
                 ],
             ),
-            decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.white,
-                Colors.lightGreen,
-                ],
-              )
-            ),
+          decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
+              ],
+            )
+          ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

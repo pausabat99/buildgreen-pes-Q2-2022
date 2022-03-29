@@ -1,11 +1,9 @@
 
-import 'package:buildgreen/classes/navigator_keys.dart';
 import 'package:buildgreen/screens/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
-
 import 'package:flutter/material.dart';
 
 
@@ -28,6 +26,7 @@ class MyApp extends StatelessWidget {
       '/login': (context) => const LogInScreen(),
       '/register': (context) => const SignUpScreen(),
       '/index': (context) => const MainScreen(),
+      '/sim':(context) => const ListaSimulacion(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -41,8 +40,8 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.green,
       ),
-      navigatorKey: NavigatorKeys.navigatorKeyMain,
-      home: const WelcomeScreen(),
+
+      home: const WelcomeScreen()
     );
   }
 }

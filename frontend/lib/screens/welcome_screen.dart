@@ -33,9 +33,7 @@ class WelcomeScreen extends StatelessWidget {
         await prefs.remove("_user_token");
       }
     }
-  }
-
-        
+  }   
 
   @override
   Widget build(BuildContext context) {
