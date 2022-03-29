@@ -114,7 +114,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         });
   }
 
-  void simulate() {}
+  void simulate() {
+    Navigator.pushNamed(context, '/sim_result');
+  }
 
   Widget _buildPanel() {
     return ExpansionPanelList(
