@@ -3,12 +3,15 @@ import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
-import 'package:buildgreen/screens/signup_screen.dart';
 import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
+import 'package:buildgreen/screens/welcome_screen.dart';
 
 import 'package:flutter/material.dart';
+
+import 'screens/forms/new_appliance.dart';
+import 'screens/forms/signup_screen.dart';
 
 
 void main() {
