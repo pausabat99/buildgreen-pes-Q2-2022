@@ -1,4 +1,6 @@
-import 'package:buildgreen/screens/login_screen.dart';
+
+import 'package:buildgreen/screens/lista_electrodomesticos.dart';
+import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
 import 'package:buildgreen/screens/signup_screen.dart';
@@ -8,7 +10,6 @@ import 'package:buildgreen/screens/resultados_simulacion.dart';
 
 import 'package:flutter/material.dart';
 
-import 'screens/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,11 +25,14 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/login': (context) => const LogInScreen(),
-        '/register': (context) => const SignUpScreen(),
-        '/index': (context) => const MainScreen(),
+      // When navigating to the "/" route, build the FirstScreen widget.
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      '/login': (context) => const LogInScreen(),
+      '/register': (context) => const SignUpScreen(),
+      '/index': (context) => const MainScreen(),
+      '/sim':(context) => const ListaSimulacion(),
+      '/all_appliances': (context) => const ElectrodomesticoList(),
+      '/new_appliance': (context) => const NewAppliance(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
-      home: const ResultadosSimulacion(),
+      home: const WelcomeScreen()
     );
   }
 }

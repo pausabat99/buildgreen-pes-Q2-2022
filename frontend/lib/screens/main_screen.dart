@@ -13,17 +13,19 @@ class _MainScreenState extends State<MainScreen> {
 
   int _selectedIndex = 0;
   PageController pageController = PageController();
+  
   void onTapNavBar(int index){
     setState(() {
       _selectedIndex = index;
       pageController.animateToPage(
         index,
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 700),
         curve: Curves.easeInOut,
-      );
-    });
-
+        );
+      },
+    );
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +46,16 @@ class _MainScreenState extends State<MainScreen> {
                   MapaScreen(),
                 ],
             ),
-            decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.white,
-                Colors.lightGreen,
-                ],
-              )
-            ),
+          decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
+              ],
+            )
+          ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

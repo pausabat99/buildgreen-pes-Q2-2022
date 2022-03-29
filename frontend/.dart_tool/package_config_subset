@@ -10,6 +10,10 @@ async
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.8.2/lib/
+back_button_interceptor
+2.13
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/back_button_interceptor-5.0.2/
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/back_button_interceptor-5.0.2/lib/
 boolean_selector
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0/
@@ -54,6 +58,10 @@ flutter_lints
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib/
+fluttericon
+2.12
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0/
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0/lib/
 http
 2.14
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/
@@ -70,6 +78,10 @@ lints
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/lib/
+loader_overlay
+2.12
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/loader_overlay-2.0.6/
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/loader_overlay-2.0.6/lib/
 matcher
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11/

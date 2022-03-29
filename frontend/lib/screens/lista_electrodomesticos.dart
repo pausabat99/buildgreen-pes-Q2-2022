@@ -155,7 +155,7 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
                     left: 50,
                     top: 30,
                   ),
-                  child: const CustomBackButton(),
+                  child: const CustomBackButton(buttonColor: Colors.black),
                 ),
                 Container(
                   alignment: Alignment.topLeft,

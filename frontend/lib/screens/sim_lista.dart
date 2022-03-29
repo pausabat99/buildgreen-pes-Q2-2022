@@ -1,60 +1,278 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:buildgreen/widgets/item_electrodomestico.dart';
+import 'dart:convert';
+
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
-class SimuladorList extends StatefulWidget {
-  const SimuladorList({ Key? key }) : super(key: key);
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:io';
+
+import '../widgets/general_buttom.dart';
+
+class ListaSimulacion extends StatefulWidget {
+  const ListaSimulacion({Key? key}) : super(key: key);
 
   @override
-  State<SimuladorList> createState() => _SimuladorListState();
+  State<ListaSimulacion> createState() => _ListaSimulacion();
 }
 
-class _SimuladorListState extends State<SimuladorList> {
-  final List<String> electrodomesticos = ["Elec1", "Elec2","Elec3","Elec4"];
+// Clase item electrodoméstico
+class Item {
+  Item({
+    required this.headerValue,
+    this.isExpanded = false,
+    required this.id,
+    this.activeMorning = false,
+    this.activeAfternoon = false,
+    this.activeNight = false,
+  });
+
+  String id;
+
+  String headerValue;
+  bool isExpanded;
+  bool activeMorning;
+  bool activeAfternoon;
+  bool activeNight;
+}
+
+//Generar electrodomésticos para la Expansion Panel List
+Future<List<Item>> generateItems() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String property = prefs.getString('_actual_property');
+  final response = await http.get(
+    Uri.parse(
+        'https://buildgreen.herokuapp.com/appliances?property='+property), //esto esta hardcodeado
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader:
+          "Token " + prefs.getString("_user_token"),
+    },
+  );
+
+  final responseJson = jsonDecode(response.body);
+  debugPrint(response.body);
+  return List<Item>.generate(responseJson.length, (int index) {
+    final appliance = responseJson[index];
+    return Item(
+        headerValue: appliance['appliance']['brand'] +
+            ' ' +
+            appliance['appliance']['model'],
+        id: appliance['uuid'],
+        activeAfternoon: appliance['noon'],
+        activeMorning: appliance['morning'],
+        activeNight: appliance['night']);
+  });
+}
+
+class _ListaSimulacion extends State<ListaSimulacion> {
+  List<Item> _data = [];
+
+  _ListaSimulacion() {
+    generateItems().then((val) => setState(() {
+          _data = val;
+        }));
+  }
+
+  Future<void> newAppliance() async {
+    Navigator.of(context).pushNamed('/all_appliances');
+  }
+
+  Future<void> deleteAppliance(Item item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response = await http.delete(
+        Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
+        },
+        body: <String, String>{
+          'uuid': item.id.toString(),
+        });
+
+    debugPrint(response.body);
+  }
+
+  Future<void> updateSchedule(Item item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response = await http.patch(
+        Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
+            item.id.toString()+'/'),
+        headers: <String, String>{
+          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
+        },
+        body: <String, String>{
+          'morning': item.activeMorning.toString(),
+          'noon': item.activeAfternoon.toString(),
+          'night': item.activeNight.toString(),
+        });
+  }
+
+  void simulate() {}
+
+  Widget _buildPanel() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((Item item) {
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              leading: const Image(
+                image: AssetImage("assets/images/electrodomestico.png"),
+                height: 100,
+                width: 100,
+              ),
+              title: Text(item.headerValue),
+            );
+          },
+          body: ListView(shrinkWrap: true, children: [
+            ListTile(
+                title: Text('Selecciona el horario de uso:'),
+                trailing: SizedBox(
+                  width: 150,
+                  child: Row(children: [
+                    IconButton(
+                        icon: Icon(Icons.wb_sunny),
+                        color: item.activeMorning ? Colors.green : Colors.black,
+                        onPressed: () async {
+                          setState(() {
+                            item.activeMorning = !item.activeMorning;
+                          });
+                          await updateSchedule(item);
+                          
+                        }),
+                    IconButton(
+                        icon: Icon(Icons.brightness_4),
+                        color:
+                            item.activeAfternoon ? Colors.green : Colors.black,
+                        onPressed: () async {
+                          setState(() {
+                            item.activeAfternoon = !item.activeAfternoon;
+                          });
+                          await updateSchedule(item);
+                          
+                        }),
+                    IconButton(
+                        icon: Icon(Icons.brightness_2),
+                        color: item.activeNight ? Colors.green : Colors.black,
+                        onPressed: () async {
+                          setState(() {
+                            item.activeNight = !item.activeNight;
+                          });
+                          await updateSchedule(item);
+                        })
+                  ]),
+                )),
+            ListTile(
+              title: const Text('Borrar'),
+              onTap: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('¡ATENCIÓN!'),
+                  content: const Text('¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancelar'),
+                      child: const Text('Cancelar'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        //await deleteProperty(item); falta por implementar
+                        setState(() {
+                          _data.removeWhere(
+                              (Item currentItem) => item == currentItem);
+                        });
+                        Navigator.pop(context, 'OK');
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ]),
+          isExpanded: item.isExpanded,
+        );
+      }).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: 
-          SizedBox(
-            height: double.infinity,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 100, 
-                  child: Text(
-                    'SIMULACIÓN',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40)
-                  ),
+      body: Container(
+        child: ListView(
+          children: [
+            Column(children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  top: 30,
                 ),
-                SizedBox(
-                  height: 400,
-                  child: ListView.separated(
-                    itemCount : electrodomesticos.length,
-                    itemBuilder:  (BuildContext context, int index) {
-                      return ItemElectrodomestico(title: electrodomesticos[index]);
-                    } ,
-                    padding: const EdgeInsets.all(8),
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                child: CustomBackButton(
+                buttonColor: Colors.black,
                   ),
+              ),
+              
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  top: 10,
                 ),
-                SizedBox(
-                  height: 100,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                      //padding: EdgeInsets.all(10)
-                    ),
-                    onPressed: () {
-                      
-                     },
-                    child: Text('Añadir'),
-                  ),
+                child: const Text(
+                  'SIMULACIÓN',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                 ),
+              ),
+              Container(
+                alignment: Alignment.topLeft,
+                padding: const EdgeInsets.only(
+                  left: 50,
+                  bottom: 50,
+                ),
+                child: const Text(
+                  'Electrodomésticos',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              Container(
+                child: _buildPanel(),
+              ),
+              GeneralButton(
+                  title: "Añadir electrodoméstico",
+                  textColor: Colors.white,
+                  action: newAppliance),
+              GeneralButton(
+                  title: "SIMULAR CONSUMO",
+                  textColor: Colors.white,
+                  action: simulate),
+              const Padding(padding: EdgeInsets.only(bottom: 30))
+            ]),
+          ],
+        ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
               ],
-            ),
+            )
           ),
+      ),
     );
-
   }
 }

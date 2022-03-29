@@ -14,6 +14,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "back_button_interceptor",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/back_button_interceptor-5.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
       "name": "boolean_selector",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/boolean_selector-2.1.0",
       "packageUri": "lib/",
@@ -98,6 +104,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "fluttericon",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/fluttericon-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4",
       "packageUri": "lib/",
@@ -118,6 +130,12 @@
     {
       "name": "lints",
       "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "loader_overlay",
+      "rootUri": "file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/loader_overlay-2.0.6",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -302,7 +320,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-03-29T16:10:33.440348Z",
+  "generated": "2022-03-29T13:44:06.678159Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

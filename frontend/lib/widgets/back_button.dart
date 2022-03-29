@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
+    this.buttonColor = Colors.white,
     Key? key,
   }) : super(key: key);
 
+  final Color buttonColor;
+  
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -14,16 +17,16 @@ class CustomBackButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(100),
         ),
-        side: const BorderSide(
-          color: Colors.white,
+        side: BorderSide(
+          color: buttonColor,
           width: 3,
         ),
         elevation: 1
       ),
       onPressed: () => {Navigator.pop(context)},
-      child: const Icon(
+      child: Icon(
         Icons.arrow_back_rounded,
-        color: Colors.white,
+        color: buttonColor,
         size: 45,),
     );
   }

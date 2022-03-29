@@ -3,7 +3,6 @@
 
 import 'dart:convert';
 
-import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 
@@ -25,12 +24,12 @@ class Item {
   Item({
     required this.headerValue,
     this.isExpanded = false,
-    this.id,
+    this.uuid,
   });
 
   String headerValue;
   bool isExpanded;
-  String? id;
+  String? uuid;
 }
 
 //Generar propiedades para la Expansion Panel List
@@ -50,7 +49,7 @@ Future<List<Item>> generateItems() async{
     final property = responseJson[index];
     return Item(
         headerValue: property['address'],
-        id: property['uuid']
+        uuid: property['uuid']
         //expandedValue: 'This is item number $index',
         );
   });
@@ -65,6 +64,7 @@ List<Item> generateItems2(int numberOfItems) {
   });
 }
 
+
 class _ListaPropiedades extends State<ListaPropiedades> {
   //Se rellena  la lista de propiedades
   List<Item> _data =  [];
@@ -77,6 +77,13 @@ class _ListaPropiedades extends State<ListaPropiedades> {
           _data = val;
         }));
   }
+
+  Future<void> moveToAppliances(Item item) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('_actual_property', item.uuid);  
+    Navigator.pushNamed(context, '/sim');
+  }
+  
   Future<void> newProperty() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -107,7 +114,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
       body: <String, String> {
-        'uuid': item.id.toString(),
+        'uuid': item.uuid.toString(),
       } 
     );
 
@@ -139,12 +146,8 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                 children: [
                   ListTile(
                       title: const Text("Abrir Propiedad"),
-                      onTap: () {
-                        setState(() {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const AreaPersonalCliente()));
-                        });
-                      }),
+                      onTap:() async {
+                        moveToAppliances(item);}),
                   ListTile(
                     title: const Text("Eliminar Propiedad"),
                     onTap: () => showDialog<String>(
