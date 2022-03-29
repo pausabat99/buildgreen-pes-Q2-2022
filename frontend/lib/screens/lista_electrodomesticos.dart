@@ -77,12 +77,13 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   _ElectrodomesticoList() {
     generateItems().then((val) => setState(() {
           _data = val;
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> moveToPropiedades(Item item) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.setString('_actual_property', item.uuid);
 
     await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
