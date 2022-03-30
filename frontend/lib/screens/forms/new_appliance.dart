@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:io';
@@ -24,17 +26,16 @@ class _NewApplianceState extends State<NewAppliance> {
   TextEditingController consumoController = TextEditingController();
 
   final backendtranslate = <String, String>{
-    "Televisión":"tv",
+    "TV":"tv",
     "Nevera":"fridge",
     "Horno":"oven",
   };
-  String dropdownValue = 'Televisión';
+  String dropdownValue = 'TV';
 
   String output = "Hola";
 
   Future<void> moveToPropiedades() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.setString('_actual_property', item.uuid);
 
     await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
@@ -106,7 +107,7 @@ class _NewApplianceState extends State<NewAppliance> {
                             dropdownValue = newValue!;
                           });
                         },
-                        items: <String>['Televisión', 'Horno', 'Nevera']
+                        items: <String>['TV', 'Horno', 'Nevera']
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

@@ -69,6 +69,7 @@ Future<List<Item>> generateItems() async {
 
 class _ListaSimulacion extends State<ListaSimulacion> {
   List<Item> _data = [];
+  var value = "";
 
   _ListaSimulacion() {
     generateItems().then((val) => setState(() {
@@ -77,7 +78,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   Future<void> newAppliance() async {
-    Navigator.of(context).pushNamed('/all_appliances');
+    await Navigator.of(context).pushNamed('/all_appliances');
+    _data = await generateItems();
+    setState(() {});
   }
 
   Future<void> deleteAppliance(Item item) async {
@@ -98,7 +101,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     final response = await http.patch(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
             item.id.toString() +
@@ -115,7 +117,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         });
   }
 
-  void simulate() {}
+  void simulate() {
+    Navigator.pushNamed(context, '/sim_result');
+  }
 
 
   Widget _buildPanel() {
@@ -170,7 +174,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                             item.activeNight = !item.activeNight;
                           });
                           await updateSchedule(item);
-                        })
+                        }),
                   ]),
                 )),
             ListTile(
@@ -188,7 +192,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        //await deleteProperty(item); falta por implementar
+                        await deleteAppliance(item);
                         setState(() {
                           _data.removeWhere(
                               (Item currentItem) => item == currentItem);
@@ -281,9 +285,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     Padding(padding: EdgeInsets.all(15))
                   ],
               ),
-              
             ),
-            
             const Padding(padding: EdgeInsets.only(bottom: 15)),
             Align(
                 alignment: Alignment.bottomCenter,
