@@ -23,6 +23,10 @@ class ListaSimulacion extends StatefulWidget {
 class Item {
   Item({
     required this.headerValue,
+    required this.model,
+    required this.brand,
+    required this.price,
+    required this.cons,
     this.isExpanded = false,
     required this.id,
     this.activeMorning = false,
@@ -33,6 +37,10 @@ class Item {
   String id;
 
   String headerValue;
+  String model;
+  String brand;
+  String price;
+  String cons;
   bool isExpanded;
   bool activeMorning;
   bool activeAfternoon;
@@ -44,8 +52,8 @@ Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final String property = prefs.getString('_actual_property');
   final response = await http.get(
-    Uri.parse('https://buildgreen.herokuapp.com/appliances?property=' +
-        property), //esto esta hardcodeado
+    Uri.parse(
+        'https://buildgreen.herokuapp.com/appliances?property=' + property),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -57,13 +65,18 @@ Future<List<Item>> generateItems() async {
   return List<Item>.generate(responseJson.length, (int index) {
     final appliance = responseJson[index];
     return Item(
-        headerValue: appliance['appliance']['brand'] +
-            ' ' +
-            appliance['appliance']['model'],
-        id: appliance['uuid'],
-        activeAfternoon: appliance['noon'],
-        activeMorning: appliance['morning'],
-        activeNight: appliance['night']);
+      headerValue: appliance['appliance']['brand'] +
+          ' ' +
+          appliance['appliance']['model'],
+      id: appliance['uuid'],
+      activeAfternoon: appliance['noon'],
+      activeMorning: appliance['morning'],
+      activeNight: appliance['night'],
+      brand: appliance['appliance']['brand'],
+      model: appliance['appliance']['model'],
+      price: appliance['appliance']['price'].toString(),
+      cons: appliance['appliance']['cons'].toString(),
+    );
   });
 }
 
@@ -95,8 +108,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         body: <String, String>{
           'uuid': item.id.toString(),
         });
-
-    debugPrint(response.body);
   }
 
   Future<void> updateSchedule(Item item) async {
@@ -121,6 +132,68 @@ class _ListaSimulacion extends State<ListaSimulacion> {
     Navigator.pushNamed(context, '/sim_result');
   }
 
+  //AQUI EMPIEZA EL CAOS ---> lo he intentado :(
+  Future<String> _getProperty() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String property = prefs.getString('_actual_property');
+    debugPrint(property);
+
+    final response = await http.get(
+        Uri.parse(
+            'https://buildgreen.herokuapp.com/properties/' + property + '/'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
+        });
+
+    String direccion = 'Direccion';
+    debugPrint(direccion);
+    final responseJson = jsonDecode(response.body);
+    for (var index in responseJson) {
+      final property = responseJson[index];
+      direccion = property['address'];
+    }
+    debugPrint(direccion);
+    return direccion;
+  }
+
+  Widget _propertyName() {
+    return FutureBuilder<String>(
+      future: _getProperty(), // a previously-obtained Future<String> or null
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        debugPrint(snapshot.data);
+        List<Widget> children;
+        if (snapshot.hasData) {
+          children = <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('${snapshot.data}'),
+            )
+          ];
+        } else if (snapshot.hasError) {
+          children = <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Text('No se ha podido cargar la propiedad'),
+            )
+          ];
+        } else {
+          children = const <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: Text('Cargando propiedad'),
+            )
+          ];
+        }
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: children,
+          ),
+        );
+      },
+    );
+  }
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -142,6 +215,16 @@ class _ListaSimulacion extends State<ListaSimulacion> {
             );
           },
           body: ListView(shrinkWrap: true, children: [
+            ListTile(
+              title: Column(
+                children: [
+                  Text('Marca: ' + item.brand, textAlign: TextAlign.left),
+                  Text('Modelo: ' + item.model, textAlign: TextAlign.left),
+                  Text('Precio: ' + item.price, textAlign: TextAlign.left),
+                  Text('Consumo: ' + item.cons, textAlign: TextAlign.left),
+                ],
+              ),
+            ),
             ListTile(
                 title: Text('Selecciona el horario de uso:'),
                 trailing: SizedBox(
@@ -229,6 +312,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 buttonColor: Colors.black,
               ),
             ),
+
             /// TITLE
             Container(
               alignment: Alignment.topLeft,
@@ -236,11 +320,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 top: 10,
               ),
-              child: const Text(
-                'SIMULACIÓN',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-              ),
+              child: _propertyName(),
             ),
+
             /// Subtitle
             Container(
               alignment: Alignment.topLeft,
@@ -257,43 +339,35 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
             Container(
               height: MediaQuery.of(context).size.height - 300,
-              decoration:BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:<Color>[
-                    Colors.green,
-                    Colors.lightGreen
-                  ]
-                ),
+                    colors: <Color>[Colors.green, Colors.lightGreen]),
                 boxShadow: [
-                  BoxShadow(
-                    blurRadius: 3,
-                    blurStyle: BlurStyle.normal
-                  ),
+                  BoxShadow(blurRadius: 3, blurStyle: BlurStyle.normal),
                 ],
               ),
-              
               child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: [
-                    _buildPanel(),
-                    GeneralButton(
-                      title: "Añadir electrodoméstico",
-                      textColor: Colors.white,
-                      action: newAppliance,
-                    ),
-                    Padding(padding: EdgeInsets.all(15))
-                  ],
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  _buildPanel(),
+                  GeneralButton(
+                    title: "Añadir electrodoméstico",
+                    textColor: Colors.white,
+                    action: newAppliance,
+                  ),
+                  Padding(padding: EdgeInsets.all(15))
+                ],
               ),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 15)),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: GeneralButton(
-                    title: "SIMULAR CONSUMO",
-                    textColor: Colors.white,
-                    action: simulate),
-              ),
+              alignment: Alignment.bottomCenter,
+              child: GeneralButton(
+                  title: "SIMULAR CONSUMO",
+                  textColor: Colors.white,
+                  action: simulate),
+            ),
           ],
         ),
         decoration: const BoxDecoration(
