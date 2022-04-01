@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
 
@@ -101,7 +101,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await http.patch(
+    await http.patch(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
             item.id.toString() +
             '/'),
