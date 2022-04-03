@@ -86,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const Expanded(child: Text(""),),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                       alignment: Alignment.bottomCenter,
                         child : GeneralButton(
                           title: 'Entrar', 
@@ -95,7 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                     ),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 150),
+                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 100),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
                           

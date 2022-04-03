@@ -26,8 +26,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  String output = "Hola";
-
   String? _character = "client";
 
   Future<void> createAccount() async {
@@ -48,9 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
     debugPrint(response.body);
-    setState(() {
-      output = response.body;
-    });
+
     final responseJson = jsonDecode(response.body);
     if (responseJson['user_info'] != null){
       final response = await http.post(
@@ -61,9 +57,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       );
       debugPrint(response.body);
-      setState(() {
-        output = response.body;
-      });
       
       final responseJson = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -72,14 +65,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         context,
         MaterialPageRoute(builder: (context) => const MainScreen())
       );
-      //
     }
     else {
       debugPrint("NUUU");
     }
   }
-
-  
 
   Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -90,6 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
       return Colors.white;
   }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -104,18 +95,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // background colors end
             // form start
             Container(
-              padding: const EdgeInsets.all(50),
+              padding: const EdgeInsets.all(25),
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(10),
                     alignment: Alignment.topLeft,
                     child: Row(
                       
                       children: [
                         const CustomBackButton(),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(10, 0 , 0, 0),
+                          padding: const EdgeInsets.fromLTRB(5, 0 , 0, 0),
                           child: Text("Sign Up",
                             textAlign: TextAlign.left, 
                             style: Theme.of(context).textTheme.headline1,
@@ -137,10 +128,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   
                   InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
                   
-                  const Padding(padding: EdgeInsets.only(top: 20)),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
                   
                   Container(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                     alignment: Alignment.centerLeft,
                     
                     child: const Text(
@@ -187,13 +178,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                   ),
                 ),
-
+                Padding(padding: EdgeInsets.all(5)),
                 GeneralButton(
                     title: "Crear Cuenta",
                     action: createAccount,
                     textColor: Colors.white,
                 ),
-                Text(output),
                 ],
               ),
             )

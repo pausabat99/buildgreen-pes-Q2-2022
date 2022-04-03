@@ -14,9 +14,9 @@ class GeneralButton extends StatelessWidget{
   @override 
   Widget build(BuildContext context){
     return Container(
-      height: 80,
+      height: 60,
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 25, left: 50, right: 50),
+      padding: const EdgeInsets.only(left: 25, right: 25),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Colors.teal.withAlpha(0),

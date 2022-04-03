@@ -3,11 +3,13 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
-import 'package:flutter/material.dart';
 import 'package:buildgreen/widgets/input_form.dart';
+
+import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,8 +33,6 @@ class _NewApplianceState extends State<NewAppliance> {
     "Horno":"oven",
   };
   String dropdownValue = 'TV';
-
-  String output = "Hola";
 
   Future<void> moveToPropiedades() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -134,7 +134,6 @@ class _NewApplianceState extends State<NewAppliance> {
                       action: moveToPropiedades,
                       textColor: Colors.white,
                   ),
-                  Text(output),
                 ],
               ),
             )
