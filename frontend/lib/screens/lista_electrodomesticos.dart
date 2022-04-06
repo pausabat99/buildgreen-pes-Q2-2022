@@ -13,6 +13,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 class ElectrodomesticoList extends StatefulWidget {
   const ElectrodomesticoList({Key? key}) : super(key: key);
 
@@ -45,6 +46,8 @@ class Item {
 Future<List<Item>> generateItems() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  EasyLoading.show(status: 'Cargando electrodomésticos');
+
   final response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/appliances_all/'),
       headers: <String, String>{
@@ -53,7 +56,7 @@ Future<List<Item>> generateItems() async{
   );
 
   final responseJson = jsonDecode(response.body);
-  debugPrint(response.body);
+  EasyLoading.dismiss();
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
     return Item(
@@ -187,7 +190,7 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
                 Container(
                   child: _buildPanel(),
                 ),
-                
+                const Padding(padding: EdgeInsets.all(5)),
                 GeneralButton(title: "Custom", textColor: Colors.white, action: newProperty),
                 const Padding(padding: EdgeInsets.only(bottom: 30))
               ]),

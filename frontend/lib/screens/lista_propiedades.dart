@@ -217,7 +217,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
               Container(
                 child: _buildPanel(),
               ),
-              
+              const Padding(padding: EdgeInsets.all(5)),
               GeneralButton(title: "Añadir propiedad", textColor: Colors.white, action: newProperty),
               const Padding(padding: EdgeInsets.only(bottom: 30))
             ]),

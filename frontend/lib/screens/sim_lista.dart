@@ -277,6 +277,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                   shrinkWrap: true,
                   children: [
                     _buildPanel(),
+                    const Padding(padding: EdgeInsets.all(5)),
                     GeneralButton(
                       title: "Añadir electrodoméstico",
                       textColor: Colors.white,
@@ -286,7 +287,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                   ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 15)),
+            Expanded(child: Text("")),
             Align(
                 alignment: Alignment.bottomCenter,
                 child: GeneralButton(
@@ -294,6 +295,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     textColor: Colors.white,
                     action: simulate),
               ),
+            Expanded(child: Text("")),
           ],
         ),
         decoration: const BoxDecoration(
