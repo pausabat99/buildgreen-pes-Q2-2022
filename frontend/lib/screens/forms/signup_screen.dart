@@ -12,6 +12,9 @@ import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:email_validator/email_validator.dart';
+
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({ Key? key }) : super(key: key);
 
@@ -25,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController apellidoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController2 = TextEditingController();
 
   String? _character = "client";
 
@@ -81,6 +85,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return Colors.white;
   }
 
+  bool formCorrect(){
+    return EmailValidator.validate(emailController.text.toString()) && checkRepeated();
+  }
+
+  bool checkRepeated(){
+    if (passwordController2.text == "") return true;
+    if (passwordController.text == passwordController2.text) return true;
+    return EmailValidator.validate(emailController.text.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -126,7 +140,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   
                   InputForm(controller: emailController, hintLabel: "Email"),
                   
-                  InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
+                  InputForm(
+                    controller: passwordController,
+                    hintLabel: "Password",
+                    obscureText: true,
+                    textColor: (checkRepeated()? Colors.white : Colors.red),
+                  ),
+                  
+                  InputForm(controller: passwordController2, hintLabel: "Repeat Password", obscureText: true,),
                   
                   const Padding(padding: EdgeInsets.only(top: 10)),
                   
@@ -181,9 +202,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Padding(padding: EdgeInsets.all(5)),
                 GeneralButton(
                     title: "Crear Cuenta",
-                    action: createAccount,
-                    textColor: Colors.white,
+                    action: (formCorrect()) ? createAccount : (){},
+                    textColor: (formCorrect()) ? Colors.white : Colors.white24,
                 ),
+                
                 ],
               ),
             )

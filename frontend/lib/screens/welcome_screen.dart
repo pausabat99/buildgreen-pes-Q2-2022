@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "../widgets/general_buttom.dart";
 
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 class WelcomeScreen extends StatelessWidget {
 
   static const routeName = '/welcome_screen';
@@ -16,8 +19,10 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
+     EasyLoading.show(status: 'Detected account\nLogging in');
      final http.Response response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/user/'),
       headers: <String, String>{
@@ -26,6 +31,7 @@ class WelcomeScreen extends StatelessWidget {
       );
 
       final responseJson = jsonDecode(response.body);
+      EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
         Navigator.pushNamedAndRemoveUntil(context, '/index', ((route) => false));
       }

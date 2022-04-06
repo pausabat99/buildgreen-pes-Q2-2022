@@ -18,6 +18,7 @@ class GeneralButton extends StatelessWidget{
       width: double.infinity,
       padding: const EdgeInsets.only(left: 25, right: 25),
       child: ElevatedButton(
+
         style: ElevatedButton.styleFrom(
           primary: Colors.teal.withAlpha(0),
           onPrimary: Colors.white.withAlpha(0),

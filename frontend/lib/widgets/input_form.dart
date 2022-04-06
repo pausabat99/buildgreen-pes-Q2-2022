@@ -5,16 +5,18 @@ class InputForm extends StatelessWidget {
     required this.controller,
     this.hintLabel,
     this.obscureText = false,
+    this.textColor,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String? hintLabel;
   final bool obscureText;
+  final Color? textColor;
 
   UnderlineInputBorder getBorder(){
-    return const UnderlineInputBorder(
+    return UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.white,
+        color: textColor?? Colors.white,
         width: 3,
       ),
     );
@@ -26,6 +28,7 @@ class InputForm extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(5,),
         child: TextField(
+          maxLength: 50,
           obscureText: obscureText,
           controller: controller,
           style: Theme.of(context).textTheme.bodyText1,
@@ -37,6 +40,7 @@ class InputForm extends StatelessWidget {
               color: Colors.white70,
               fontSize: 15,
             ),
+            counterText: ""
           ),
         ),
       ),
