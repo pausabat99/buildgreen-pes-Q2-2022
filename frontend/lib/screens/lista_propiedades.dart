@@ -85,8 +85,10 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   }
   
   Future<void> newProperty() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    await Navigator.of(context).pushNamed('/new_property');
+    _data = await generateItems();
+    setState(() {});
+    /*
     await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/properties/'),
       headers: <String, String>{
@@ -103,6 +105,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
       Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
       _data.insert(lastItemIndex, nitem);
     });
+    */
   }
 
   Future <void> deleteProperty(Item item) async {
