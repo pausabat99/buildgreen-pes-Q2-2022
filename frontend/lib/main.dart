@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         '/sim': (context) => const ListaSimulacion(),
         '/all_appliances': (context) => const ElectrodomesticoList(),
         '/new_appliance': (context) => const NewAppliance(),
-        '/new_property': (context) => NewProperty(),
+        '/new_property': (context) => const NewProperty(),
         '/sim_result': (context) => const ResultadosSimulacion(),
       },
       theme: ThemeData(

@@ -17,7 +17,7 @@ import '../../widgets/general_buttom.dart';
 const kGoogleApiKey = "AIzaSyBygQuyllYYghJsQIOyQmYPqGlYtiLMGM0";
 
 class NewProperty extends StatefulWidget {
-  NewProperty({Key? key}) : super(key: key);
+  const NewProperty({Key? key}) : super(key: key);
 
   @override
   State<NewProperty> createState() => _NewPropertyState();
@@ -46,7 +46,7 @@ class _NewPropertyState extends State<NewProperty> {
               "Token " + prefs.getString('_user_token'),
         },
         body: <String, String>{
-          "address": nombreController.text,
+          "address": location,
           "name": nombreController.text,
           "property_type": backendtranslate[dropdownValue].toString(),
           "apt": apartamentoController.text,
