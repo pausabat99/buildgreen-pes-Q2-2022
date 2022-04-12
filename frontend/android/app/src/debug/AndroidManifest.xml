@@ -5,5 +5,5 @@
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCkvUCzsJrH1TspbGvUOXtnLBA9MaC764E"/>
+        android:value="AIzaSyCLFW_y78tJfYic8xMrzTxGbZVxnVgyCBs"/>
 </manifest>

@@ -5,8 +5,10 @@
         android:label="buildgreen"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCkvUCzsJrH1TspbGvUOXtnLBA9MaC764E"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCLFW_y78tJfYic8xMrzTxGbZVxnVgyCBs" />
+    
         <activity
             android:name=".MainActivity"
             android:exported="true"
