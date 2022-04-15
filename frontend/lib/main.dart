@@ -1,4 +1,3 @@
-
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -13,12 +12,16 @@ import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -29,15 +32,15 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-      // When navigating to the "/" route, build the FirstScreen widget.
-      // When navigating to the "/second" route, build the SecondScreen widget.
-      '/login': (context) => const LogInScreen(),
-      '/register': (context) => const SignUpScreen(),
-      '/index': (context) => const MainScreen(),
-      '/sim':(context) => const ListaSimulacion(),
-      '/all_appliances': (context) => const ElectrodomesticoList(),
-      '/new_appliance': (context) => const NewAppliance(),
-      '/sim_result':(context) => const ResultadosSimulacion(), 
+        // When navigating to the "/" route, build the FirstScreen widget.
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/login': (context) => const LogInScreen(),
+        '/register': (context) => const SignUpScreen(),
+        '/index': (context) => const MainScreen(),
+        '/sim': (context) => const ListaSimulacion(),
+        '/all_appliances': (context) => const ElectrodomesticoList(),
+        '/new_appliance': (context) => const NewAppliance(),
+        '/sim_result': (context) => const ResultadosSimulacion(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -50,6 +53,17 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
+      locale: Locale('ca', 'CAT'),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('es', 'ES'),
+        Locale('ca', 'CAT'),
+      ],
       home: const WelcomeScreen(),
       builder: EasyLoading.init(),
     );
