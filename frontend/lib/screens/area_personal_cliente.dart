@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
+import '../main.dart';
+
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
   @override
@@ -18,6 +20,29 @@ class AreaPersonalCliente extends StatefulWidget {
 
 class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   bool processing = false;
+  late Locale lang = Localizations.localeOf(context);
+
+  _title(String val) {
+    switch (val) {
+      case 'ca':
+        return Text(
+          'Catala',
+          style: TextStyle(fontSize: 16.0),
+        );
+
+      case 'es':
+        return Text(
+          'Castellano',
+          style: TextStyle(fontSize: 16.0),
+        );
+
+      default:
+        return Text(
+          'Castellano',
+          style: TextStyle(fontSize: 16.0),
+        );
+    }
+  }
 
   Future<void> onPressedLogOut() async {
     if (processing) return;
@@ -228,6 +253,21 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                   ]),
             ],
           ),
+          DropdownButton<Locale>(
+              value: lang,
+              onChanged: (Locale? val) {
+                MyApp.of(context)?.setLocale(val!);
+                lang = val!;
+              },
+              items: const [
+                Locale('es', 'ES'),
+                Locale('ca', 'CAT'),
+              ]
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: _title(e.languageCode),
+                      ))
+                  .toList()),
           GeneralButton(
             title: "Log out",
             action: onPressedLogOut,

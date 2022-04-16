@@ -1,3 +1,4 @@
+import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -19,11 +20,25 @@ import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+}
+
+late Locale _locale = Locale('es', 'ES');
+
+class _MyAppState extends State<MyApp> {
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -53,18 +68,18 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
-      locale: Locale('ca', 'CAT'),
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      locale: _locale,
+      supportedLocales: const [
         Locale('es', 'ES'),
         Locale('ca', 'CAT'),
       ],
-      home: const WelcomeScreen(),
+      home: AreaPersonalCliente(),
       builder: EasyLoading.init(),
     );
   }
