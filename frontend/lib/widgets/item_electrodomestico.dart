@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemElectrodomestico extends StatelessWidget {
   const ItemElectrodomestico({
@@ -29,22 +30,25 @@ class ItemElectrodomestico extends StatelessWidget {
           Expanded(
             child: IconButton(
                 onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('¡ATENCIÓN!'),
-                    content: const Text('¿Quieres borrar este electrodoméstico?'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancelar'),
-                        child: const Text('Cancelar'),
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: Text(AppLocalizations.of(context)!.atencion),
+                        content: Text(AppLocalizations.of(context)!
+                            .borrarelectrodomestico),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context,
+                                AppLocalizations.of(context)!.cancelar),
+                            child: Text(AppLocalizations.of(context)!.cancelar),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(
+                                context, AppLocalizations.of(context)!.ok),
+                            child: Text(AppLocalizations.of(context)!.ok),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 20),
                 icon: const Icon(Icons.delete)),

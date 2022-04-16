@@ -90,7 +90,7 @@ class WelcomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                     alignment: Alignment.bottomCenter,
                     child: GeneralButton(
-                        title: AppLocalizations.of(context)!.helloWorld,
+                        title: AppLocalizations.of(context)!.entrar,
                         textColor: Colors.white,
                         action: () => {Navigator.pushNamed(context, '/login')}),
                   ),
@@ -98,7 +98,7 @@ class WelcomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(25, 25, 25, 100),
                     alignment: Alignment.bottomCenter,
                     child: GeneralButton(
-                        title: 'Registrarse',
+                        title: AppLocalizations.of(context)!.registrarse,
                         textColor: Colors.white,
                         action: () =>
                             {Navigator.pushNamed(context, '/register')}),

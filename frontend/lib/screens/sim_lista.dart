@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -121,7 +122,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
     Navigator.pushNamed(context, '/sim_result');
   }
 
-
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
@@ -143,7 +143,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
           },
           body: ListView(shrinkWrap: true, children: [
             ListTile(
-                title: Text('Selecciona el horario de uso:'),
+                title: Text(AppLocalizations.of(context)!.seleccionahorario),
                 trailing: SizedBox(
                   width: 150,
                   child: Row(children: [
@@ -178,17 +178,18 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                   ]),
                 )),
             ListTile(
-              title: const Text('Borrar'),
+              title: Text(AppLocalizations.of(context)!.borrar),
               onTap: () => showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
-                  title: const Text('¡ATENCIÓN!'),
-                  content: const Text(
-                      '¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                  title: Text(AppLocalizations.of(context)!.atencion),
+                  content: Text(
+                      AppLocalizations.of(context)!.borrarelectrodomestico),
                   actions: <Widget>[
                     TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancelar'),
-                      child: const Text('Cancelar'),
+                      onPressed: () => Navigator.pop(
+                          context, AppLocalizations.of(context)!.cancelar),
+                      child: Text(AppLocalizations.of(context)!.cancelar),
                     ),
                     TextButton(
                       onPressed: () async {
@@ -197,9 +198,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                           _data.removeWhere(
                               (Item currentItem) => item == currentItem);
                         });
-                        Navigator.pop(context, 'OK');
+                        Navigator.pop(
+                            context, AppLocalizations.of(context)!.ok);
                       },
-                      child: const Text('OK'),
+                      child: Text(AppLocalizations.of(context)!.ok),
                     ),
                   ],
                 ),
@@ -229,6 +231,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 buttonColor: Colors.black,
               ),
             ),
+
             /// TITLE
             Container(
               alignment: Alignment.topLeft,
@@ -236,11 +239,12 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 top: 10,
               ),
-              child: const Text(
-                'SIMULACIÓN',
+              child: Text(
+                AppLocalizations.of(context)!.simulacion,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
+
             /// Subtitle
             Container(
               alignment: Alignment.topLeft,
@@ -248,8 +252,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 bottom: 10,
               ),
-              child: const Text(
-                'Electrodomésticos',
+              child: Text(
+                AppLocalizations.of(context)!.electrodomestico,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
@@ -257,44 +261,36 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
             Container(
               height: MediaQuery.of(context).size.height - 300,
-              decoration:BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:<Color>[
-                    Colors.green,
-                    Colors.lightGreen
-                  ]
-                ),
+                    colors: <Color>[Colors.green, Colors.lightGreen]),
                 boxShadow: [
-                  BoxShadow(
-                    blurRadius: 3,
-                    blurStyle: BlurStyle.normal
-                  ),
+                  BoxShadow(blurRadius: 3, blurStyle: BlurStyle.normal),
                 ],
               ),
-              
               child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: [
-                    _buildPanel(),
-                    const Padding(padding: EdgeInsets.all(5)),
-                    GeneralButton(
-                      title: "Añadir electrodoméstico",
-                      textColor: Colors.white,
-                      action: newAppliance,
-                    ),
-                    Padding(padding: EdgeInsets.all(15))
-                  ],
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  _buildPanel(),
+                  const Padding(padding: EdgeInsets.all(5)),
+                  GeneralButton(
+                    title: AppLocalizations.of(context)!.anelectrodomestico,
+                    textColor: Colors.white,
+                    action: newAppliance,
+                  ),
+                  Padding(padding: EdgeInsets.all(15))
+                ],
               ),
             ),
             Expanded(child: Text("")),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: GeneralButton(
-                    title: "SIMULAR CONSUMO",
-                    textColor: Colors.white,
-                    action: simulate),
-              ),
+              alignment: Alignment.bottomCenter,
+              child: GeneralButton(
+                  title: AppLocalizations.of(context)!.simularconsumo,
+                  textColor: Colors.white,
+                  action: simulate),
+            ),
             Expanded(child: Text("")),
           ],
         ),
