@@ -7,6 +7,7 @@ import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
 
@@ -118,7 +119,19 @@ class _LogInScreenState extends State<LogInScreen> {
                     action: logInAccount,
                     textColor: Colors.white,
                 ),
+                // GOOGLE
+                const Padding(padding: EdgeInsets.all(10)),
+                
+                FloatingActionButton.extended(
+                  onPressed: (){
+                      GoogleSignIn().signIn();
+                    },
+                  icon: Icon(Icons.security),
+                  label: Text("Sign in with google"),
+                  
+                  ),
 
+                // REGISTRARSE
                 const Padding(padding: EdgeInsets.all(10)),
                 Text("o", style: Theme.of(context).textTheme.bodyText1,),
                 const Padding(padding: EdgeInsets.all(10)),

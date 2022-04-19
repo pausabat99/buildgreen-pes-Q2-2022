@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "348227764678",
+    "project_id": "buildgreentests",
+    "storage_bucket": "buildgreentests.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348227764678:android:52c77b37707b9b173db2c7",
+        "android_client_info": {
+          "package_name": "com.example.buildgreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348227764678-dp3815mkdj55psmbh00t32su6gkidud8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.buildgreen",
+            "certificate_hash": "09c28f86dd39cef5a017e4506b74bae69b229810"
+          }
+        },
+        {
+          "client_id": "348227764678-m9m63sbfu18d1sup8sgju1elkf4nr574.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0kTLWjnAdQPG7keSmfDZG1AHVNtJib1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348227764678-m9m63sbfu18d1sup8sgju1elkf4nr574.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
