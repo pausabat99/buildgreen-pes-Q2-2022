@@ -164,6 +164,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "google_places_flutter",
+      "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_places_flutter-2.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4",
       "packageUri": "lib/",
@@ -224,6 +230,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "nested",
+      "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "package_info",
       "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-2.0.2",
       "packageUri": "lib/",
@@ -270,6 +282,12 @@
       "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "restart_app",
@@ -398,7 +416,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-04-13T12:51:02.985860Z",
+  "generated": "2022-04-19T13:24:06.698121Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

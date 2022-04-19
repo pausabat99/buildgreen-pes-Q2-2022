@@ -98,6 +98,10 @@ google_maps_webservice
 2.12
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.20-nullsafety.5/
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_webservice-0.0.20-nullsafety.5/lib/
+google_places_flutter
+2.12
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_places_flutter-2.0.5/
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_places_flutter-2.0.5/lib/
 http
 2.14
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.13.4/
@@ -138,6 +142,10 @@ meta
 2.12
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib/
+nested
+2.12
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib/
 package_info
 2.12
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-2.0.2/
@@ -170,6 +178,10 @@ process
 2.14
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.4/lib/
+provider
+2.12
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.2/
+file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/provider-6.0.2/lib/
 restart_app
 2.12
 file:///Users/pau/Desktop/PES/development/flutter/.pub-cache/hosted/pub.dartlang.org/restart_app-1.1.0/
