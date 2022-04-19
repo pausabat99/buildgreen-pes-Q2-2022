@@ -1,18 +1,16 @@
-import 'package:buildgreen/widgets/back_button.dart';
+import 'package:buildgreen/service_subscriber.dart';
 import 'package:flutter/material.dart';
 import 'package:buildgreen/widgets/input_form.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/back_button.dart';
-import 'package:google_maps_webservice/places.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
-import 'package:google_api_headers/google_api_headers.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
-import '../../widgets/general_buttom.dart';
+import 'package:buildgreen/widgets/general_buttom.dart';
 
 const kGoogleApiKey = "AIzaSyBygQuyllYYghJsQIOyQmYPqGlYtiLMGM0";
 
@@ -58,8 +56,9 @@ class _NewPropertyState extends State<NewProperty> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    return Material(
-      child: Stack(
+    final applicationBloc = Provider.of<ApplicationBloc>(context); 
+    return Scaffold(
+      body: Stack(
         children: [
           BackgroundForm(
             screenHeight: screenHeight,
@@ -73,50 +72,13 @@ class _NewPropertyState extends State<NewProperty> {
                   alignment: Alignment.topLeft,
                   child: const CustomBackButton(),
                 ),
-                InkWell(
-                  onTap: () async {
-                    var place = await PlacesAutocomplete.show(
-                        context: context,
-                        apiKey: kGoogleApiKey,
-                        mode: Mode.overlay,
-                        types: [],
-                        strictbounds: false,
-                        components: [Component(Component.country, 'es')],
-                        onError: (err) {
-                          print(err);
-                        });
-
-                    if (place != null) {
-                      setState(() {
-                        location = place.description.toString();
-                      });
-
-                      //from google_maps_webservice package
-                      final plist = GoogleMapsPlaces(
-                        apiKey: kGoogleApiKey,
-                        apiHeaders: await GoogleApiHeaders().getHeaders(),
-                        //from google_api_headers package
-                      );
-                      String placeId = place.placeId ?? "0";
-                      final detail = await plist.getDetailsByPlaceId(placeId);
-                    }
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Card(
-                      child: Container(
-                        padding: EdgeInsets.all(0),
-                        width: MediaQuery.of(context).size.width - 40,
-                        child: ListTile(
-                          title: Text(location),
-                          trailing: Icon(Icons.search),
-                          dense: true,
-                        ),
-                      ),
-                    ),
+                TextField(
+                  decoration: const InputDecoration(
+                    hintText: "Search Location",
+                    suffixIcon: Icon(Icons.search),
                   ),
+                  onChanged: (value) => applicationBloc.searchPlaces(value),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
