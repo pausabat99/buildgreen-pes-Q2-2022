@@ -71,6 +71,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 initialCameraPosition: _initialCameraPosition,
                 myLocationButtonEnabled: true,
                 myLocationEnabled: true,
+                compassEnabled: true,
               ) ,
             ),
           ],
