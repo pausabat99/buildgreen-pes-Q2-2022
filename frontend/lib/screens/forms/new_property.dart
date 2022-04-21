@@ -12,8 +12,6 @@ import 'dart:io';
 
 import 'package:buildgreen/widgets/general_buttom.dart';
 
-const kGoogleApiKey = "AIzaSyBygQuyllYYghJsQIOyQmYPqGlYtiLMGM0";
-
 class NewProperty extends StatefulWidget {
   const NewProperty({Key? key}) : super(key: key);
 
@@ -34,6 +32,7 @@ class _NewPropertyState extends State<NewProperty> {
   String dropdownValue = 'Apartamento';
 
   String location = "Buscar dirección";
+
 
   Future<void> moveToPropiedades() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -56,7 +55,7 @@ class _NewPropertyState extends State<NewProperty> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    final applicationBloc = Provider.of<ApplicationBloc>(context); 
+    final applicationBloc = Provider.of<ApplicationBloc>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -72,17 +71,49 @@ class _NewPropertyState extends State<NewProperty> {
                   alignment: Alignment.topLeft,
                   child: const CustomBackButton(),
                 ),
-                TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Search Location",
-                    suffixIcon: Icon(Icons.search),
-                  ),
-                  onChanged: (value) => applicationBloc.searchPlaces(value),
+                Stack(
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                        hintText: "Buscar dirección",
+                        suffixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: (value) => applicationBloc.searchPlaces(value),
+                    ),
+                    if (applicationBloc.searchResults.isNotEmpty) 
+                        Container(
+                          height: 300.0,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(.6),
+                              backgroundBlendMode: BlendMode.darken),
+                          child: ListView.builder(
+                            itemCount: applicationBloc.searchResults.length,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text(
+                                  applicationBloc
+                                      .searchResults[index].description.toString(),
+                                  style: const TextStyle(color: Colors.white)))
+                            ),
+                        ),
+                        Container(
+                          height: 300.0,
+                          child: ListView.builder(
+                            itemCount: applicationBloc.searchResults.length,
+                            itemBuilder: (context, index) => ListTile(
+                              title: Text(
+                                  applicationBloc
+                                      .searchResults[index].description.toString(),
+                                  style: const TextStyle(color: Colors.white)))
+                            ),
+                        )
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InputForm(controller: nombreController, hintLabel: 'Nombre'),
+                    InputForm(
+                        controller: nombreController, hintLabel: 'Nombre'),
                     Transform.translate(
                       offset: const Offset(0, 12),
                       child: DropdownButton<String>(
