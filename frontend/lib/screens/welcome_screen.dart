@@ -1,5 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'package:buildgreen/controllers/login_controller.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -13,7 +15,7 @@ import "../widgets/general_buttom.dart";
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class WelcomeScreen extends StatelessWidget {
-
+  
   static const routeName = '/welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -39,11 +41,12 @@ class WelcomeScreen extends StatelessWidget {
         await prefs.remove("_user_token");
       }
     }
-  }   
+  }
 
   @override
   Widget build(BuildContext context) {
     logInReqAccount(context);
+    
     double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
