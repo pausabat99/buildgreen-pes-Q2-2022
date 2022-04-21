@@ -30,7 +30,6 @@ class InputForm extends StatelessWidget {
   
   @override
   Widget build(BuildContext context){
-    bool error = true;
     return Flexible(
       child: Container(
         padding: const EdgeInsets.fromLTRB(5,0,5,0),

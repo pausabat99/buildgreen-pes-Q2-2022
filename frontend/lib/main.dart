@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
