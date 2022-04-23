@@ -33,10 +33,6 @@ class Item {
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
-    this.model='',
-    this.brand='',
-    this.price=0.0,
-    this.cons=0.0
   });
 
   String id;
@@ -79,8 +75,8 @@ Future<List<Item>> generateItems() async {
         activeNight: appliance['night'],
         brand: appliance['appliance']['brand'],
         model: appliance['appliance']['model'],
-        price: appliance['appliance']['price'],
-        cons: appliance['appliance']['cons']);
+        price: appliance['appliance']['price'].toString(),
+        cons: appliance['appliance']['cons'].toString());
   });
 }
 
@@ -260,7 +256,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 top: 10,
               ),
-              child: _propertyName(),
+              child: Text("Mi prioridad"),
             ),
 
             /// Subtitle
