@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "../widgets/general_buttom.dart";
 
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 class WelcomeScreen extends StatelessWidget {
 
   static const routeName = '/welcome_screen';
@@ -16,8 +19,10 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
+    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
+     EasyLoading.show(status: 'Detected account\nLogging in');
      final http.Response response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/user/'),
       headers: <String, String>{
@@ -26,6 +31,7 @@ class WelcomeScreen extends StatelessWidget {
       );
 
       final responseJson = jsonDecode(response.body);
+      EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
         Navigator.pushNamedAndRemoveUntil(context, '/index', ((route) => false));
       }
@@ -86,7 +92,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     const Expanded(child: Text(""),),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                       alignment: Alignment.bottomCenter,
                         child : GeneralButton(
                           title: 'Entrar', 
@@ -95,7 +101,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                     ),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(50, 0, 50, 150),
+                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 100),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
                           
@@ -106,7 +112,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              ),  
             ],
           ),
         ],)

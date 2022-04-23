@@ -13,6 +13,8 @@ import 'package:buildgreen/widgets/input_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 class LogInScreen extends StatefulWidget {
   const LogInScreen({ Key? key }) : super(key: key);
 
@@ -25,12 +27,9 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  bool processing = false;
-
 
   Future<void> logInAccount() async {
-    if (processing) return; 
-    processing = true;
+    EasyLoading.show(status: 'Logging in...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     debugPrint("RRequesting");
     debugPrint(prefs.getString('_user_token'));
@@ -41,14 +40,28 @@ class _LogInScreenState extends State<LogInScreen> {
         'password': passwordController.text,
       },
     );
+    EasyLoading.dismiss();
     
     final responseJson = jsonDecode(response.body);
     if (responseJson['token'] != null){
       await prefs.setString('_user_token', responseJson['token']);
-      processing = false;
       Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false);
     }
-    processing = false;
+    else{
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('¡Error!'),
+          content: const Text('Algunas credenciales eran incorrectas'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Ok'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override

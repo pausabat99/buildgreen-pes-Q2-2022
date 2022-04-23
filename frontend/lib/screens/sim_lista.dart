@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
+//import 'dart:ffi';
 
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,10 @@ class Item {
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
+    this.model='',
+    this.brand='',
+    this.price=0.0,
+    this.cons=0.0
   });
 
   String id;
@@ -65,18 +70,17 @@ Future<List<Item>> generateItems() async {
   return List<Item>.generate(responseJson.length, (int index) {
     final appliance = responseJson[index];
     return Item(
-      headerValue: appliance['appliance']['brand'] +
-          ' ' +
-          appliance['appliance']['model'],
-      id: appliance['uuid'],
-      activeAfternoon: appliance['noon'],
-      activeMorning: appliance['morning'],
-      activeNight: appliance['night'],
-      brand: appliance['appliance']['brand'],
-      model: appliance['appliance']['model'],
-      price: appliance['appliance']['price'].toString(),
-      cons: appliance['appliance']['cons'].toString(),
-    );
+        headerValue: appliance['appliance']['brand'] +
+            ' ' +
+            appliance['appliance']['model'],
+        id: appliance['uuid'],
+        activeAfternoon: appliance['noon'],
+        activeMorning: appliance['morning'],
+        activeNight: appliance['night'],
+        brand: appliance['appliance']['brand'],
+        model: appliance['appliance']['model'],
+        price: appliance['appliance']['price'],
+        cons: appliance['appliance']['cons']);
   });
 }
 
@@ -112,7 +116,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await http.patch(
+    await http.patch(
         Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
             item.id.toString() +
             '/'),
@@ -131,70 +135,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   void simulate() {
     Navigator.pushNamed(context, '/sim_result');
   }
-
-  //AQUI EMPIEZA EL CAOS ---> lo he intentado :(
-  Future<String> _getProperty() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String property = prefs.getString('_actual_property');
-    debugPrint(property);
-
-    final response = await http.get(
-        Uri.parse(
-            'https://buildgreen.herokuapp.com/properties/' + property + '/'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              "Token " + prefs.getString("_user_token"),
-        });
-
-    String direccion = 'Direccion';
-    debugPrint(direccion);
-    final responseJson = jsonDecode(response.body);
-    for (var index in responseJson) {
-      final property = responseJson[index];
-      direccion = property['address'];
-    }
-    debugPrint(direccion);
-    return direccion;
-  }
-
-  Widget _propertyName() {
-    return FutureBuilder<String>(
-      future: _getProperty(), // a previously-obtained Future<String> or null
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        debugPrint(snapshot.data);
-        List<Widget> children;
-        if (snapshot.hasData) {
-          children = <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text('${snapshot.data}'),
-            )
-          ];
-        } else if (snapshot.hasError) {
-          children = <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 16),
-              child: Text('No se ha podido cargar la propiedad'),
-            )
-          ];
-        } else {
-          children = const <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: Text('Cargando propiedad'),
-            )
-          ];
-        }
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: children,
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
@@ -347,27 +287,30 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 ],
               ),
               child: ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: [
-                  _buildPanel(),
-                  GeneralButton(
-                    title: "Añadir electrodoméstico",
-                    textColor: Colors.white,
-                    action: newAppliance,
-                  ),
-                  Padding(padding: EdgeInsets.all(15))
-                ],
+
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  children: [
+                    _buildPanel(),
+                    const Padding(padding: EdgeInsets.all(5)),
+                    GeneralButton(
+                      title: "Añadir electrodoméstico",
+                      textColor: Colors.white,
+                      action: newAppliance,
+                    ),
+                    Padding(padding: EdgeInsets.all(15))
+                  ],
               ),
             ),
-            const Padding(padding: EdgeInsets.only(bottom: 15)),
+            Expanded(child: Text("")),
             Align(
-              alignment: Alignment.bottomCenter,
-              child: GeneralButton(
-                  title: "SIMULAR CONSUMO",
-                  textColor: Colors.white,
-                  action: simulate),
-            ),
+                alignment: Alignment.bottomCenter,
+                child: GeneralButton(
+                    title: "SIMULAR CONSUMO",
+                    textColor: Colors.white,
+                    action: simulate),
+              ),
+            Expanded(child: Text("")),
           ],
         ),
         decoration: const BoxDecoration(
