@@ -18,7 +18,7 @@ class PlacesService {
               "&types=address" + 
               "&key=$kGoogleApiKey";
               */
-    var url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=sabadell&strictbounds=true&location=41.3879,2.16992&radius=800&language=es&key=$kGoogleApiKey";
+    var url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&strictbounds=true&location=41.3879,2.16992&radius=8000&types=address&language=es&key=$kGoogleApiKey";
 
     var response = await http.get(Uri.parse(url));
 
