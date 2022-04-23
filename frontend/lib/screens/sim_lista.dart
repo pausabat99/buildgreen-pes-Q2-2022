@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 
 import 'dart:convert';
+//import 'dart:ffi';
 
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +29,19 @@ class Item {
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
+    this.model='',
+    this.brand='',
+    this.price=0.0,
+    this.cons=0.0
   });
 
   String id;
 
   String headerValue;
+  String model;
+  String brand;
+  double price;
+  double cons;
   bool isExpanded;
   bool activeMorning;
   bool activeAfternoon;
@@ -63,7 +72,11 @@ Future<List<Item>> generateItems() async {
         id: appliance['uuid'],
         activeAfternoon: appliance['noon'],
         activeMorning: appliance['morning'],
-        activeNight: appliance['night']);
+        activeNight: appliance['night'],
+        brand: appliance['appliance']['brand'],
+        model: appliance['appliance']['model'],
+        price: appliance['appliance']['price'],
+        cons: appliance['appliance']['cons']);
   });
 }
 
