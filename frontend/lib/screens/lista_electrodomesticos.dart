@@ -122,27 +122,39 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
           children: _data.map<ExpansionPanel>((Item item) {
             return ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  leading: const Image(
-                    image: AssetImage("assets/images/electrodomestico.png"),
-                    height: 100,
-                    width: 100,
-                  ),
-                  title: Text(item.headerValue),
-                );
-              },
-              body: ListView(
-                shrinkWrap: true,
+            return ListTile(
+              leading: const Image(
+                image: AssetImage("assets/images/electrodomestico.png"),
+                height: 100,
+                width: 100,
+              ),
+              title: Text(item.headerValue),
+            );
+          },
+          body: ListView(shrinkWrap: true, children: [
+            ListTile(
+              title: Column(
                 children: [
-                  ListTile(
-                      title: const Text("Añadir a propiedad"),
-                      onTap:() async {
-                        moveToPropiedades(item);
-                        },
-                  ),
+                  Text('Marca: '+item.brand, textAlign: TextAlign.left),
+                  Text('Modelo: '+item.model, textAlign: TextAlign.left),
+                  Text('Precio: '+item.price, textAlign: TextAlign.left),
+                  Text('Consumo: '+item.cons, textAlign: TextAlign.left),
                 ],
               ),
-              isExpanded: item.isExpanded,
+            ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                    title: const Text("Añadir a propiedad"),
+                    onTap:() async {
+                      moveToPropiedades(item);
+                      },
+                ),
+              ],
+            ),
+          ]),
+          isExpanded: item.isExpanded,
             );
           }).toList(),
         );

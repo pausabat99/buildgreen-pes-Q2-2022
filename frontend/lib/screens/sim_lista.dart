@@ -24,6 +24,10 @@ class ListaSimulacion extends StatefulWidget {
 class Item {
   Item({
     required this.headerValue,
+    required this.model,
+    required this.brand,
+    required this.price,
+    required this.cons,
     this.isExpanded = false,
     required this.id,
     this.activeMorning = false,
@@ -40,8 +44,8 @@ class Item {
   String headerValue;
   String model;
   String brand;
-  double price;
-  double cons;
+  String price;
+  String cons;
   bool isExpanded;
   bool activeMorning;
   bool activeAfternoon;
@@ -53,8 +57,8 @@ Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final String property = prefs.getString('_actual_property');
   final response = await http.get(
-    Uri.parse('https://buildgreen.herokuapp.com/appliances?property=' +
-        property), //esto esta hardcodeado
+    Uri.parse(
+        'https://buildgreen.herokuapp.com/appliances?property=' + property),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -108,8 +112,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
         body: <String, String>{
           'uuid': item.id.toString(),
         });
-
-    debugPrint(response.body);
   }
 
   Future<void> updateSchedule(Item item) async {
@@ -153,6 +155,16 @@ class _ListaSimulacion extends State<ListaSimulacion> {
             );
           },
           body: ListView(shrinkWrap: true, children: [
+            ListTile(
+              title: Column(
+                children: [
+                  Text('Marca: ' + item.brand, textAlign: TextAlign.left),
+                  Text('Modelo: ' + item.model, textAlign: TextAlign.left),
+                  Text('Precio: ' + item.price, textAlign: TextAlign.left),
+                  Text('Consumo: ' + item.cons, textAlign: TextAlign.left),
+                ],
+              ),
+            ),
             ListTile(
                 title: Text('Selecciona el horario de uso:'),
                 trailing: SizedBox(
@@ -240,6 +252,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 buttonColor: Colors.black,
               ),
             ),
+
             /// TITLE
             Container(
               alignment: Alignment.topLeft,
@@ -247,11 +260,9 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 top: 10,
               ),
-              child: const Text(
-                'SIMULACIÓN',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-              ),
+              child: _propertyName(),
             ),
+
             /// Subtitle
             Container(
               alignment: Alignment.topLeft,
@@ -268,22 +279,15 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
             Container(
               height: MediaQuery.of(context).size.height - 300,
-              decoration:BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors:<Color>[
-                    Colors.green,
-                    Colors.lightGreen
-                  ]
-                ),
+                    colors: <Color>[Colors.green, Colors.lightGreen]),
                 boxShadow: [
-                  BoxShadow(
-                    blurRadius: 3,
-                    blurStyle: BlurStyle.normal
-                  ),
+                  BoxShadow(blurRadius: 3, blurStyle: BlurStyle.normal),
                 ],
               ),
-              
               child: ListView(
+
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   children: [
