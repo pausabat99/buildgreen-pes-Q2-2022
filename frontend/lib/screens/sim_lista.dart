@@ -120,8 +120,6 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   void simulate() {
     Navigator.pushNamed(context, '/sim_result');
   }
-
-
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
