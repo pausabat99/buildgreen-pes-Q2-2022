@@ -53,26 +53,23 @@ class _MapaScreenState extends State<MapaScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
-            /// SEARCH BAR
-            Container(
-              padding: const EdgeInsets.all(30),
-              child: TextField(
-                controller: filterController,
-                decoration: const InputDecoration(
-                  //border: OutlineInputBorder(),
-                  hintText: 'Filtrar',
-                  icon: Icon(Icons.search),
-                ),
-              )
-            ),
+
             /// MAPS
-            Expanded(
-              child: GoogleMap(
-                initialCameraPosition: _initialCameraPosition,
-                myLocationButtonEnabled: true,
-                myLocationEnabled: true,
-                compassEnabled: true,
-              ) ,
+            Expanded(              
+              child: Container(
+                padding: EdgeInsets.all(20),
+                
+                child: ClipRRect(
+                  clipBehavior: Clip.hardEdge,
+                  borderRadius: BorderRadius.circular(20),
+                  child: GoogleMap(
+                    initialCameraPosition: _initialCameraPosition,
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
+                    compassEnabled: true,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
