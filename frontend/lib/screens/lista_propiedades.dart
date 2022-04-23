@@ -80,7 +80,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
 
   Future<void> moveToAppliances(Item item) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('_actual_property', item.uuid);  
+    await prefs.setString('_actual_property', item.uuid);
     Navigator.pushNamed(context, '/sim');
   }
   
@@ -217,7 +217,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
               Container(
                 child: _buildPanel(),
               ),
-              
+              const Padding(padding: EdgeInsets.all(5)),
               GeneralButton(title: "Añadir propiedad", textColor: Colors.white, action: newProperty),
               const Padding(padding: EdgeInsets.only(bottom: 30))
             ]),

@@ -34,6 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.transparent,
       body: Container(
           child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (value) {
                   setState(() {
                      _selectedIndex = value;

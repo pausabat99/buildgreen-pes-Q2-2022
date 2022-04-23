@@ -13,6 +13,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 class ElectrodomesticoList extends StatefulWidget {
   const ElectrodomesticoList({Key? key}) : super(key: key);
 
@@ -25,7 +26,7 @@ class Item {
   Item({
     required this.headerValue,
     this.isExpanded = false,
-    required this.appliance_type,
+    required this.applianceType,
     required this.model,
     required this.brand,
     required this.cons,
@@ -34,7 +35,7 @@ class Item {
 
   String headerValue;
   bool isExpanded;
-  String appliance_type;
+  String applianceType;
   String model;
   String brand;
   String cons;
@@ -45,6 +46,8 @@ class Item {
 Future<List<Item>> generateItems() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  EasyLoading.show(status: 'Cargando electrodomésticos');
+
   final response = await http.get(
       Uri.parse('https://buildgreen.herokuapp.com/appliances_all/'),
       headers: <String, String>{
@@ -53,18 +56,17 @@ Future<List<Item>> generateItems() async{
   );
 
   final responseJson = jsonDecode(response.body);
-  debugPrint(response.body);
+  EasyLoading.dismiss();
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
     return Item(
         headerValue: property['brand'] + property['model'],
-        appliance_type: property['appliance_type'],
+        applianceType: property['appliance_type'],
         model: property['model'],
         brand: property['brand'],
         cons: property['cons'].toString(),
         price: property['price'].toString(),
-        //expandedValue: 'This is item number $index',
-        );
+    );
   });
 }
 
@@ -78,12 +80,13 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   _ElectrodomesticoList() {
     generateItems().then((val) => setState(() {
           _data = val;
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> moveToPropiedades(Item item) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.setString('_actual_property', item.uuid);
 
     await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
@@ -92,7 +95,7 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
       },
       body: <String, String>{
       "property":  prefs.getString('_actual_property'),
-      "appliance_type": item.appliance_type,
+      "appliance_type": item.applianceType,
       "model":  item.model,
       "brand": item.brand,
       "cons":  item.cons,
@@ -103,7 +106,10 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   }
   
   Future<void> newProperty() async {
-    Navigator.pushNamed(context, '/new_appliance');
+    setState(() {
+      Navigator.pushNamed(context, '/new_appliance');  
+    });
+    
   }
 
   Widget _buildPanel()  {
@@ -184,7 +190,7 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
                 Container(
                   child: _buildPanel(),
                 ),
-                
+                const Padding(padding: EdgeInsets.all(5)),
                 GeneralButton(title: "Custom", textColor: Colors.white, action: newProperty),
                 const Padding(padding: EdgeInsets.only(bottom: 30))
               ]),

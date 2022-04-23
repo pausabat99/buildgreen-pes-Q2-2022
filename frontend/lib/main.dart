@@ -1,11 +1,15 @@
 
+import 'package:buildgreen/screens/forms/new_appliance.dart';
+import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
-import 'package:buildgreen/screens/area_personal_cliente.dart';
+
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 import 'package:buildgreen/screens/sim_lista.dart';
-import 'package:buildgreen/screens/resultados_simulacion.dart';
+
 import 'package:buildgreen/screens/welcome_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -13,11 +17,9 @@ import 'package:flutter/material.dart';
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
       '/sim':(context) => const ListaSimulacion(),
       '/all_appliances': (context) => const ElectrodomesticoList(),
       '/new_appliance': (context) => const NewAppliance(),
+      '/sim_result':(context) => const ResultadosSimulacion(), 
       },
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -48,7 +51,8 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen()
+      home: const WelcomeScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

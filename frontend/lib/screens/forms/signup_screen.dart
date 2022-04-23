@@ -12,6 +12,9 @@ import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:email_validator/email_validator.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({ Key? key }) : super(key: key);
 
@@ -25,34 +28,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController apellidoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  String output = "Hola";
+  TextEditingController passwordController2 = TextEditingController();
 
   String? _character = "client";
+  bool _usernameCorrect = true;
+  bool _emailCorrect = true;
+
+  final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   Future<void> createAccount() async {
+    EasyLoading.show(status: 'Creating account...');
     final response = await http.post(
       Uri.parse('https://buildgreen.herokuapp.com/signup/'),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-      'username': nameController.text,
-      'first_name': nameController.text,
-      'last_name': apellidoController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-      'is_admin': 'False',
-      'license_num': '',
+        'username': nameController.text,
+        'first_name': nameController.text,
+        'last_name': apellidoController.text,
+        'email': emailController.text,
+        'password': passwordController.text,
+        'is_admin': 'False',
+        'license_num': '',
       },
       ),
     );
+    EasyLoading.dismiss();
     debugPrint(response.body);
-    setState(() {
-      output = response.body;
-    });
+
     final responseJson = jsonDecode(response.body);
     if (responseJson['user_info'] != null){
+      EasyLoading.show(status: 'Logging in...');
       final response = await http.post(
         Uri.parse('https://buildgreen.herokuapp.com/login/'),
         body: {
@@ -61,25 +68,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
         }
       );
       debugPrint(response.body);
-      setState(() {
-        output = response.body;
-      });
       
       final responseJson = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('_user_token', responseJson['token']);
+      EasyLoading.dismiss();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const MainScreen())
       );
-      //
     }
     else {
-      debugPrint("NUUU");
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('¡Error!'),
+          content: const Text('Algunas credenciales eran incorrectas'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Ok'),
+            ),
+          ],
+        ),
+      );
+      if (responseJson['username'] != null){
+        setState(() {
+          _usernameCorrect = false;
+        });
+      }
+
+      if (responseJson['email'] != null){
+        setState(() {
+          _emailCorrect = false;
+        });
+      }
     }
   }
-
-  
 
   Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -90,6 +115,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
       return Colors.white;
   }
+
+  bool formCorrect(){
+    return EmailValidator.validate(emailController.text.toString()) && 
+      checkRepeated() && nameController.text != "" && apellidoController.text != "";
+  }
+
+  bool checkRepeated(){
+    if (passwordController2.text == "") return true;
+    if (passwordController.text == passwordController2.text) return true;
+    return EmailValidator.validate(emailController.text.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -104,97 +141,145 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // background colors end
             // form start
             Container(
-              padding: const EdgeInsets.all(50),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.topLeft,
-                    child: Row(
-                      
-                      children: [
-                        const CustomBackButton(),
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 0 , 0, 0),
-                          child: Text("Sign Up",
-                            textAlign: TextAlign.left, 
-                            style: Theme.of(context).textTheme.headline1,
-                            
+              padding: const EdgeInsets.all(25),
+              child: Form(
+                key: _form,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        
+                        children: [
+                          const CustomBackButton(),
+                          Container(
+                            padding: const EdgeInsets.fromLTRB(5, 0 , 0, 0),
+                            child: Text("Sign Up",
+                              textAlign: TextAlign.left, 
+                              style: Theme.of(context).textTheme.headline1,
+                              
+                            ),
                           ),
+                        ]
+                      ),
+                    ),
+                    Row(children: <Widget>[
+                      
+                      InputForm(controller: nameController, 
+                        autoValidateMode: AutovalidateMode.onUserInteraction,
+                        onChanged: (value){
+                          _usernameCorrect = true;
+                        },
+                        validationFunction: (value) {
+                          if (value.toString().isEmpty){
+                            return "Enter some text";
+                          }
+                          if(!_usernameCorrect){
+                            return "Username ya usado";
+                          }
+                          return null;
+                        },
+                        hintLabel: 'Nombre'),
+                      
+                      InputForm(
+                        controller: apellidoController,
+                        hintLabel: "Apellidos",
+                        autoValidateMode: AutovalidateMode.onUserInteraction,
+                        validationFunction: (value) {
+                            if (value.toString().isEmpty){
+                              return "Enter some text";
+                            }
+                            return null;
+                          },
                         ),
-                      ]
+                      ],
+                    ),
+                    
+                    InputForm(controller: emailController, hintLabel: "Email",
+                      autoValidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        _emailCorrect = true;
+                      },
+                      validationFunction: (value) {
+                          if (!EmailValidator.validate(value.toString())){
+                            return "Incorrect e-mail";
+                        }
+                          if(!_emailCorrect){
+                            return "e-mail ya en uso";
+                          }
+                        return null;
+                      },
+                    ),
+                    
+                    InputForm(
+                      controller: passwordController,
+                      hintLabel: "Password",
+                      obscureText: true,
+                      autoValidateMode: AutovalidateMode.always,
+                      validationFunction: (value) {
+                          if (value.toString() != passwordController2.text){
+                            return "Passwords don't match";
+                        }
+                        return null;
+                      },
+                    ),
+                    
+                    InputForm(controller: passwordController2, hintLabel: "Confirm Password", obscureText: true,
+                      autoValidateMode: AutovalidateMode.always,
+                      validationFunction: (value) {
+                          if (value.toString() != passwordController.text){
+                            return "Passwords don't match";
+                        }
+                        return null;
+                      },
+                    ),
+                    
+                  const Padding(padding: EdgeInsets.only(top: 10)),
+                    
+                  ListTile(
+                    title: Text(
+                      'Cliente',
+                      style: Theme.of(context).textTheme.bodyText1
+                    ),
+              
+                    leading: Radio<String>(
+                      value: "client",
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
+                      groupValue: _character,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _character = value;
+                        });
+                      },
                     ),
                   ),
-                  
-                  Row(children: <Widget>[
-                    InputForm(controller: nameController, hintLabel: 'Nombre'),
-                    
-                    InputForm(controller: apellidoController, hintLabel: "Apellidos"),
-                    ],
+              
+                  ListTile(
+                    title: Text(
+                      'Administrador de propiedades',
+                      style: Theme.of(context).textTheme.bodyText1
+                    ),
+                    leading: Radio<String>(
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
+                      value: "prop_admin",
+                      groupValue: _character,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _character = value;
+                        });
+                      },
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.all(5)),
+                  GeneralButton(
+                      title: "Crear Cuenta",
+                      action: (formCorrect()) ? createAccount : (){},
+                      textColor: (formCorrect()) ? Colors.white : Colors.white24,
                   ),
                   
-                  InputForm(controller: emailController, hintLabel: "Email"),
-                  
-                  InputForm(controller: passwordController, hintLabel: "Password", obscureText: true,),
-                  
-                  const Padding(padding: EdgeInsets.only(top: 20)),
-                  
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    alignment: Alignment.centerLeft,
-                    
-                    child: const Text(
-                        "Tipo de usuario",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 15,
-                        ),
-                      ),
-                  ),
-
-                  
-                ListTile(
-                  title: Text(
-                    'Cliente',
-                    style: Theme.of(context).textTheme.bodyText1
-                  ),
-
-                  leading: Radio<String>(
-                    value: "client",
-                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                    groupValue: _character,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _character = value;
-                      });
-                    },
-                  ),
+                  ],
                 ),
-
-                ListTile(
-                  title: Text(
-                    'Administrador de propiedades',
-                    style: Theme.of(context).textTheme.bodyText1
-                  ),
-                  leading: Radio<String>(
-                    fillColor: MaterialStateProperty.resolveWith(getColor),
-                    value: "prop_admin",
-                    groupValue: _character,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _character = value;
-                      });
-                    },
-                  ),
-                ),
-
-                GeneralButton(
-                    title: "Crear Cuenta",
-                    action: createAccount,
-                    textColor: Colors.white,
-                ),
-                Text(output),
-                ],
               ),
             )
           // form end
