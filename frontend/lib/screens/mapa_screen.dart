@@ -1,7 +1,13 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 
+import 'dart:async';
+
+import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -11,37 +17,45 @@ class MapaScreen extends StatefulWidget {
 
 class _MapaScreenState extends State<MapaScreen> {
   TextEditingController filterController = TextEditingController();
+  final _controller = RequestPermissionController(Permission.locationAlways);
 
   @override
+  void initState(){
+    super.initState();
+    _controller.request();
+  }
+
+  @override
+  void dispose(){
+    _controller.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+    _controller.request();
+    final  _initialCameraPosition = CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
-        body: Container(
-        padding: const EdgeInsets.all(20),
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
         child: Column(
-          children: <Widget>[
-            Row(children: const <Widget>[
-              Expanded(
-                child: Text(
-                  'MAPA',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      decoration: TextDecoration.none),
-                ),
-              ),
-              Expanded(
-                child: Image(
-                  image: AssetImage("assets/images/admin.png"),
-                  height: 70,
-                  width: 70,
-                ),
-              )
-            ]),
+          children: [
+            const Padding(padding: EdgeInsets.all(10)),
+            /// TITLE
             Container(
-              padding: const EdgeInsets.fromLTRB(0, 30, 30, 30),
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                top: 10,
+              ),
+              child: const Text(
+                'Mapa',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              ),
+            ),
+            /// SEARCH BAR
+            Container(
+              padding: const EdgeInsets.all(30),
               child: TextField(
                 controller: filterController,
                 decoration: const InputDecoration(
@@ -51,15 +65,14 @@ class _MapaScreenState extends State<MapaScreen> {
                 ),
               )
             ),
-            Container(
-              //este es el contenedor del MAPA
-              height: 400,
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.circular(12),
-              )
+            /// MAPS
+            Expanded(
+              child: GoogleMap(
+                initialCameraPosition: _initialCameraPosition,
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
+                compassEnabled: true,
+              ) ,
             ),
           ],
         ),

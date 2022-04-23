@@ -5,16 +5,24 @@ class InputForm extends StatelessWidget {
     required this.controller,
     this.hintLabel,
     this.obscureText = false,
+    this.textColor,
+    this.autoValidateMode,
+    this.validationFunction,
+    this.onChanged,
   }) : super(key: key);
 
   final TextEditingController controller;
   final String? hintLabel;
   final bool obscureText;
+  final Color? textColor;
+  final AutovalidateMode? autoValidateMode;
+  final String? Function(String? value)? validationFunction;
+  final void Function(String? value)? onChanged;
 
-  UnderlineInputBorder getBorder(){
-    return const UnderlineInputBorder(
+  UnderlineInputBorder getBorder(Color? color){
+    return UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.white,
+        color: color ?? Colors.white,
         width: 3,
       ),
     );
@@ -24,19 +32,27 @@ class InputForm extends StatelessWidget {
   Widget build(BuildContext context){
     return Flexible(
       child: Container(
-        padding: const EdgeInsets.all(5,),
-        child: TextField(
+        padding: const EdgeInsets.fromLTRB(5,0,5,0),
+        child: TextFormField(
+          maxLines: 1,
+          onChanged: onChanged,
+          maxLength: 50,
+          autovalidateMode: autoValidateMode ?? AutovalidateMode.disabled,
+          validator: validationFunction ?? (value) {return null;},
           obscureText: obscureText,
           controller: controller,
           style: Theme.of(context).textTheme.bodyText1,
           decoration: InputDecoration(
-            focusedBorder: getBorder(),
-            enabledBorder: getBorder(),
+            enabledBorder: getBorder(textColor),
+            errorBorder: getBorder(Colors.red),
+
+            helperText: "",
             labelText: hintLabel,
-            labelStyle: const TextStyle(
-              color: Colors.white70,
+            labelStyle:  TextStyle(
+              color: textColor ?? Colors.white70,
               fontSize: 15,
             ),
+            counterText: ""
           ),
         ),
       ),

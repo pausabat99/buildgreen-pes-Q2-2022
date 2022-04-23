@@ -25,11 +25,11 @@ class BackgroundForm extends StatelessWidget {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: RotationTransition(
-              turns: const AlwaysStoppedAnimation(-15 / 360),
+              turns: const AlwaysStoppedAnimation(-10 / 360),
               alignment: Alignment.bottomCenter,
               child: Container(
                 alignment: Alignment.bottomCenter,
-                height: screenHeight * 0.25,
+                height: screenHeight * 0.22,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                 color: Colors.white,
@@ -40,10 +40,10 @@ class BackgroundForm extends StatelessWidget {
         ),
         Container(
           alignment: Alignment.bottomRight,
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(15),
           child: Image(
             image: const AssetImage('assets/images/build_green_logo.png'),
-            height: screenHeight * 0.125,
+            height: screenHeight * 0.1,
             ),
         ),
       ],

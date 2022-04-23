@@ -1,0 +1,1 @@
+this folder has been made to store static files, do not delete it
