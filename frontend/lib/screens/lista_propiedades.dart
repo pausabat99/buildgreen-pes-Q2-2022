@@ -125,6 +125,10 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   Widget _buildPanel()  {
     return ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
+            for (var foo in _data ) {
+            if(_data[index] != foo)
+              foo.isExpanded = false; 
+            }
             setState(() {
               _data[index].isExpanded = !isExpanded;
             });

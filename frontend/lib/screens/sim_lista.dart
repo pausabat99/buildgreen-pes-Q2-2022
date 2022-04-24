@@ -134,6 +134,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
+        for (var t_item in _data ) {
+          if(_data[index] != t_item)
+            t_item.isExpanded = false; 
+        }
         setState(() {
           _data[index].isExpanded = !isExpanded;
         });
@@ -141,6 +145,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
       children: _data.map<ExpansionPanel>((Item item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
+
             return ListTile(
               leading: const Image(
                 image: AssetImage("assets/images/electrodomestico.png"),
@@ -150,81 +155,103 @@ class _ListaSimulacion extends State<ListaSimulacion> {
               title: Text(item.headerValue),
             );
           },
-          body: ListView(shrinkWrap: true, children: [
-            ListTile(
-              title: Column(
-                children: [
-                  Text('Marca: ' + item.brand, textAlign: TextAlign.left),
-                  Text('Modelo: ' + item.model, textAlign: TextAlign.left),
-                  Text('Precio: ' + item.price, textAlign: TextAlign.left),
-                  Text('Consumo: ' + item.cons, textAlign: TextAlign.left),
-                ],
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              ListTile(
+                title: Column(
+                  children: [
+                    Text('Marca: ' + item.brand, textAlign: TextAlign.left),
+                    Text('Modelo: ' + item.model, textAlign: TextAlign.left),
+                    Text('Precio: ' + item.price, textAlign: TextAlign.left),
+                    Text('Consumo: ' + item.cons, textAlign: TextAlign.left),
+                  ],
+                ),
               ),
-            ),
-            ListTile(
-                title: Text('Selecciona el horario de uso:'),
-                trailing: SizedBox(
-                  width: 150,
-                  child: Row(children: [
-                    IconButton(
-                        icon: Icon(Icons.wb_sunny),
-                        color: item.activeMorning ? Colors.green : Colors.black,
-                        onPressed: () async {
-                          setState(() {
-                            item.activeMorning = !item.activeMorning;
-                          });
-                          await updateSchedule(item);
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.brightness_4),
-                        color:
-                            item.activeAfternoon ? Colors.green : Colors.black,
-                        onPressed: () async {
-                          setState(() {
-                            item.activeAfternoon = !item.activeAfternoon;
-                          });
-                          await updateSchedule(item);
-                        }),
-                    IconButton(
-                        icon: Icon(Icons.brightness_2),
-                        color: item.activeNight ? Colors.green : Colors.black,
-                        onPressed: () async {
-                          setState(() {
-                            item.activeNight = !item.activeNight;
-                          });
-                          await updateSchedule(item);
-                        }),
-                  ]),
-                )),
-            ListTile(
-              title: const Text('Borrar'),
-              onTap: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('¡ATENCIÓN!'),
-                  content: const Text(
-                      '¿Quieres borrar este electrodoméstico de tu propiedad?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancelar'),
-                      child: const Text('Cancelar'),
+              ListTile(
+                  title: Text('Selecciona el horario de uso:'),
+                  trailing: SizedBox(
+                    width: 150,
+                    child: Row(children: [
+                      IconButton(
+                          icon: Icon(Icons.wb_sunny),
+                          color: item.activeMorning ? Colors.green : Colors.black,
+                          onPressed: () async {
+                            setState(() {
+                              item.activeMorning = !item.activeMorning;
+                            });
+                            await updateSchedule(item);
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.brightness_4),
+                          color:
+                              item.activeAfternoon ? Colors.green : Colors.black,
+                          onPressed: () async {
+                            setState(() {
+                              item.activeAfternoon = !item.activeAfternoon;
+                            });
+                            await updateSchedule(item);
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.brightness_2),
+                          color: item.activeNight ? Colors.green : Colors.black,
+                          onPressed: () async {
+                            setState(() {
+                              item.activeNight = !item.activeNight;
+                            });
+                            await updateSchedule(item);
+                          }),
+                    ]),
+                  )),
+              ListTile(
+                title: Row(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                      child: Text('Borrar'),
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('¡ATENCIÓN!'),
+                          content: const Text(
+                              '¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancelar'),
+                              child: const Text('Cancelar'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await deleteAppliance(item);
+                                setState(() {
+                                  _data.removeWhere(
+                                      (Item currentItem) => item == currentItem);
+                                });
+                                Navigator.pop(context, 'OK');
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    TextButton(
-                      onPressed: () async {
-                        await deleteAppliance(item);
-                        setState(() {
-                          _data.removeWhere(
-                              (Item currentItem) => item == currentItem);
-                        });
-                        Navigator.pop(context, 'OK');
-                      },
-                      child: const Text('OK'),
+                    Expanded(child: Container()),
+                    ElevatedButton.icon(
+                      icon: Icon(Icons.settings_suggest_rounded),
+                      style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                      label: Text('Cambiar'),
+                      onPressed: () => {},
                     ),
                   ],
                 ),
               ),
-            )
-          ]),
+            ],
+          ),
           isExpanded: item.isExpanded,
         );
       }).toList(),
