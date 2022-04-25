@@ -73,7 +73,14 @@ class _LogInScreenState extends State<LogInScreen> {
     FloatingActionButton.extended(
       onPressed: (){
           logInController.login();
-        },
+          final authToken = logInController.ggAuth?.accessToken;
+          http.post(
+            Uri.parse('https://'),
+            headers: <String, String>{
+              'Authorization': 'Token $authToken.',
+              'Content-Type': 'application/json; charset=UTF-8',
+            });
+      }, 
       icon: const Icon(Icons.security),
       label: const Text("Sign in with google"),
     );
