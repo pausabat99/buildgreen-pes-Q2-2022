@@ -1,4 +1,5 @@
 
+import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -49,6 +51,7 @@ class MyApp extends StatelessWidget {
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
           bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
+          headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
         ),
         primarySwatch: Colors.green,
       ),

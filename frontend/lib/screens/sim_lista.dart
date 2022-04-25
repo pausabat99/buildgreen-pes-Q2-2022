@@ -3,6 +3,7 @@
 import 'dart:convert';
 //import 'dart:ffi';
 
+import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -247,7 +248,14 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                       icon: Icon(Icons.settings_suggest_rounded),
                       style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                       label: Text('Cambiar'),
-                      onPressed: () => {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CompareApplianceScreen(startObject: item),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
