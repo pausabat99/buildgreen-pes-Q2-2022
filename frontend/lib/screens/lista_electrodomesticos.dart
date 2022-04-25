@@ -25,8 +25,6 @@ class ElectrodomesticoList extends StatefulWidget {
   State<ElectrodomesticoList> createState() => _ElectrodomesticoList();
 }
 
-//Classe Item Propiedad
-
 //Generar propiedades para la Expansion Panel List
 Future<List<Item>> generateItems() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -42,6 +40,7 @@ Future<List<Item>> generateItems() async{
 
   final responseJson = jsonDecode(response.body);
   EasyLoading.dismiss();
+
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
     return Item(
@@ -55,6 +54,27 @@ Future<List<Item>> generateItems() async{
   });
 }
 
+Future<String> addAppliance(Item item) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response  = await http.post(
+      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
+      },
+      body: <String, String>{
+      "property":  prefs.getString('_actual_property'),
+      "appliance_type": item.applianceType,
+      "model":  item.model,
+      "brand": item.brand,
+      "cons":  item.cons,
+      "price": item.price,
+      }
+    );
+    final jsonResponse = json.decode(response.body);
+    return jsonResponse["uuid"];
+
+  }
 
 class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   //Se rellena  la lista de propiedades
@@ -70,23 +90,9 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
     );
   }
 
-  Future<void> moveToPropiedades(Item item) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
-      },
-      body: <String, String>{
-      "property":  prefs.getString('_actual_property'),
-      "appliance_type": item.applianceType,
-      "model":  item.model,
-      "brand": item.brand,
-      "cons":  item.cons,
-      "price": item.price,
-      }
-    );
+  Future<void> moveToPropiedades(Item item) async{
+    await addAppliance(item);
     Navigator.pop(context);
   }
   

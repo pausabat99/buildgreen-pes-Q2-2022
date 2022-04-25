@@ -24,6 +24,23 @@ class ListaSimulacion extends StatefulWidget {
   State<ListaSimulacion> createState() => _ListaSimulacion();
 }
 
+Future<void> deleteAppliance(Item item) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  await 
+  http.delete(
+    Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader:
+          "Token " + prefs.getString("_user_token"),
+    },
+    body: <String, String>{
+      'uuid': item.id.toString(),
+    },
+  );
+}
+
+
 // Clase item electrodoméstico
 class Item {
   Item({
@@ -68,7 +85,6 @@ Future<List<Item>> generateItems() async {
   );
 
   final responseJson = jsonDecode(response.body);
-  debugPrint(response.body);
   return List<Item>.generate(responseJson.length, (int index) {
     final appliance = responseJson[index];
     return Item(
@@ -91,31 +107,39 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   var value = "";
 
   _ListaSimulacion() {
-    generateItems().then((val) => setState(() {
+    generateItems().then(
+      (val) => setState(() 
+        {
           _data = val;
-        }));
+        },
+      ),
+    );
   }
 
   Future<void> newAppliance() async {
-    await Navigator.of(context).pushNamed('/all_appliances');
-    _data = await generateItems();
-    setState(() {});
+    await Navigator.of(context).pushNamed('/all_appliances').then((_) async{
+      _data = await generateItems(); // UPDATING List after comming back
+      setState(() {});
+    });
+    
   }
 
-  Future<void> deleteAppliance(Item item) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await 
-    http.delete(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader:
-            "Token " + prefs.getString("_user_token"),
-      },
-      body: <String, String>{
-        'uuid': item.id.toString(),
-      },
+  Future<void> changeAppliance(Item startItem) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompareApplianceScreen(startObject: startItem),
+      ),
+    ).then((value) async {
+      _data = await generateItems(); // UPDATING List after comming back
+      for (var name in _data){
+        if (name.id == value){
+          name.isExpanded = true;
+        }
+      }
+      setState(() {});}
     );
+  
   }
 
   Future<void> updateSchedule(Item item) async {
@@ -252,14 +276,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                       icon: Icon(Icons.settings_suggest_rounded),
                       style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                       label: Text('Cambiar'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CompareApplianceScreen(startObject: item),
-                          ),
-                        );
-                      },
+                      onPressed: () => { changeAppliance(item) }
                     ),
                   ],
                 ),

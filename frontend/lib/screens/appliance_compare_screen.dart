@@ -36,10 +36,15 @@ TextStyle animatorTextStyle( double variable){
   );
 }
 
+Future<String> switchAppliance(Item oldAppliance, Item newAppliance) async{
+  if (oldAppliance != newAppliance){
+    await deleteAppliance(oldAppliance);
+    return await lec.addAppliance(newAppliance);
+  }
+  return "";
+}
 class CompareApplianceScreen extends StatefulWidget {
-
   final Item startObject; 
-  
   
   const CompareApplianceScreen(
     {
@@ -62,7 +67,7 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
 
   Item? newItem;
 
-  
+  String? newId;
 
   _CompareApplianceScreenState() {
     lec.generateItems().then((val) => setState(() {
@@ -81,6 +86,7 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
     var ahorroConsumo = double.parse(targetItem.cons) - (startIndex != -1 ? double.parse(allObjects[startIndex].cons): 0);
 
 
+
     TextStyle? headline2 = Theme.of(context).textTheme.headline5;
     return SafeArea(
       child: Scaffold(
@@ -94,7 +100,7 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
                   // HEADER
                   Row(
                     children:  [
-                      const CustomBackButton(),
+                      CustomBackButton(returnValue: (newId != null) ? newId : widget.startObject.id),
                       const Padding(padding: EdgeInsets.all(10)),
                       Text(
                         "Cambio",
@@ -215,8 +221,11 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
                                         ),
                                         child: TextButton( 
                                           child: Text("CHOOSE", style: Theme.of(context).textTheme.bodyLarge,),
-                                          onPressed: (){
-                                            setState(() => {newItem = allObjects[startIndex]});
+                                          onPressed: () async {
+                                            newId = await switchAppliance(newItem??widget.startObject,  allObjects[startIndex]);
+                                            setState(() 
+                                            {newItem = allObjects[startIndex];
+                                            newItem?.id = newId??"";});
                                           },
                                         ),
                                       ),
