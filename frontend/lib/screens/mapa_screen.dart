@@ -1,8 +1,5 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-
-import 'dart:async';
-
 import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,7 +30,7 @@ class _MapaScreenState extends State<MapaScreen> {
   @override
   Widget build(BuildContext context) {
     _controller.request();
-    final  _initialCameraPosition = CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
+    const _initialCameraPosition =  CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -57,7 +54,7 @@ class _MapaScreenState extends State<MapaScreen> {
             /// MAPS
             Expanded(              
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 
                 child: ClipRRect(
                   clipBehavior: Clip.hardEdge,

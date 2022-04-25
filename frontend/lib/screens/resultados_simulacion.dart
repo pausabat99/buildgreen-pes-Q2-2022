@@ -13,6 +13,8 @@ import 'dart:async';
 import 'dart:io';
 
 class ResultadosSimulacion extends StatefulWidget {
+  static const route = "/sim_result";
+
   const ResultadosSimulacion({Key? key}) : super(key: key);
 
   @override

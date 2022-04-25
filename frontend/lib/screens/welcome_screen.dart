@@ -14,7 +14,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class WelcomeScreen extends StatelessWidget {
 
-  static const routeName = '/welcome_screen';
+  static const route = '/welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
 
@@ -44,7 +44,6 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     logInReqAccount(context);
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -70,27 +69,16 @@ class WelcomeScreen extends StatelessWidget {
                 flex: 3,
                 child: Column(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(top: 75, left: 0, right: 0),
-                    ),
-                    Stack(
-                      children: <Widget>[
                         // background profilePic start
-                        Container(
-                           padding: EdgeInsets.only(top: screenHeight*0.35, left: 50, right: 50),
-
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(
-                                "assets/images/build_green_logo.png",
-                              ),
-                            ),
-                          ),
-                        ),
-                        // background profilePic end
-                      ]
+                    Container(
+                      padding: const EdgeInsets.only(top: 100, left: 50, right: 50),
+                      child: const Image(
+                        image: AssetImage("assets/images/build_green_logo.png"),
+                      ),
                     ),
-                    const Expanded(child: Text(""),),
+
+                    Expanded(child: Container()),
+
                     Container(
                       padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                       alignment: Alignment.bottomCenter,
@@ -101,7 +89,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                     ),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 100),
+                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 50),
                       alignment: Alignment.bottomCenter,
                       child : GeneralButton(
                           
