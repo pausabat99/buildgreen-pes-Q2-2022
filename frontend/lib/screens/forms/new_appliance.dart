@@ -14,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NewAppliance extends StatefulWidget {
+
+  static const route = "/new_appliance";
+
   const NewAppliance({ Key? key }) : super(key: key);
 
   @override

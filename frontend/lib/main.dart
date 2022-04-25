@@ -32,13 +32,14 @@ class MyApp extends StatelessWidget {
       routes: {
       // When navigating to the "/" route, build the FirstScreen widget.
       // When navigating to the "/second" route, build the SecondScreen widget.
-      '/login': (context) => const LogInScreen(),
-      '/register': (context) => const SignUpScreen(),
-      '/index': (context) => const MainScreen(),
-      '/sim':(context) => const ListaSimulacion(),
-      '/all_appliances': (context) => const ElectrodomesticoList(),
-      '/new_appliance': (context) => const NewAppliance(),
-      '/sim_result':(context) => const ResultadosSimulacion(), 
+      LogInScreen.route           :(context) => const LogInScreen(),
+      SignUpScreen.route          :(context) => const SignUpScreen(),
+      MainScreen.route            :(context) => const MainScreen(),
+      ListaSimulacion.route       :(context) => const ListaSimulacion(),
+      ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
+      NewAppliance.route          :(context) => const NewAppliance(),
+      ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
+      WelcomeScreen.route         :(context) => const WelcomeScreen(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',

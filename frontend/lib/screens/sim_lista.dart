@@ -14,6 +14,9 @@ import 'dart:io';
 import '../widgets/general_buttom.dart';
 
 class ListaSimulacion extends StatefulWidget {
+
+  static const route = "/sim";
+  
   const ListaSimulacion({Key? key}) : super(key: key);
 
   @override

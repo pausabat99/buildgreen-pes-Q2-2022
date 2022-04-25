@@ -15,6 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 class ElectrodomesticoList extends StatefulWidget {
+
+  static const route = "/all_appliances";
+  
   const ElectrodomesticoList({Key? key}) : super(key: key);
 
   @override

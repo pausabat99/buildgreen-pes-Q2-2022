@@ -16,6 +16,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LogInScreen extends StatefulWidget {
+  
+  static const String route = "/login";
+  
   const LogInScreen({ Key? key }) : super(key: key);
 
   @override
@@ -23,6 +26,7 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
