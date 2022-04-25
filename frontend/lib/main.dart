@@ -51,10 +51,13 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
           bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
           headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+          headline5: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
+          ),
         ),
         primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen(),
+      home: const ListaSimulacion(),
       builder: EasyLoading.init(),
     );
   }

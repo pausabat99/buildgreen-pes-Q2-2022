@@ -14,6 +14,7 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:buildgreen/screens/sim_lista.dart';
 class ElectrodomesticoList extends StatefulWidget {
 
   static const route = "/all_appliances";
@@ -25,25 +26,6 @@ class ElectrodomesticoList extends StatefulWidget {
 }
 
 //Classe Item Propiedad
-class Item {
-  Item({
-    required this.headerValue,
-    this.isExpanded = false,
-    required this.applianceType,
-    required this.model,
-    required this.brand,
-    required this.cons,
-    required this.price,
-  });
-
-  String headerValue;
-  bool isExpanded;
-  String applianceType;
-  String model;
-  String brand;
-  String cons;
-  String price;
-}
 
 //Generar propiedades para la Expansion Panel List
 Future<List<Item>> generateItems() async{

@@ -32,15 +32,17 @@ class Item {
     required this.brand,
     required this.price,
     required this.cons,
+    this.applianceType = "",
     this.isExpanded = false,
-    required this.id,
+    this.id = "",
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
+    
   });
 
   String id;
-
+  String applianceType;
   String headerValue;
   String model;
   String brand;
@@ -254,7 +256,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CompareApplianceScreen(startObject: item, allObjects: _data),
+                            builder: (context) => CompareApplianceScreen(startObject: item),
                           ),
                         );
                       },
