@@ -118,9 +118,9 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   Widget _buildPanel()  {
     return ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
-            for (var t_item in _data ) {
-              if(_data[index] != t_item) {
-                t_item.isExpanded = false;
+            for (var tItem in _data ) {
+              if(_data[index] != tItem) {
+                tItem.isExpanded = false;
               } 
             }
             setState(() {

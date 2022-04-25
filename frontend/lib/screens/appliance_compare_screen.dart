@@ -2,7 +2,6 @@
 
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/general_background.dart';
-import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -28,17 +27,19 @@ BoxDecoration panelDeoraction(){
 class CompareApplianceScreen extends StatelessWidget {
 
   final Item startObject; 
+  final List<Item> allObjects;
 
-  const CompareApplianceScreen({Key? key, required this.startObject}):super(key: key);
+  const CompareApplianceScreen(
+    {
+      Key? key,
+      required this.startObject,
+      required this.allObjects
+    }
+  ) :super(key: key);
 
   @override
   Widget build(BuildContext context) {
     
-    
-    Item? loaded_one;
-
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
     
     return SafeArea(
       child: Scaffold(
@@ -62,75 +63,33 @@ class CompareApplianceScreen extends StatelessWidget {
                     ],
                   ),
                   const Padding(padding: EdgeInsets.all(5)),
-                  // List of 
                   Expanded(
-                    flex: 3,
+                    flex:  3,
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: panelDeoraction(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              //crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
+                      children:  [
+                        // First item 
+                        Expanded( 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ApplianceDetail(appliance: startObject),
+                                      ],
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(5)),
 
-                                const Image(
-                                  image: AssetImage("assets/images/electrodomestico.png"),
-                                ),
-
-                                // BRAND AND NAME
-                                Flex(
-                                  direction: Axis.vertical,
-                                  children: [
-                                    Text(startObject.brand),
-                                    Text(startObject.headerValue),
-                                  ],
-                                ),
-
-                                Flex(
-                                  direction: Axis.vertical,
-                                  children: [
-                                    Text(startObject.brand),
-                                    Text(startObject.headerValue),
-                                  ],
-                                ),
-
-                                // POWER CONSUMPTION
-                                Flex(
-                                  direction: Axis.vertical,
-                                  children: [
-                                    const Text("Price",       style: TextStyle(color: Colors.grey, fontSize: 20),),
-                                    Text(startObject.price),
-                                    const Padding(padding: EdgeInsets.all(5)),
-                                    const Text("Power [KW]",  style: TextStyle(color: Colors.grey, fontSize: 20)),
-                                    Text(startObject.cons)
-                                  ],
-                                ),
-                              ],
-                            ),
+                        Expanded( 
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ApplianceDetail(appliance: (allObjects..shuffle()).first),
+                                      ],
                           ),
                         ),
                         
-                        const Padding(padding: EdgeInsets.all(5)),
-                        Expanded(
-                          child: Container(
-                            decoration: panelDeoraction(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image(
-                                  width: 0.3* screenWidth,
-                                  image: const AssetImage("assets/images/build_green_logo.png"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        
                       ],
                     ),
                   ),
@@ -139,8 +98,8 @@ class CompareApplianceScreen extends StatelessWidget {
                     flex: 1,
                     child: Container(
                       decoration: panelDeoraction(),
-                    )
-                    ,)
+                    ),
+                  )
                 ],
               ),
             ),
@@ -148,6 +107,59 @@ class CompareApplianceScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ApplianceDetail extends StatelessWidget {
+  const ApplianceDetail({
+    Key? key,
+    required this.appliance,
+  }) : super(key: key);
+
+  final Item appliance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+            child: Container(
+              decoration: panelDeoraction(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+
+                  
+
+                  // BRAND AND NAME
+                  Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      const Image(
+                        image: AssetImage("assets/images/electrodomestico.png"),
+                      ),
+                      const Padding(padding: EdgeInsets.all(10)),
+                      Text(appliance.brand),
+                      Text(appliance.headerValue),
+                    ],
+                  ),
+
+
+                  // POWER CONSUMPTION
+                  Flex(
+                    direction: Axis.vertical,
+                    children: [
+                      const Text("Price",       style: TextStyle(color: Colors.grey, fontSize: 20),),
+                      Text(appliance.price),
+                      const Padding(padding: EdgeInsets.all(5)),
+                      const Text("Power [KW]",  style: TextStyle(color: Colors.grey, fontSize: 20)),
+                      Text(appliance.cons)
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
   }
 }
 

@@ -103,15 +103,17 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Future<void> deleteAppliance(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final response = await http.delete(
-        Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              "Token " + prefs.getString("_user_token"),
-        },
-        body: <String, String>{
-          'uuid': item.id.toString(),
-        });
+    await 
+    http.delete(
+      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader:
+            "Token " + prefs.getString("_user_token"),
+      },
+      body: <String, String>{
+        'uuid': item.id.toString(),
+      },
+    );
   }
 
   Future<void> updateSchedule(Item item) async {
@@ -138,8 +140,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
-        for (var t_item in _data ) {
-          if(_data[index] != t_item) t_item.isExpanded = false; 
+        for (var tItem in _data ) {
+          if(_data[index] != tItem) tItem.isExpanded = false; 
         }
         setState(() {
           _data[index].isExpanded = !isExpanded;
@@ -252,7 +254,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CompareApplianceScreen(startObject: item),
+                            builder: (context) => CompareApplianceScreen(startObject: item, allObjects: _data),
                           ),
                         );
                       },

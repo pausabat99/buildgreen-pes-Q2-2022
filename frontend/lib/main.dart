@@ -1,5 +1,4 @@
 
-import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';

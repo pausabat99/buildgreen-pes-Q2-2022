@@ -1,3 +1,5 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,10 +14,11 @@ class RequestPermissionPage extends StatefulWidget {
 
 class _RequestPermissionPageState extends State<RequestPermissionPage> {
   final _controller = RequestPermissionController(Permission.locationWhenInUse);
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: Container(width: double.infinity, height: double.infinity,))
+    return const Scaffold(
+      body: SafeArea(child: SizedBox(width: double.infinity, height: double.infinity,))
       
     );
   }
