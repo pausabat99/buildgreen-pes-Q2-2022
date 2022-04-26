@@ -16,6 +16,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class SignUpScreen extends StatefulWidget {
+
+  static const route = '/register';
+  
   const SignUpScreen({ Key? key }) : super(key: key);
 
   @override
@@ -271,7 +274,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                   ),
-                  Padding(padding: EdgeInsets.all(5)),
+                  const Padding(padding: EdgeInsets.all(5)),
                   GeneralButton(
                       title: "Crear Cuenta",
                       action: (formCorrect()) ? createAccount : (){},

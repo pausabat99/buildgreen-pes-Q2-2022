@@ -3,6 +3,9 @@ import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:flutter/material.dart';
 class MainScreen extends StatefulWidget {
+
+  static const route = '/index';
+
   const MainScreen({ Key? key ,}) : super(key: key);
   
   @override

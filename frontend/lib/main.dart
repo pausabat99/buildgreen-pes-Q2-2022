@@ -19,6 +19,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master_frontend
 void main() {
   runApp(MyApp());
 }
@@ -47,15 +51,16 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/login': (context) => const LogInScreen(),
-        '/register': (context) => const SignUpScreen(),
-        '/index': (context) => const MainScreen(),
-        '/sim': (context) => const ListaSimulacion(),
-        '/all_appliances': (context) => const ElectrodomesticoList(),
-        '/new_appliance': (context) => const NewAppliance(),
-        '/sim_result': (context) => const ResultadosSimulacion(),
+      // When navigating to the "/" route, build the FirstScreen widget.
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      LogInScreen.route           :(context) => const LogInScreen(),
+      SignUpScreen.route          :(context) => const SignUpScreen(),
+      MainScreen.route            :(context) => const MainScreen(),
+      ListaSimulacion.route       :(context) => const ListaSimulacion(),
+      ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
+      NewAppliance.route          :(context) => const NewAppliance(),
+      ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
+      WelcomeScreen.route         :(context) => const WelcomeScreen(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',
@@ -65,6 +70,10 @@ class _MyAppState extends State<MyApp> {
           headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
           bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
           bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
+          headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+          headline5: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
+          ),
         ),
         primarySwatch: Colors.green,
       ),
