@@ -1,4 +1,4 @@
-
+import 'package:buildgreen/screens/area_personal_cliente.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -13,16 +13,36 @@ import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> master_frontend
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+}
+
+late Locale _locale = Locale('es', 'ES');
+
+class _MyAppState extends State<MyApp> {
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -57,7 +77,18 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.green,
       ),
-      home: const WelcomeScreen(),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [
+        Locale('es', 'ES'),
+        Locale('ca', 'CAT'),
+      ],
+      home: AreaPersonalCliente(),
       builder: EasyLoading.init(),
     );
   }

@@ -110,6 +110,10 @@ http_parser
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.0/lib/
+intl
+2.12
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
+file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib/
 js
 2.12
 file:///D:/flutter/.pub-cache/hosted/pub.dartlang.org/js-0.6.3/
@@ -258,6 +262,10 @@ flutter
 2.12
 file:///D:/flutter/packages/flutter/
 file:///D:/flutter/packages/flutter/lib/
+flutter_localizations
+2.12
+file:///D:/flutter/packages/flutter_localizations/
+file:///D:/flutter/packages/flutter_localizations/lib/
 flutter_test
 2.12
 file:///D:/flutter/packages/flutter_test/

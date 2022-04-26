@@ -7,6 +7,7 @@ import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -163,6 +164,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   void simulate() {
     Navigator.pushNamed(context, '/sim_result');
   }
+<<<<<<< HEAD
+
+=======
+>>>>>>> master_frontend
   Widget _buildPanel() {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
@@ -314,7 +319,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 top: 10,
               ),
-              child: Text("Mi prioridad"),
+              child: Text(
+                AppLocalizations.of(context)!.simulacion,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              ),
             ),
 
             /// Subtitle
@@ -324,8 +332,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 left: 50,
                 bottom: 10,
               ),
-              child: const Text(
-                'Electrodomésticos',
+              child: Text(
+                AppLocalizations.of(context)!.electrodomestico,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
@@ -348,7 +356,7 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                     _buildPanel(),
                     const Padding(padding: EdgeInsets.all(5)),
                     GeneralButton(
-                      title: "Añadir electrodoméstico",
+                      title: AppLocalizations.of(context)!.anelectrodomestico,
                       textColor: Colors.white,
                       action: newAppliance,
                     ),
@@ -358,12 +366,12 @@ class _ListaSimulacion extends State<ListaSimulacion> {
             ),
             Expanded(child: Text("")),
             Align(
-                alignment: Alignment.bottomCenter,
-                child: GeneralButton(
-                    title: "SIMULAR CONSUMO",
-                    textColor: Colors.white,
-                    action: simulate),
-              ),
+              alignment: Alignment.bottomCenter,
+              child: GeneralButton(
+                  title: AppLocalizations.of(context)!.simularconsumo,
+                  textColor: Colors.white,
+                  action: simulate),
+            ),
             Expanded(child: Text("")),
           ],
         ),

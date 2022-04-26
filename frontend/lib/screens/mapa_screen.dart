@@ -38,6 +38,7 @@ class _MapaScreenState extends State<MapaScreen> {
         child: Column(
           children: [
             const Padding(padding: EdgeInsets.all(10)),
+
             /// TITLE
             Container(
               alignment: Alignment.topLeft,
@@ -45,9 +46,9 @@ class _MapaScreenState extends State<MapaScreen> {
                 left: 50,
                 top: 10,
               ),
-              child: const Text(
-                'Mapa',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              child: Text(
+                AppLocalizations.of(context)!.mapa,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
 
@@ -59,7 +60,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 child: ClipRRect(
                   clipBehavior: Clip.hardEdge,
                   borderRadius: BorderRadius.circular(20),
-                  child: GoogleMap(
+                  child: const GoogleMap(
                     initialCameraPosition: _initialCameraPosition,
                     myLocationButtonEnabled: true,
                     myLocationEnabled: true,
