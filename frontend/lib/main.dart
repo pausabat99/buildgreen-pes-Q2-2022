@@ -1,4 +1,5 @@
 import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'package:buildgreen/screens/consejo_dia_lista.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -85,7 +86,7 @@ class _MyAppState extends State<MyApp> {
         Locale('es', 'ES'),
         Locale('ca', 'CAT'),
       ],
-      home: WelcomeScreen(),
+      home: ListaConsejosDia(),
       builder: EasyLoading.init(),
     );
   }

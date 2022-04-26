@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   dio: ^4.0.4
   fluttericon: ^2.0.0
+  lint: ^1.8.2
 
 dev_dependencies:
   flutter_test:
