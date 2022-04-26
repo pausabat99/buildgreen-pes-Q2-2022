@@ -25,19 +25,19 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   _title(String val) {
     switch (val) {
       case 'ca':
-        return Text(
+        return const Text(
           'Catala',
           style: TextStyle(fontSize: 16.0),
         );
 
       case 'es':
-        return Text(
+        return const Text(
           'Castellano',
           style: TextStyle(fontSize: 16.0),
         );
 
       default:
-        return Text(
+        return const Text(
           'Castellano',
           style: TextStyle(fontSize: 16.0),
         );
@@ -81,8 +81,8 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.areapersonal,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 40),
                     ),
                   ),
                 ],
