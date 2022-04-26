@@ -25,6 +25,15 @@ class _NewPropertyState extends State<NewProperty> {
   TextEditingController nombreController = TextEditingController();
   TextEditingController apartamentoController = TextEditingController();
   TextEditingController cPostalController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  /*@override
+  void dispose() {
+    final applicationBloc =
+        Provider.of<ApplicationBloc>(context, listen: false);
+    applicationBloc.dispose();
+    super.dispose();
+  }*/
 
   final backendtranslate = <String, String>{
     "Apartamento": "apt",
@@ -32,8 +41,6 @@ class _NewPropertyState extends State<NewProperty> {
     "Casa": "house",
   };
   String dropdownValue = 'Apartamento';
-
-  String location = "Buscar dirección";
 
   Future<void> moveToPropiedades() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,7 +51,7 @@ class _NewPropertyState extends State<NewProperty> {
               "Token " + prefs.getString('_user_token'),
         },
         body: <String, String>{
-          "address": location,
+          "address": addressController.text,
           "name": nombreController.text,
           "property_type": backendtranslate[dropdownValue].toString(),
           "apt": apartamentoController.text,
@@ -56,15 +63,12 @@ class _NewPropertyState extends State<NewProperty> {
   Future<bool> userIsAdministrator() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final response = await http.get(
-        Uri.parse('https://buildgreen.herokuapp.com/user/'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              "Token " + prefs.getString('_user_token'),
-        });
-
-    final responseJson = jsonDecode(response.body);
-    return responseJson['is_admin'];
+    String type = prefs.getString("_user_type");
+    if (type == "true") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -88,36 +92,42 @@ class _NewPropertyState extends State<NewProperty> {
                   alignment: Alignment.topLeft,
                   child: const CustomBackButton(),
                 ),
-                Stack(
-                  children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: "Buscar dirección",
-                        suffixIcon: Icon(Icons.search),
-                      ),
-                      onChanged: (value) => applicationBloc.searchPlaces(value),
+                TextField(
+                    decoration: const InputDecoration(
+                      hintText: "Buscar dirección",
+                      suffixIcon: Icon(Icons.search),
                     ),
-                    if (applicationBloc.searchResults.isNotEmpty)
-                      Container(
-                        height:
-                            applicationBloc.searchResults.length.toDouble() *
-                                50.0, //esto es un apaño
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(.6),
-                            backgroundBlendMode: BlendMode.darken),
-                        child: ListView.builder(
-                            itemCount: applicationBloc.searchResults.length,
-                            itemBuilder: (context, index) => ListTile(
-                                title: Text(
+                    controller: addressController,
+                    onChanged: (value) {
+                      applicationBloc.searchPlaces(value);
+                    }),
+                if (applicationBloc.searchResults.isNotEmpty)
+                  Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.6),
+                        backgroundBlendMode: BlendMode.darken),
+                    child: ListView.builder(
+                        itemCount: applicationBloc.searchResults.length,
+                        itemBuilder: (context, index) => ListTile(
+                                title: ListTile(
+                              title: Text(
+                                  applicationBloc
+                                      .searchResults[index].description
+                                      .toString(),
+                                  style: const TextStyle(color: Colors.white)),
+                              onTap: () async {
+                                await applicationBloc.setSelectedLocation(
                                     applicationBloc
-                                        .searchResults[index].description
-                                        .toString(),
-                                    style:
-                                        const TextStyle(color: Colors.white)))),
-                      ),
-                  ],
-                ),
+                                        .searchResults[index].placeId);
+                                addressController.text =
+                                    applicationBloc.getSelectedLocation();
+                                cPostalController.text =
+                                    applicationBloc.getSelectedLocationPCode();
+                              },
+                            ))),
+                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -128,9 +138,9 @@ class _NewPropertyState extends State<NewProperty> {
                             isAdmin, // a previously-obtained Future<String> or null
                         builder: (BuildContext context,
                             AsyncSnapshot<bool> snapshot) {
-                          Widget children = const Text('cargando admin...');
+                          Widget children = const Text('cargando...');
                           if (snapshot.hasData) {
-                            if (snapshot.data.toString() == "true") {
+                            if (snapshot.data.toString() == "false") {
                               children = DropdownButton<String>(
                                 alignment: Alignment.topCenter,
                                 value: dropdownValue,
@@ -159,17 +169,17 @@ class _NewPropertyState extends State<NewProperty> {
                                 }).toList(),
                                 dropdownColor: Colors.green,
                               );
-                            } else if (snapshot.data.toString() == "false") {
+                            } else if (snapshot.data.toString() == "true") {
                               children = const Text('Edificio');
                             }
                           }
                           return children;
                         }),
-                    Transform.translate(
-                      offset: const Offset(0, 12),
-                    ),
                   ],
                 ),
+                InputForm(
+                    controller: apartamentoController,
+                    hintLabel: 'Apartamento   ex: 3.1'),
                 InputForm(
                     controller: cPostalController, hintLabel: 'Codigo postal'),
                 GeneralButton(
