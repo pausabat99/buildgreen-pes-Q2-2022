@@ -4,6 +4,7 @@ import 'package:buildgreen/screens/request_permission/request_permission_control
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);

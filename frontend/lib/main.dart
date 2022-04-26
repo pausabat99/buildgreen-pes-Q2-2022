@@ -19,10 +19,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
 
-<<<<<<< HEAD
-=======
 
->>>>>>> master_frontend
 void main() {
   runApp(MyApp());
 }
@@ -88,7 +85,7 @@ class _MyAppState extends State<MyApp> {
         Locale('es', 'ES'),
         Locale('ca', 'CAT'),
       ],
-      home: AreaPersonalCliente(),
+      home: WelcomeScreen(),
       builder: EasyLoading.init(),
     );
   }
