@@ -12,7 +12,7 @@ import 'package:buildgreen/widgets/input_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:buildgreen/constants.dart' as Constants;
 class NewAppliance extends StatefulWidget {
 
   static const route = "/new_appliance";
@@ -41,7 +41,7 @@ class _NewApplianceState extends State<NewAppliance> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      Uri.parse(Constants.API_ROUTE+'/appliances/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
       },

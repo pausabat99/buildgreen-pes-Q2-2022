@@ -8,8 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "../widgets/general_buttom.dart";
-
-
+import 'package:buildgreen/constants.dart' as Constants;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -24,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
     if(prefs.getString("_user_token") != null){
      EasyLoading.show(status: 'Detected account\nLogging in');
      final http.Response response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/user/'),
+      Uri.parse(Constants.API_ROUTE+'/user/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
         },

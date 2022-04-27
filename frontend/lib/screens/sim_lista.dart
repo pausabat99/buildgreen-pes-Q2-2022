@@ -15,6 +15,8 @@ import 'dart:io';
 
 import '../widgets/general_buttom.dart';
 
+import 'package:buildgreen/constants.dart' as Constants;
+
 class ListaSimulacion extends StatefulWidget {
 
   static const route = "/sim";
@@ -30,7 +32,7 @@ Future<void> deleteAppliance(Item item) async {
 
   await 
   http.delete(
-    Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+    Uri.parse(Constants.API_ROUTE+'/appliances/'),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -78,7 +80,7 @@ Future<List<Item>> generateItems() async {
   final String property = prefs.getString('_actual_property');
   final response = await http.get(
     Uri.parse(
-        'https://buildgreen.herokuapp.com/appliances?property=' + property),
+        Constants.API_ROUTE+'/appliances?property=' + property),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -146,11 +148,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await http.patch(
-        Uri.parse('https://buildgreen.herokuapp.com/appliances/' +
+        Uri.parse(Constants.API_ROUTE + '/appliances/' +
             item.id.toString() +
             '/'),
         headers: <String, String>{
-          //a8275004db03b2bf6409aebcb3c7478ec106ce0e84c89546ed20bd953ba73c75 token pau
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString("_user_token"),
         },

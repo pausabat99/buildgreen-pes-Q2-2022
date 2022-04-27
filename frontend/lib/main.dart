@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
         Locale('es', 'ES'),
         Locale('ca', 'CAT'),
       ],
-      home: const ListaConsejosDia(),
+      home: const WelcomeScreen(),
       builder: EasyLoading.init(),
     );
   }

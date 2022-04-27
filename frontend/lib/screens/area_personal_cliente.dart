@@ -5,6 +5,7 @@ import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -49,7 +50,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
     processing = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/logout/'),
+      Uri.parse(Constants.API_ROUTE+'/logout/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader:
             "Token " + prefs.getString("_user_token"),
