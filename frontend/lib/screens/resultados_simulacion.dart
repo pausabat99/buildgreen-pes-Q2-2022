@@ -8,6 +8,8 @@ import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:buildgreen/constants.dart' as Constants;
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
@@ -25,7 +27,7 @@ Future<List<double>> updateConsumption() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
-    Uri.parse('https://buildgreen.herokuapp.com/appliances?property=' +
+    Uri.parse(Constants.API_ROUTE + '/appliances?property=' +
         prefs.getString('_actual_property') +
         '&sim'),
     headers: <String, String>{
@@ -92,7 +94,7 @@ class _ResultadosSimulacion extends State<ResultadosSimulacion> {
             child: Text(
               AppLocalizations.of(context)!.resultadossimulacion,
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
             ),
           ),
           //
