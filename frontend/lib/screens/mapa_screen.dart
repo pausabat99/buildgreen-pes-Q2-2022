@@ -1,5 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:async';
+
 import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,24 +16,24 @@ class MapaScreen extends StatefulWidget {
 }
 
 class _MapaScreenState extends State<MapaScreen> {
-  TextEditingController filterController = TextEditingController();
-  final _controller = RequestPermissionController(Permission.locationAlways);
+  Completer<GoogleMapController> _controller = Completer();
+  final _lController = RequestPermissionController(Permission.locationAlways);
 
-  @override
-  void initState(){
-    super.initState();
-    _controller.request();
-  }
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(41.4026556, 2.1587003),
+    zoom: 14.4746,
+  );
+  TextEditingController filterController = TextEditingController();
+  
 
   @override
   void dispose(){
-    _controller.dispose();
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
-    _controller.request();
-    const _initialCameraPosition =  CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
+    _lController.request();
+    final _initialCameraPosition =  CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -55,19 +57,15 @@ class _MapaScreenState extends State<MapaScreen> {
 
             /// MAPS
             Expanded(              
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                
-                child: ClipRRect(
-                  clipBehavior: Clip.hardEdge,
-                  borderRadius: BorderRadius.circular(20),
-                  child: const GoogleMap(
-                    initialCameraPosition: _initialCameraPosition,
-                    myLocationButtonEnabled: true,
-                    myLocationEnabled: true,
-                    compassEnabled: true,
-                  ),
-                ),
+              child: GoogleMap(
+                initialCameraPosition: _kGooglePlex,
+                compassEnabled: true,
+                mapType: MapType.hybrid,
+                myLocationButtonEnabled: true,
+                myLocationEnabled: true,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
               ),
             ),
           ],
