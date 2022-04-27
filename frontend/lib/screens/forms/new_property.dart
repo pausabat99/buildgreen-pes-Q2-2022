@@ -103,15 +103,15 @@ class _NewPropertyState extends State<NewProperty> {
                     }),
                 if (applicationBloc.searchResults.isNotEmpty)
                   Container(
-                    height: 200,
-                    width: double.infinity,
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(.6),
                         backgroundBlendMode: BlendMode.darken),
-                    child: ListView.builder(
+                    child: Expanded(
+                      flex: 1,
+                      child: ListView.builder(
                         itemCount: applicationBloc.searchResults.length,
                         itemBuilder: (context, index) => ListTile(
-                                title: ListTile(
+                            title: ListTile(
                               title: Text(
                                   applicationBloc
                                       .searchResults[index].description
@@ -127,6 +127,7 @@ class _NewPropertyState extends State<NewProperty> {
                                     applicationBloc.getSelectedLocationPCode();
                               },
                             ))),
+                    ),
                   ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
