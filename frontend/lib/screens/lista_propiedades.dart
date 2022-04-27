@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
+import 'package:buildgreen/constants.dart' as Constants;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListaPropiedades extends StatefulWidget {
@@ -37,7 +39,7 @@ Future<List<Item>> generateItems() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+      Uri.parse(Constants.API_ROUTE+'/properties/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -86,30 +88,37 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   
   Future<void> newProperty() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-      },
-      body: {
-        "address": "Calle Ejemplo "+ _data.length.toString(),
-        "property_type": "apt"
-      },
-    );
-
     setState(() {
       int lastItemIndex = _data.length;
       Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
       _data.insert(lastItemIndex, nitem);
     });
+
+    await http.post(
+      Uri.parse(Constants.API_ROUTE+'/properties/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+      },
+      body: {
+        "address": "Calle Ejemplo "+ _data.length.toString(),
+        "name": "Mi puta casa",
+        "apt": "32, 15",
+        "postal_code": "14002",
+        "property_type": "apt"
+      },
+    );
+
+    
   }
 
   Future <void> deleteProperty(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    setState(() {
+      _data.remove(item);
+    });
+    
     final response = await http.delete(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+      Uri.parse(Constants.API_ROUTE+'/properties/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },

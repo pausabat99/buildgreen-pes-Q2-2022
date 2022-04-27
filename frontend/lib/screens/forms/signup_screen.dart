@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import 'package:buildgreen/constants.dart' as Constants;
+
 class SignUpScreen extends StatefulWidget {
 
   static const route = '/register';
@@ -42,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> createAccount() async {
     EasyLoading.show(status: 'Creating account...');
     final response = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/signup/'),
+      Uri.parse(Constants.API_ROUTE+'/signup/'),
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -64,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (responseJson['user_info'] != null){
       EasyLoading.show(status: 'Logging in...');
       final response = await http.post(
-        Uri.parse('https://buildgreen.herokuapp.com/login/'),
+        Uri.parse(Constants.API_ROUTE+'/login/'),
         body: {
           'username': nameController.text,
           'password': passwordController.text, 

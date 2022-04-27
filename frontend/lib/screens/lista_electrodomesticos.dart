@@ -15,6 +15,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
+
+import 'package:buildgreen/constants.dart' as Constants;
+
 class ElectrodomesticoList extends StatefulWidget {
 
   static const route = "/all_appliances";
@@ -32,7 +35,7 @@ Future<List<Item>> generateItems() async{
   EasyLoading.show(status: 'Cargando electrodomésticos');
 
   final response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances_all/'),
+      Uri.parse(Constants.API_ROUTE+'/appliances_all/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -58,7 +61,7 @@ Future<String> addAppliance(Item item) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final response  = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      Uri.parse(Constants.API_ROUTE+'/appliances/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
       },
