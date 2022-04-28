@@ -3,7 +3,6 @@
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
-import 'package:round_spot/round_spot.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // ignore: library_prefixes
@@ -13,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
-import '../main.dart';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
@@ -71,9 +69,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Detector(
-        areaID: "Area Personal",
-        child: ListView(
+      body: ListView(
           children: [
             Column(
               children: <Widget>[
@@ -282,7 +278,6 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
             const Padding(padding: EdgeInsets.only(top: 20))
           ],
         ),
-      ),
     );
   }
 }
