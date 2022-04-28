@@ -15,6 +15,9 @@ import 'dart:io';
 import 'package:buildgreen/widgets/general_buttom.dart';
 
 class NewProperty extends StatefulWidget {
+
+  static const route = "/new_property";
+
   const NewProperty({Key? key}) : super(key: key);
 
   @override

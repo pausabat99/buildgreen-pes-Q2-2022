@@ -23,11 +23,9 @@ class ApplicationBloc with ChangeNotifier {
   }
 
   setSelectedLocation(String placeId) async {
-    //selectedLocation.add(await placesService.getPlace(placeId));
     selectedLocation = await placesService.getPlace(placeId);
-    searchResults = []; //aixo ho buida, potser no funciona
+    searchResults = [];
     notifyListeners();
-    //return (selectedLocation.name + ', ' + selectedLocation.number);
   }
 
   String getSelectedLocation() {
@@ -37,10 +35,4 @@ class ApplicationBloc with ChangeNotifier {
   String getSelectedLocationPCode() {
     return selectedLocation.postalCode;
   }
-
-  /*@override
-  void dispose() {
-    //selectedLocation.close();
-    super.dispose();
-  }*/
 }

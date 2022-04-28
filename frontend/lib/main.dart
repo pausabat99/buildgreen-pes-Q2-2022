@@ -61,6 +61,7 @@ class _MyAppState extends State<MyApp> {
       NewAppliance.route          :(context) => const NewAppliance(),
       ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
       WelcomeScreen.route         :(context) => const WelcomeScreen(),
+      NewProperty.route           :(context) => const NewProperty(),
       },
       theme: ThemeData(
         fontFamily: 'Arial',

@@ -91,9 +91,6 @@ class _ListaPropiedades extends State<ListaPropiedades> {
     await Navigator.of(context).pushNamed('/new_property');
     _data = await generateItems();
     setState(() {});
-    
-
-    
   }
 
   Future <void> deleteProperty(Item item) async {
