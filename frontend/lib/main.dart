@@ -17,6 +17,7 @@ import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'screens/forms/new_appliance.dart';
 import 'screens/forms/signup_screen.dart';
@@ -47,49 +48,52 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      initialRoute: '/',
-      routes: {
-      // When navigating to the "/" route, build the FirstScreen widget.
-      // When navigating to the "/second" route, build the SecondScreen widget.
-      LogInScreen.route           :(context) => const LogInScreen(),
-      SignUpScreen.route          :(context) => const SignUpScreen(),
-      MainScreen.route            :(context) => const MainScreen(),
-      ListaSimulacion.route       :(context) => const ListaSimulacion(),
-      ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
-      NewAppliance.route          :(context) => const NewAppliance(),
-      ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
-      WelcomeScreen.route         :(context) => const WelcomeScreen(),
-      NewProperty.route           :(context) => const NewProperty(),
-      },
-      theme: ThemeData(
-        fontFamily: 'Arial',
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-              fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.white),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
-          bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
-          headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-          headline5: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
+    return ChangeNotifierProvider(
+      create: (context) => ApplicationBloc(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        initialRoute: '/',
+        routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        LogInScreen.route           :(context) => const LogInScreen(),
+        SignUpScreen.route          :(context) => const SignUpScreen(),
+        MainScreen.route            :(context) => const MainScreen(),
+        ListaSimulacion.route       :(context) => const ListaSimulacion(),
+        ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
+        NewAppliance.route          :(context) => const NewAppliance(),
+        ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
+        WelcomeScreen.route         :(context) => const WelcomeScreen(),
+        NewProperty.route           :(context) => const NewProperty(),
+        },
+        theme: ThemeData(
+          fontFamily: 'Arial',
+          textTheme: const TextTheme(
+            headline1: TextStyle(
+                fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.white),
+            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+            bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
+            bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
+            headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+            headline5: TextStyle(
+              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
+            ),
           ),
         ),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        supportedLocales: const [
+          Locale('es', 'ES'),
+          Locale('ca', 'CAT'),
+        ],
+        home: const WelcomeScreen(),
+        builder: EasyLoading.init(),
       ),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      supportedLocales: const [
-        Locale('es', 'ES'),
-        Locale('ca', 'CAT'),
-      ],
-      home: const WelcomeScreen(),
-      builder: EasyLoading.init(),
     );
   }
 }

@@ -30,13 +30,13 @@ class _NewPropertyState extends State<NewProperty> {
   TextEditingController cPostalController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  /*@override
+  @override
   void dispose() {
     final applicationBloc =
         Provider.of<ApplicationBloc>(context, listen: false);
     applicationBloc.dispose();
     super.dispose();
-  }*/
+  }
 
   final backendtranslate = <String, String>{
     "Apartamento": "apt",
