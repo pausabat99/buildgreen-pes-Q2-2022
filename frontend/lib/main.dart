@@ -75,8 +75,6 @@ class _MyAppState extends State<MyApp> {
             fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
           ),
         ),
-        home: WelcomeScreen(),
-        builder: EasyLoading.init(),
       ),
       localizationsDelegates: const [
         AppLocalizations.delegate,
