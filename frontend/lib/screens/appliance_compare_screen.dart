@@ -4,13 +4,10 @@ import 'dart:math';
 
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/general_background.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
+
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart' as lec;
 
@@ -85,9 +82,8 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
 
     var ahorroConsumo = double.parse(targetItem.cons) - (startIndex != -1 ? double.parse(allObjects[startIndex].cons): 0);
 
-
-
     TextStyle? headline2 = Theme.of(context).textTheme.headline5;
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -311,18 +307,20 @@ Widget comparadorAhorro(TextStyle? titleStyle, double variable, String title, St
 }
 Column applianceDetail(Item appliance){
   return Column(
-      
       children: [
         // ICON + Subtitles
         Flex(
           direction: Axis.vertical,
           children: [
-            const Image(
-              image: AssetImage("assets/images/electrodomestico.png"),
+            const FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Image(
+                image: AssetImage("assets/images/electrodomestico.png"),
+              ),
             ),
-            const Padding(padding: EdgeInsets.all(10)),
+            const Padding(padding: EdgeInsets.all(5)),
 
-              // BRAND AND NAME
+            // BRAND AND NAME
             Text(appliance.brand),
             Text(appliance.headerValue),
           ],
@@ -331,10 +329,20 @@ Column applianceDetail(Item appliance){
         Flex(
           direction: Axis.vertical,
           children: [
-            const Text("Price",       style: TextStyle(color: Colors.grey, fontSize: 20),),
+            const FittedBox(
+              child:Text("Price",
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
+              fit: BoxFit.fitHeight,
+            ),
             Text(appliance.price),
             const Padding(padding: EdgeInsets.all(5)),
-            const Text("Power [KW]",  style: TextStyle(color: Colors.grey, fontSize: 20)),
+            const FittedBox(
+              child:Text("Power [KW]",
+                style: TextStyle(color: Colors.grey, fontSize: 20),
+                ),
+              fit: BoxFit.fitHeight,
+            ),
             Text(appliance.cons)
           ],
         ),

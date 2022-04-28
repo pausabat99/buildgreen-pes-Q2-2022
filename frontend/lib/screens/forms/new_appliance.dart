@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, library_prefixes
 
 import 'dart:async';
 import 'package:http/http.dart' as http;

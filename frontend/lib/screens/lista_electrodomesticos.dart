@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:buildgreen/screens/sim_lista.dart';
 
+// ignore: library_prefixes
 import 'package:buildgreen/constants.dart' as Constants;
 
 class ElectrodomesticoList extends StatefulWidget {

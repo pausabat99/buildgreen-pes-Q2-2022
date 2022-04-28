@@ -1,4 +1,3 @@
-import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/general_background.dart';
 import 'package:flutter/material.dart';
 import 'package:buildgreen/screens/appliance_compare_screen.dart';
@@ -37,6 +36,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
 
   }
 
+  // ignore: non_constant_identifier_names
   Widget CustomRadioButton(String text, int index, String position) {
     return Expanded(
       child: OutlinedButton(
@@ -48,7 +48,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
         },
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
             color:Colors.black,
           ),
         ),
@@ -70,7 +70,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
           const GeneralBackground(),
           SafeArea(
             child: Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Container(
                 decoration: panelDecoracion(),
                 child: Column(
@@ -83,7 +83,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             
                             decoration: const BoxDecoration(
                                 boxShadow: [
@@ -208,7 +208,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: Text("COMPLETAR RETO: 500 xp"),
+                        child: const Text("COMPLETAR RETO: 500 xp"),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                         ),

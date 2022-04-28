@@ -1,5 +1,4 @@
-import 'package:buildgreen/screens/area_personal_cliente.dart';
-import 'package:buildgreen/screens/consejo_dia_view.dart';
+
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -22,10 +21,12 @@ import 'screens/forms/signup_screen.dart';
 
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 
@@ -33,7 +34,7 @@ class MyApp extends StatefulWidget {
       context.findAncestorStateOfType<_MyAppState>();
 }
 
-late Locale _locale = Locale('es', 'ES');
+late Locale _locale = const Locale('es', 'ES');
 
 class _MyAppState extends State<MyApp> {
   void setLocale(Locale value) {

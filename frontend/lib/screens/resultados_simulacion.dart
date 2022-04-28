@@ -8,6 +8,7 @@ import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+// ignore: library_prefixes
 import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:http/http.dart' as http;
