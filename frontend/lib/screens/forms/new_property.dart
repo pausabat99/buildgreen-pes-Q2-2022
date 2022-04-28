@@ -102,33 +102,35 @@ class _NewPropertyState extends State<NewProperty> {
                       applicationBloc.searchPlaces(value);
                     }),
                 if (applicationBloc.searchResults.isNotEmpty)
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(.6),
-                        backgroundBlendMode: BlendMode.darken),
-                    child: Expanded(
-                      flex: 1,
-                      child: ListView.builder(
-                        itemCount: applicationBloc.searchResults.length,
-                        itemBuilder: (context, index) => ListTile(
-                            title: ListTile(
-                              title: Text(
-                                  applicationBloc
-                                      .searchResults[index].description
-                                      .toString(),
-                                  style: const TextStyle(color: Colors.white)),
-                              onTap: () async {
-                                await applicationBloc.setSelectedLocation(
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(.6),
+                          backgroundBlendMode: BlendMode.darken
+                          ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: applicationBloc.searchResults.length,
+                          itemBuilder: (context, index) => ListTile(
+                                  title: ListTile(
+                                title: Text(
                                     applicationBloc
-                                        .searchResults[index].placeId);
-                                addressController.text =
-                                    applicationBloc.getSelectedLocation();
-                                cPostalController.text =
-                                    applicationBloc.getSelectedLocationPCode();
-                              },
-                            ))),
-                    ),
-                  ),
+                                        .searchResults[index].description
+                                        .toString(),
+                                    style: const TextStyle(color: Colors.white)),
+                                onTap: () async {
+                                  await applicationBloc.setSelectedLocation(
+                                      applicationBloc
+                                          .searchResults[index].placeId);
+                                  addressController.text =
+                                      applicationBloc.getSelectedLocation();
+                                  cPostalController.text =
+                                      applicationBloc.getSelectedLocationPCode();
+                                },
+                              ))),
+                      ),
+                    ),  
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
