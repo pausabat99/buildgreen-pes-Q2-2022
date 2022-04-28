@@ -58,9 +58,9 @@ class _MapaScreenState extends State<MapaScreen> {
     for (var result in responseJson){
       final latitude = double.parse(result['latitud']);
       final longitude = double.parse(result['longitud']);
-      final emissions = result["qualificaci_de_consum_d"];
+      final emissions = result["emissions_de_co2"];
       locations.add(LatLng(latitude, longitude));
-      weights.add(emissions);
+      weights.add(double.parse(emissions).round());
     }
     debugPrint("alg");
     setState(() {
@@ -90,7 +90,7 @@ class _MapaScreenState extends State<MapaScreen> {
     _lController.request();
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => {getHeatMap('/qualificationMap')},
+        onPressed: () => {getHeatMap('/co2map')},
         label: const Text('Add Heatmap'),
         icon: const Icon(Icons.add_box),
       ),
