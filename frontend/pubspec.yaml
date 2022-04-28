@@ -43,6 +43,9 @@ dependencies:
   fluttericon: ^2.0.0
   lint: ^1.8.2
   flutter_html: ^2.2.1
+  round_spot: ^0.3.1
+  google_maps_flutter_heatmap: ^0.1.1+2
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
@@ -57,7 +60,7 @@ dev_dependencies:
   restart_app: ^1.1.0
   animated_flip_counter: ^0.2.4
   loader_overlay: ^2.0.6
-  google_maps_flutter: ^2.0.10
+  #google_maps_flutter: ^2.0.10
   flutter_easyloading: ^3.0.3
   email_validator: ^2.0.1
   location_permission_handler: ^0.0.2

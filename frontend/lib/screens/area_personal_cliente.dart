@@ -12,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
-import '../main.dart';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
@@ -257,10 +256,11 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
           ),
           DropdownButton<Locale>(
               value: lang,
-              onChanged: (Locale? val) {
+              onChanged: (Locale? val)=>{},
+              /*onChanged: (Locale? val) {
                 MyApp.of(context)?.setLocale(val!);
                 lang = val!;
-              },
+              }*/
               items: const [
                 Locale('es', 'ES'),
                 Locale('ca', 'CAT'),

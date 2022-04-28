@@ -74,6 +74,13 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
       ),
     );
   }
+
+  bool isSame(){
+    final leftItem = newItem??widget.startObject;
+    final rightItem = (startIndex!=-1) ? allObjects[startIndex] : widget.startObject;  
+    
+    return (leftItem.id == rightItem.id);
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -202,26 +209,31 @@ class _CompareApplianceScreenState extends State<CompareApplianceScreen> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                      flex: 1,
+                                      flex: 2,
                                       child: Container(
-                                        decoration: const BoxDecoration(
-                                          boxShadow:  [
+                                        decoration:  BoxDecoration(
+                                          boxShadow:  const [
                                             BoxShadow(
                                               color: Colors.black26,
                                               offset: Offset(3,3,),
                                               blurRadius: 5.0,
                                             )
                                           ],
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          color: (isSame())? Colors.green:Colors.grey,
+                                          borderRadius: const BorderRadius.all(Radius.circular(20)),
                                         ),
                                         child: TextButton( 
+                                          
                                           child: Text("CHOOSE", style: Theme.of(context).textTheme.bodyLarge,),
                                           onPressed: () async {
+                                            setState(() {
+                                              newItem = allObjects[startIndex];
+                                            });
                                             newId = await switchAppliance(newItem??widget.startObject,  allObjects[startIndex]);
-                                            setState(() 
-                                            {newItem = allObjects[startIndex];
-                                            newItem?.id = newId??"";});
+                                            setState(() {
+                                              newItem = allObjects[startIndex];
+                                              newItem?.id = newId??"";
+                                            });
                                           },
                                         ),
                                       ),
@@ -331,7 +343,7 @@ Column applianceDetail(Item appliance){
           children: [
             const FittedBox(
               child:Text("Price",
-                style: TextStyle(color: Colors.grey, fontSize: 20),
+                style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               fit: BoxFit.fitHeight,
             ),
@@ -339,7 +351,7 @@ Column applianceDetail(Item appliance){
             const Padding(padding: EdgeInsets.all(5)),
             const FittedBox(
               child:Text("Power [KW]",
-                style: TextStyle(color: Colors.grey, fontSize: 20),
+                style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
               fit: BoxFit.fitHeight,
             ),
