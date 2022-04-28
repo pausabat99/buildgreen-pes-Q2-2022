@@ -1,94 +1,87 @@
-
-import 'package:buildgreen/screens/forms/new_appliance.dart';
-import 'package:buildgreen/screens/forms/signup_screen.dart';
-import 'package:buildgreen/screens/lista_electrodomesticos.dart';
-import 'package:buildgreen/screens/forms/login_screen.dart';
-import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/resultados_simulacion.dart';
-
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-
-import 'package:buildgreen/screens/sim_lista.dart';
-
-import 'package:buildgreen/screens/welcome_screen.dart';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 
-import 'screens/forms/new_appliance.dart';
-import 'screens/forms/signup_screen.dart';
+void main() => runApp(const MyApp());
 
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
-
-  static _MyAppState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MyAppState>();
-}
-
-late Locale _locale = const Locale('es', 'ES');
-
-class _MyAppState extends State<MyApp> {
-  void setLocale(Locale value) {
-    setState(() {
-      _locale = value;
-    });
-  }
-
-  // This widget is the root of your application.
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      initialRoute: '/',
-      routes: {
-      // When navigating to the "/" route, build the FirstScreen widget.
-      // When navigating to the "/second" route, build the SecondScreen widget.
-      LogInScreen.route           :(context) => const LogInScreen(),
-      SignUpScreen.route          :(context) => const SignUpScreen(),
-      MainScreen.route            :(context) => const MainScreen(),
-      ListaSimulacion.route       :(context) => const ListaSimulacion(),
-      ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
-      NewAppliance.route          :(context) => const NewAppliance(),
-      ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
-      WelcomeScreen.route         :(context) => const WelcomeScreen(),
-      },
-      theme: ThemeData(
-        fontFamily: 'Arial',
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-              fontSize: 36.0, fontWeight: FontWeight.bold, color: Colors.white),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyText2: TextStyle(fontSize: 14.0, color: Colors.black),
-          bodyText1: TextStyle(fontSize: 14.0, color: Colors.white),
-          headline2: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-          headline5: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black,
-          ),
-        ),
-        primarySwatch: Colors.green,
-      ),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      supportedLocales: const [
-        Locale('es', 'ES'),
-        Locale('ca', 'CAT'),
-      ],
-      home: const WelcomeScreen(),
-      builder: EasyLoading.init(),
+      title: 'Flutter Google Maps Demo',
+      home: MapSample(),
     );
+  }
+}
+
+class MapSample extends StatefulWidget {
+  const MapSample({Key? key}) : super(key: key);
+
+  @override
+  State<MapSample> createState() => MapSampleState();
+}
+
+class MapSampleState extends State<MapSample> {
+  final Completer<GoogleMapController> _controller = Completer();
+  final Set<Heatmap> _heatmaps = {};
+  static const  CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+  final LatLng _heatmapLocation = const LatLng(37.42796133580664, -122.085749655962);
+  static const  CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        heatmaps: _heatmaps,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _addHeatmap,
+        label: const Text('Add Heatmap'),
+        icon: const Icon(Icons.add_box),
+      ),
+    );
+  }
+  void _addHeatmap(){
+    setState(() {
+      _heatmaps.add(
+        Heatmap(
+          heatmapId: HeatmapId(_heatmapLocation.toString()),
+          points: _createPoints(_heatmapLocation),
+          radius: 20,
+          visible: true,
+          gradient:  HeatmapGradient(
+            colors: <Color>[Colors.green, Colors.red], startPoints: <double>[0.2, 0.8]
+          )
+        )
+      );
+    });
+  }
+  //heatmap generation helper functions
+  List<WeightedLatLng> _createPoints(LatLng location) {
+    final List<WeightedLatLng> points = <WeightedLatLng>[];
+    //Can create multiple points here
+    points.add(_createWeightedLatLng(location.latitude,location.longitude, 1));
+    points.add(_createWeightedLatLng(location.latitude-1,location.longitude, 1)); 
+    return points;
+  }
+
+  WeightedLatLng _createWeightedLatLng(double lat, double lng, int weight) {
+    return WeightedLatLng(point: LatLng(lat, lng), intensity: weight);
   }
 }
