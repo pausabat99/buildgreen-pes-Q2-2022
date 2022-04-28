@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+// ignore_for_file: import_of_legacy_library_into_null_safe, library_prefixes
 
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -12,8 +12,11 @@ import 'package:buildgreen/widgets/input_form.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:buildgreen/constants.dart' as Constants;
 class NewAppliance extends StatefulWidget {
+
+  static const route = "/new_appliance";
+
   const NewAppliance({ Key? key }) : super(key: key);
 
   @override
@@ -38,7 +41,7 @@ class _NewApplianceState extends State<NewAppliance> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
+      Uri.parse(Constants.API_ROUTE+'/appliances/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
       },

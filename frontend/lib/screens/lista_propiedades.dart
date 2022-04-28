@@ -10,6 +10,9 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
+// ignore: library_prefixes
+import 'package:buildgreen/constants.dart' as Constants;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListaPropiedades extends StatefulWidget {
@@ -37,7 +40,7 @@ Future<List<Item>> generateItems() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+      Uri.parse(Constants.API_ROUTE+'/properties/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -88,31 +91,19 @@ class _ListaPropiedades extends State<ListaPropiedades> {
     await Navigator.of(context).pushNamed('/new_property');
     _data = await generateItems();
     setState(() {});
-    /*
-    await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-      },
-      body: {
-        "address": "Calle Ejemplo "+ _data.length.toString(),
-        "property_type": "apt"
-      },
-    );
+    
 
-    setState(() {
-      int lastItemIndex = _data.length;
-      Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
-      _data.insert(lastItemIndex, nitem);
-    });
-    */
+    
   }
 
   Future <void> deleteProperty(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    setState(() {
+      _data.remove(item);
+    });
+    
     final response = await http.delete(
-      Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+      Uri.parse(Constants.API_ROUTE+'/properties/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -128,6 +119,9 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   Widget _buildPanel()  {
     return ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
+            for (var foo in _data ) {
+            if(_data[index] != foo) foo.isExpanded = false; 
+            }
             setState(() {
               _data[index].isExpanded = !isExpanded;
             });

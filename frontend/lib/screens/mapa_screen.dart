@@ -1,8 +1,12 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'dart:async';
 
+import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -11,11 +15,23 @@ class MapaScreen extends StatefulWidget {
 }
 
 class _MapaScreenState extends State<MapaScreen> {
+  final Completer<GoogleMapController> _controller = Completer();
+  final _lController = RequestPermissionController();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(41.4026556, 2.1587003),
+    zoom: 14.4746,
+  );
   TextEditingController filterController = TextEditingController();
+  
 
   @override
+  void dispose(){
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
-    final  _initialCameraPosition = CameraPosition(target: LatLng(41.4026556,2.1587003), zoom: 12);
+    _lController.request();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -23,6 +39,7 @@ class _MapaScreenState extends State<MapaScreen> {
         child: Column(
           children: [
             const Padding(padding: EdgeInsets.all(10)),
+
             /// TITLE
             Container(
               alignment: Alignment.topLeft,
@@ -30,31 +47,34 @@ class _MapaScreenState extends State<MapaScreen> {
                 left: 50,
                 top: 10,
               ),
-              child: const Text(
-                'Mapa',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+              child: Text(
+                AppLocalizations.of(context)!.mapa,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
-            /// SEARCH BAR
-            Container(
-              padding: const EdgeInsets.all(30),
-              child: TextField(
-                controller: filterController,
-                decoration: const InputDecoration(
-                  //border: OutlineInputBorder(),
-                  hintText: 'Filtrar',
-                  icon: Icon(Icons.search),
-                ),
-              )
-            ),
+
             /// MAPS
-            Expanded(
-              child: GoogleMap(
-                initialCameraPosition: _initialCameraPosition,
-                zoomControlsEnabled: false,
-                zoomGesturesEnabled: false,
-                myLocationButtonEnabled: true,
-              ) ,
+            Expanded(              
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                
+                child: ClipRRect(
+                  clipBehavior: Clip.hardEdge,
+                  borderRadius: BorderRadius.circular(20),
+                  child: GoogleMap(
+                    initialCameraPosition: _kGooglePlex,
+                    compassEnabled: true,
+                    mapType: MapType.hybrid,
+                    myLocationButtonEnabled: true,
+                    myLocationEnabled: true,
+                    zoomControlsEnabled: false,
+                    zoomGesturesEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                  ),
+                ),
+              ),
             ),
           ],
         ),

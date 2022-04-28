@@ -14,32 +14,19 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:buildgreen/screens/sim_lista.dart';
+
+// ignore: library_prefixes
+import 'package:buildgreen/constants.dart' as Constants;
+
 class ElectrodomesticoList extends StatefulWidget {
+
+  static const route = "/all_appliances";
+  
   const ElectrodomesticoList({Key? key}) : super(key: key);
 
   @override
   State<ElectrodomesticoList> createState() => _ElectrodomesticoList();
-}
-
-//Classe Item Propiedad
-class Item {
-  Item({
-    required this.headerValue,
-    this.isExpanded = false,
-    required this.applianceType,
-    required this.model,
-    required this.brand,
-    required this.cons,
-    required this.price,
-  });
-
-  String headerValue;
-  bool isExpanded;
-  String applianceType;
-  String model;
-  String brand;
-  String cons;
-  String price;
 }
 
 //Generar propiedades para la Expansion Panel List
@@ -49,7 +36,7 @@ Future<List<Item>> generateItems() async{
   EasyLoading.show(status: 'Cargando electrodomésticos');
 
   final response = await http.get(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances_all/'),
+      Uri.parse(Constants.API_ROUTE+'/appliances_all/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -57,6 +44,7 @@ Future<List<Item>> generateItems() async{
 
   final responseJson = jsonDecode(response.body);
   EasyLoading.dismiss();
+
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
     return Item(
@@ -70,6 +58,27 @@ Future<List<Item>> generateItems() async{
   });
 }
 
+Future<String> addAppliance(Item item) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final response  = await http.post(
+      Uri.parse(Constants.API_ROUTE+'/appliances/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
+      },
+      body: <String, String>{
+      "property":  prefs.getString('_actual_property'),
+      "appliance_type": item.applianceType,
+      "model":  item.model,
+      "brand": item.brand,
+      "cons":  item.cons,
+      "price": item.price,
+      }
+    );
+    final jsonResponse = json.decode(response.body);
+    return jsonResponse["uuid"];
+
+  }
 
 class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   //Se rellena  la lista de propiedades
@@ -85,23 +94,9 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
     );
   }
 
-  Future<void> moveToPropiedades(Item item) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/appliances/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString('_user_token'),
-      },
-      body: <String, String>{
-      "property":  prefs.getString('_actual_property'),
-      "appliance_type": item.applianceType,
-      "model":  item.model,
-      "brand": item.brand,
-      "cons":  item.cons,
-      "price": item.price,
-      }
-    );
+  Future<void> moveToPropiedades(Item item) async{
+    await addAppliance(item);
     Navigator.pop(context);
   }
   
@@ -115,6 +110,11 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
   Widget _buildPanel()  {
     return ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
+            for (var tItem in _data ) {
+              if(_data[index] != tItem) {
+                tItem.isExpanded = false;
+              } 
+            }
             setState(() {
               _data[index].isExpanded = !isExpanded;
             });
@@ -122,27 +122,39 @@ class _ElectrodomesticoList extends State<ElectrodomesticoList> {
           children: _data.map<ExpansionPanel>((Item item) {
             return ExpansionPanel(
               headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  leading: const Image(
-                    image: AssetImage("assets/images/electrodomestico.png"),
-                    height: 100,
-                    width: 100,
-                  ),
-                  title: Text(item.headerValue),
-                );
-              },
-              body: ListView(
-                shrinkWrap: true,
+            return ListTile(
+              leading: const Image(
+                image: AssetImage("assets/images/electrodomestico.png"),
+                height: 100,
+                width: 100,
+              ),
+              title: Text(item.headerValue),
+            );
+          },
+          body: ListView(shrinkWrap: true, children: [
+            ListTile(
+              title: Column(
                 children: [
-                  ListTile(
-                      title: const Text("Añadir a propiedad"),
-                      onTap:() async {
-                        moveToPropiedades(item);
-                        },
-                  ),
+                  Text('Marca: '+item.brand, textAlign: TextAlign.left),
+                  Text('Modelo: '+item.model, textAlign: TextAlign.left),
+                  Text('Precio: '+item.price, textAlign: TextAlign.left),
+                  Text('Consumo: '+item.cons, textAlign: TextAlign.left),
                 ],
               ),
-              isExpanded: item.isExpanded,
+            ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                    title: const Text("Añadir a propiedad"),
+                    onTap:() async {
+                      moveToPropiedades(item);
+                      },
+                ),
+              ],
+            ),
+          ]),
+          isExpanded: item.isExpanded,
             );
           }).toList(),
         );

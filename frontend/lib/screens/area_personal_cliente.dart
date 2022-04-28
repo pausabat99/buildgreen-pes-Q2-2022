@@ -4,10 +4,15 @@ import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// ignore: library_prefixes
+import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
+
+import '../main.dart';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
@@ -17,13 +22,36 @@ class AreaPersonalCliente extends StatefulWidget {
 
 class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   bool processing = false;
+  late Locale lang = Localizations.localeOf(context);
+
+  _title(String val) {
+    switch (val) {
+      case 'ca':
+        return const Text(
+          'Catala',
+          style: TextStyle(fontSize: 16.0),
+        );
+
+      case 'es':
+        return const Text(
+          'Castellano',
+          style: TextStyle(fontSize: 16.0),
+        );
+
+      default:
+        return const Text(
+          'Castellano',
+          style: TextStyle(fontSize: 16.0),
+        );
+    }
+  }
 
   Future<void> onPressedLogOut() async {
     if (processing) return;
     processing = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/logout/'),
+      Uri.parse(Constants.API_ROUTE+'/logout/'),
       headers: <String, String>{
         HttpHeaders.authorizationHeader:
             "Token " + prefs.getString("_user_token"),
@@ -48,15 +76,15 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
+                children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 50,
                     ),
                     child: Text(
-                      'ÁREA PERSONAL',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      AppLocalizations.of(context)!.areapersonal,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 40),
                     ),
                   ),
                 ],
@@ -116,15 +144,15 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const <Widget>[
+                children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       left: 50,
                     ),
                     child: Text(
-                      'Precios a tiempo real',
+                      AppLocalizations.of(context)!.preciosatiemporeal,
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                   ),
                 ],
@@ -138,8 +166,8 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const <Widget>[
-                        Flexible(
+                      children: <Widget>[
+                        const Flexible(
                           flex: 1,
                           child: Align(
                             alignment: Alignment.centerLeft,
@@ -155,12 +183,13 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Ver precios a tiempo real',
-                              style: TextStyle(fontSize: 20),
+                              AppLocalizations.of(context)!
+                                  .verpreciosatiemporeal,
+                              style: const TextStyle(fontSize: 20),
                             ),
                           ),
                         ),
-                        Flexible(
+                        const Flexible(
                           flex: 3,
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -179,15 +208,15 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const <Widget>[
+                children: <Widget>[
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 50,
                       ),
                       child: Text(
-                        'Consumo energetico',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.consumoenergetico,
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                     ),
@@ -226,6 +255,21 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                   ]),
             ],
           ),
+          DropdownButton<Locale>(
+              value: lang,
+              onChanged: (Locale? val) {
+                MyApp.of(context)?.setLocale(val!);
+                lang = val!;
+              },
+              items: const [
+                Locale('es', 'ES'),
+                Locale('ca', 'CAT'),
+              ]
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: _title(e.languageCode),
+                      ))
+                  .toList()),
           GeneralButton(
             title: "Log out",
             action: onPressedLogOut,

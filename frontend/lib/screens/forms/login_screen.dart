@@ -10,12 +10,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:buildgreen/widgets/input_form.dart';
 
+// ignore: library_prefixes
+import 'package:buildgreen/constants.dart' as Constants;
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LogInScreen extends StatefulWidget {
+  
+  static const String route = "/login";
+  
   const LogInScreen({ Key? key }) : super(key: key);
 
   @override
@@ -23,6 +29,7 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
+
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -34,7 +41,7 @@ class _LogInScreenState extends State<LogInScreen> {
     debugPrint("RRequesting");
     debugPrint(prefs.getString('_user_token'));
     final response = await http.post(
-      Uri.parse('https://buildgreen.herokuapp.com/login/'),
+      Uri.parse(Constants.API_ROUTE+'/login/'),
       body: {
         'username': emailController.text,
         'password': passwordController.text,

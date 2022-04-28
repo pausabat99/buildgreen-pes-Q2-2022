@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
     this.buttonColor = Colors.white,
+    this.returnValue,
     Key? key,
   }) : super(key: key);
 
   final Color buttonColor;
+  final String? returnValue;
   
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class CustomBackButton extends StatelessWidget {
         ),
         elevation: 1
       ),
-      onPressed: () => {Navigator.pop(context)},
+      onPressed: () => {Navigator.pop(context, returnValue)},
       child: Icon(
         Icons.arrow_back_rounded,
         color: buttonColor,
