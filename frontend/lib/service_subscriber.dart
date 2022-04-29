@@ -10,10 +10,8 @@ class ApplicationBloc with ChangeNotifier {
   final placesService = PlacesService();
 
   List<PlacesSearch> searchResults = [];
-  Place selectedLocation = Place(
-      name: "name",
-      number: "number",
-      postalCode: 'postalCode');
+  Place selectedLocation =
+      Place(name: "name", number: "number", postalCode: 'postalCode');
 
   ApplicationBloc();
 
@@ -35,4 +33,9 @@ class ApplicationBloc with ChangeNotifier {
   String getSelectedLocationPCode() {
     return selectedLocation.postalCode;
   }
+
+  /*@override
+  void dispose() {
+    super.dispose();
+  }*/
 }
