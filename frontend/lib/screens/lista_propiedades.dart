@@ -88,28 +88,9 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   }
   
   Future<void> newProperty() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      int lastItemIndex = _data.length;
-      Item nitem = Item(headerValue: "Calle Ejemplo "+ _data.length.toString());
-      _data.insert(lastItemIndex, nitem);
-    });
-
-    await http.post(
-      Uri.parse(Constants.API_ROUTE+'/properties/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
-      },
-      body: {
-        "address": "Calle Ejemplo "+ _data.length.toString(),
-        "name": "Mi puta casa",
-        "apt": "32, 15",
-        "postal_code": "14002",
-        "property_type": "apt"
-      },
-    );
-
-    
+    await Navigator.of(context).pushNamed('/new_property');
+    _data = await generateItems();
+    setState(() {});
   }
 
   Future <void> deleteProperty(Item item) async {

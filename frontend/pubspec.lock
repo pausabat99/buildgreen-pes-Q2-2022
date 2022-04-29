@@ -160,6 +160,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.3"
+  flutter_google_places_hoc081098:
+    dependency: "direct dev"
+    description:
+      name: flutter_google_places_hoc081098
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0-nullsafety.2"
   flutter_html:
     dependency: "direct main"
     description:
@@ -247,11 +254,41 @@ packages:
     version: "2.0.4"
   google_maps_flutter_heatmap:
     dependency: "direct main"
+  google_api_headers:
+    dependency: "direct dev"
+    description:
+      name: google_api_headers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  google_maps_flutter:
+    dependency: "direct dev"
+    description:
+      name: google_maps_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.10"
+  google_maps_flutter_platform_interface:
+    dependency: transitive
     description:
       name: google_maps_flutter_heatmap
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1+2"
+    version: "2.0.0"
+  google_maps_webservice:
+    dependency: "direct dev"
+    description:
+      name: google_maps_webservice
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.20-nullsafety.5"
+  google_places_flutter:
+    dependency: "direct dev"
+    description:
+      name: google_places_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   html:
     dependency: transitive
     description:
@@ -287,6 +324,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
   lint:
     dependency: "direct main"
     description:
@@ -301,6 +345,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  listenable_stream:
+    dependency: transitive
+    description:
+      name: listenable_stream
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   loader_overlay:
     dependency: "direct dev"
     description:
@@ -364,6 +415,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+  package_info:
+    dependency: transitive
+    description:
+      name: package_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   path:
     dependency: transitive
     description:
@@ -449,7 +507,7 @@ packages:
     source: hosted
     version: "4.2.4"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"
@@ -476,6 +534,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.3"
   shared_preferences:
     dependency: "direct main"
     description:
