@@ -252,31 +252,22 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
-  google_maps_flutter_heatmap:
-    dependency: "direct main"
   google_api_headers:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: google_api_headers
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  google_maps_flutter:
-    dependency: "direct dev"
-    description:
-      name: google_maps_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.10"
-  google_maps_flutter_platform_interface:
-    dependency: transitive
+  google_maps_flutter_heatmap:
+    dependency: "direct main"
     description:
       name: google_maps_flutter_heatmap
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "0.1.1+2"
   google_maps_webservice:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: google_maps_webservice
       url: "https://pub.dartlang.org"
