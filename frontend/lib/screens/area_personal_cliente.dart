@@ -1,5 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'package:buildgreen/screens/EditProfilePage.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -20,29 +21,6 @@ class AreaPersonalCliente extends StatefulWidget {
 
 class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   bool processing = false;
-  late Locale lang = Localizations.localeOf(context);
-
-  _title(String val) {
-    switch (val) {
-      case 'ca':
-        return const Text(
-          'Catala',
-          style: TextStyle(fontSize: 16.0),
-        );
-
-      case 'es':
-        return const Text(
-          'Castellano',
-          style: TextStyle(fontSize: 16.0),
-        );
-
-      default:
-        return const Text(
-          'Castellano',
-          style: TextStyle(fontSize: 16.0),
-        );
-    }
-  }
 
   Future<void> onPressedLogOut() async {
     if (processing) return;
@@ -61,6 +39,15 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
         builder: (BuildContext context) => const WelcomeScreen(),
       ),
       (route) => false,
+    );
+  }
+
+  Future<void> onPressedProfile() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => EditProfilePage(),
+      ),
     );
   }
 
@@ -213,7 +200,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
             ),
             child: GeneralButton(
               title: "Acceder al Perfil",
-              action: onPressedLogOut,
+              action: onPressedProfile,
               textColor: Colors.black,
             ),
           ),
