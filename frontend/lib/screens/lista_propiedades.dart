@@ -51,17 +51,8 @@ Future<List<Item>> generateItems() async{
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
     return Item(
-        headerValue: property['address'],
+        headerValue: property['name'],
         uuid: property['uuid']
-        //expandedValue: 'This is item number $index',
-        );
-  });
-}
-
-List<Item> generateItems2(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(headerValue: 'Calle Falsa 123'
-        
         //expandedValue: 'This is item number $index',
         );
   });
