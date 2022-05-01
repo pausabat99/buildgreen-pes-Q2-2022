@@ -19,17 +19,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:buildgreen/constants.dart' as Constants;
 
 class SignUpScreen extends StatefulWidget {
-
   static const route = '/register';
-  
-  const SignUpScreen({ Key? key }) : super(key: key);
+
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   TextEditingController nameController = TextEditingController();
   TextEditingController apellidoController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -40,51 +38,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _usernameCorrect = true;
   bool _emailCorrect = true;
 
+  String isAdmin() {
+    if (_character == "client") {
+      return "False";
+    } else if (_character == "prop_admin") {
+      return "True";
+    } else {
+      return "False";
+    }
+  }
+
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
 
   Future<void> createAccount() async {
     EasyLoading.show(status: 'Creating account...');
     final response = await http.post(
-      Uri.parse(Constants.API_ROUTE+'/signup/'),
+      Uri.parse(Constants.API_ROUTE + '/signup/'),
       headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
-        'username': nameController.text,
-        'first_name': nameController.text,
-        'last_name': apellidoController.text,
-        'email': emailController.text,
-        'password': passwordController.text,
-        'is_admin': 'False',
-        'license_num': '',
-      },
+      body: jsonEncode(
+        <String, String>{
+          'username': nameController.text,
+          'first_name': nameController.text,
+          'last_name': apellidoController.text,
+          'email': emailController.text,
+          'password': passwordController.text,
+          'is_admin': isAdmin(),
+          'license_num': '',
+        },
       ),
     );
     EasyLoading.dismiss();
     debugPrint(response.body);
 
     final responseJson = jsonDecode(response.body);
-    if (responseJson['user_info'] != null){
+    if (responseJson['user_info'] != null) {
       EasyLoading.show(status: 'Logging in...');
-      final response = await http.post(
-        Uri.parse(Constants.API_ROUTE+'/login/'),
-        body: {
-          'username': nameController.text,
-          'password': passwordController.text, 
-        }
-      );
+      final response =
+          await http.post(Uri.parse(Constants.API_ROUTE + '/login/'), body: {
+        'username': nameController.text,
+        'password': passwordController.text,
+      });
       debugPrint(response.body);
-      
+
       final responseJson = jsonDecode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('_user_token', responseJson['token']);
       EasyLoading.dismiss();
       Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen())
-      );
-    }
-    else {
+          context, MaterialPageRoute(builder: (context) => const MainScreen()));
+    } else {
       showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -98,13 +102,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ],
         ),
       );
-      if (responseJson['username'] != null){
+      if (responseJson['username'] != null) {
         setState(() {
           _usernameCorrect = false;
         });
       }
 
-      if (responseJson['email'] != null){
+      if (responseJson['email'] != null) {
         setState(() {
           _emailCorrect = false;
         });
@@ -113,21 +117,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.selected,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return Colors.green;
-      }
-      return Colors.white;
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.selected,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.green;
+    }
+    return Colors.white;
   }
 
-  bool formCorrect(){
-    return EmailValidator.validate(emailController.text.toString()) && 
-      checkRepeated() && nameController.text != "" && apellidoController.text != "";
+  bool formCorrect() {
+    return EmailValidator.validate(emailController.text.toString()) &&
+        checkRepeated() &&
+        nameController.text != "" &&
+        apellidoController.text != "";
   }
 
-  bool checkRepeated(){
+  bool checkRepeated() {
     if (passwordController2.text == "") return true;
     if (passwordController.text == passwordController2.text) return true;
     return EmailValidator.validate(emailController.text.toString());
@@ -136,119 +142,113 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-      return Material (
-        child: Stack(
-          children: [
-            // background colors start
-            BackgroundForm(
-              screenHeight: screenHeight,
-              backColor: const Color.fromARGB(255, 27, 119, 58),
-            ),
-            // background colors end
-            // form start
-            Container(
-              padding: const EdgeInsets.all(25),
-              child: Form(
-                key: _form,
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      alignment: Alignment.topLeft,
-                      child: Row(
-                        
-                        children: [
-                          const CustomBackButton(),
-                          Container(
-                            padding: const EdgeInsets.fromLTRB(5, 0 , 0, 0),
-                            child: Text("Sign Up",
-                              textAlign: TextAlign.left, 
-                              style: Theme.of(context).textTheme.headline1,
-                              
-                            ),
-                          ),
-                        ]
+    return Material(
+      child: Stack(
+        children: [
+          // background colors start
+          BackgroundForm(
+            screenHeight: screenHeight,
+            backColor: const Color.fromARGB(255, 27, 119, 58),
+          ),
+          // background colors end
+          // form start
+          Container(
+            padding: const EdgeInsets.all(25),
+            child: Form(
+              key: _form,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    alignment: Alignment.topLeft,
+                    child: Row(children: [
+                      const CustomBackButton(),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: Text(
+                          "Sign Up",
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
                       ),
-                    ),
-                    Row(children: <Widget>[
-                      
-                      InputForm(controller: nameController, 
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        onChanged: (value){
-                          _usernameCorrect = true;
-                        },
-                        validationFunction: (value) {
-                          if (value.toString().isEmpty){
-                            return "Enter some text";
-                          }
-                          if(!_usernameCorrect){
-                            return "Username ya usado";
-                          }
-                          return null;
-                        },
-                        hintLabel: 'Nombre'),
-                      
+                    ]),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      InputForm(
+                          controller: nameController,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          onChanged: (value) {
+                            _usernameCorrect = true;
+                          },
+                          validationFunction: (value) {
+                            if (value.toString().isEmpty) {
+                              return "Enter some text";
+                            }
+                            if (!_usernameCorrect) {
+                              return "Username ya usado";
+                            }
+                            return null;
+                          },
+                          hintLabel: 'Nombre'),
                       InputForm(
                         controller: apellidoController,
                         hintLabel: "Apellidos",
                         autoValidateMode: AutovalidateMode.onUserInteraction,
                         validationFunction: (value) {
-                            if (value.toString().isEmpty){
-                              return "Enter some text";
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                    
-                    InputForm(controller: emailController, hintLabel: "Email",
-                      autoValidateMode: AutovalidateMode.onUserInteraction,
-                      onChanged: (value) {
-                        _emailCorrect = true;
-                      },
-                      validationFunction: (value) {
-                          if (!EmailValidator.validate(value.toString())){
-                            return "Incorrect e-mail";
-                        }
-                          if(!_emailCorrect){
-                            return "e-mail ya en uso";
+                          if (value.toString().isEmpty) {
+                            return "Enter some text";
                           }
-                        return null;
-                      },
-                    ),
-                    
-                    InputForm(
-                      controller: passwordController,
-                      hintLabel: "Password",
-                      obscureText: true,
-                      autoValidateMode: AutovalidateMode.always,
-                      validationFunction: (value) {
-                          if (value.toString() != passwordController2.text){
-                            return "Passwords don't match";
-                        }
-                        return null;
-                      },
-                    ),
-                    
-                    InputForm(controller: passwordController2, hintLabel: "Confirm Password", obscureText: true,
-                      autoValidateMode: AutovalidateMode.always,
-                      validationFunction: (value) {
-                          if (value.toString() != passwordController.text){
-                            return "Passwords don't match";
-                        }
-                        return null;
-                      },
-                    ),
-                    
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                  InputForm(
+                    controller: emailController,
+                    hintLabel: "Email",
+                    autoValidateMode: AutovalidateMode.onUserInteraction,
+                    onChanged: (value) {
+                      _emailCorrect = true;
+                    },
+                    validationFunction: (value) {
+                      if (!EmailValidator.validate(value.toString())) {
+                        return "Incorrect e-mail";
+                      }
+                      if (!_emailCorrect) {
+                        return "e-mail ya en uso";
+                      }
+                      return null;
+                    },
+                  ),
+                  InputForm(
+                    controller: passwordController,
+                    hintLabel: "Password",
+                    obscureText: true,
+                    autoValidateMode: AutovalidateMode.always,
+                    validationFunction: (value) {
+                      if (value.toString() != passwordController2.text) {
+                        return "Passwords don't match";
+                      }
+                      return null;
+                    },
+                  ),
+                  InputForm(
+                    controller: passwordController2,
+                    hintLabel: "Confirm Password",
+                    obscureText: true,
+                    autoValidateMode: AutovalidateMode.always,
+                    validationFunction: (value) {
+                      if (value.toString() != passwordController.text) {
+                        return "Passwords don't match";
+                      }
+                      return null;
+                    },
+                  ),
                   const Padding(padding: EdgeInsets.only(top: 10)),
-                    
                   ListTile(
-                    title: Text(
-                      'Cliente',
-                      style: Theme.of(context).textTheme.bodyText1
-                    ),
-              
+                    title: Text('Cliente',
+                        style: Theme.of(context).textTheme.bodyText1),
                     leading: Radio<String>(
                       value: "client",
                       fillColor: MaterialStateProperty.resolveWith(getColor),
@@ -260,12 +260,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                   ),
-              
                   ListTile(
-                    title: Text(
-                      'Administrador de propiedades',
-                      style: Theme.of(context).textTheme.bodyText1
-                    ),
+                    title: Text('Administrador de propiedades',
+                        style: Theme.of(context).textTheme.bodyText1),
                     leading: Radio<String>(
                       fillColor: MaterialStateProperty.resolveWith(getColor),
                       value: "prop_admin",
@@ -279,15 +276,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   const Padding(padding: EdgeInsets.all(5)),
                   GeneralButton(
-                      title: "Crear Cuenta",
-                      action: (formCorrect()) ? createAccount : (){},
-                      textColor: (formCorrect()) ? Colors.white : Colors.white24,
+                    title: "Crear Cuenta",
+                    action: (formCorrect()) ? createAccount : () {},
+                    textColor: (formCorrect()) ? Colors.white : Colors.white24,
                   ),
-                  
-                  ],
-                ),
+                ],
               ),
-            )
+            ),
+          )
           // form end
         ],
       ),
