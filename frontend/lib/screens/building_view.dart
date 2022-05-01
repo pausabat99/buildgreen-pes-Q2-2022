@@ -12,91 +12,82 @@ import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ListaEdificios extends StatefulWidget {
-  const ListaEdificios({Key? key}) : super(key: key);
+class BuildingView extends StatefulWidget {
+  static const route = "/building_view";
+
+  const BuildingView({Key? key}) : super(key: key);
 
   @override
-  State<ListaEdificios> createState() => _ListaEdificios();
+  State<BuildingView> createState() => _BuildingView();
 }
 
-class Edificio {
-  Edificio(
-      {required this.address,
-      this.isExpanded = false,
-      required this.postalCode,
-      required this.uuid});
+class Item {
+  Item({
+    required this.name,
+    required this.address,
+    required this.user,
+    required this.apt,
+    required this.postalCode,
+    required this.propertyType,
+    required this.size,
+    this.isExpanded = false,
+    this.uuid,
+  });
 
+  String name;
   String address;
-  bool isExpanded;
+  String user;
+  String apt;
   String postalCode;
-  String uuid;
+  String propertyType;
+  String size;
+  bool isExpanded;
+  String? uuid;
 }
 
-Future<List<Edificio>> generateItems() async {
+Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   final response = await http.get(
-    Uri.parse(Constants.API_ROUTE + '/buildings/'),
+    Uri.parse(Constants.API_ROUTE +
+        '/buildings/' +
+        prefs.getString("current_building")),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
     },
   );
 
-  debugPrint(prefs.getString("_user_token").toString());
-
   final responseJson = jsonDecode(response.body);
   debugPrint(response.body);
-  return List<Edificio>.generate(responseJson.length, (int index) {
-    final building = responseJson[index];
-    return Edificio(
-        uuid: building['uuid'],
-        address: building['address'],
-        postalCode: building['postal_code']);
+  debugPrint(response.body);
+
+  return List<Item>.generate(responseJson.length, (int index) {
+    final property = responseJson['properties'];
+    return Item(
+      name: property['name'],
+      address: property['address'],
+      user: property['user'],
+      apt: property['apt'],
+      postalCode: property['postal_code'],
+      propertyType: property['property_type'],
+      uuid: property['uuid'],
+      size: property['property_size'],
+    );
   });
 }
 
-class _ListaEdificios extends State<ListaEdificios> {
-  List<Edificio> _data = [];
+class _BuildingView extends State<BuildingView> {
+  List<Item> _data = [];
 
-  _ListaEdificios() {
+  vincularPropiedad() {}
+
+  desvincularPropiedad(Item item) {}
+
+  _BuildingView() {
     generateItems().then((val) => setState(() {
           _data = val;
         }));
-  }
-
-  openBuilding(Edificio edificio) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("current_building", edificio.uuid);
-
-    await Navigator.of(context).pushNamed('/building_view');
-    _data = await generateItems();
-    setState(() {});
-  }
-
-  Future<void> deleteBuilding(Edificio edificio) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _data.remove(edificio);
-    });
-
-    final response = await http.delete(
-        Uri.parse(Constants.API_ROUTE + '/buildings/'),
-        headers: <String, String>{
-          HttpHeaders.authorizationHeader:
-              "Token " + prefs.getString("_user_token")
-        },
-        body: <String, String>{
-          'uuid': edificio.uuid.toString(),
-        });
-
-    debugPrint(response.body);
-  }
-
-  Future<void> newBuilding() async {
-    await Navigator.of(context).pushNamed('/new_building');
-    _data = await generateItems();
-    setState(() {});
   }
 
   Widget _buildPanel() {
@@ -109,7 +100,7 @@ class _ListaEdificios extends State<ListaEdificios> {
           _data[index].isExpanded = !isExpanded;
         });
       },
-      children: _data.map<ExpansionPanel>((Edificio edificio) {
+      children: _data.map<ExpansionPanel>((Item item) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
@@ -118,24 +109,23 @@ class _ListaEdificios extends State<ListaEdificios> {
                 height: 100,
                 width: 100,
               ),
-              title: Text(edificio.address),
+              title: Text(item.address),
             );
           },
           body: ListView(
             shrinkWrap: true,
             children: [
+              const ListTile(
+                title: Text("Nombre de la propiedad"),
+              ),
               ListTile(
-                  title: const Text("Abrir Edificio"),
-                  onTap: () async {
-                    openBuilding(edificio);
-                  }),
-              ListTile(
-                title: const Text("Eliminar Edificio"),
+                title: const Text("Desvincular Propiedad"),
                 onTap: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('¡ATENCIÓN!'),
-                    content: const Text('¿Quieres borrar este edificio?'),
+                    content: const Text(
+                        '¿Quieres desvincular la propiedad de tu edificio?'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancelar'),
@@ -143,10 +133,10 @@ class _ListaEdificios extends State<ListaEdificios> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          await deleteBuilding(edificio);
+                          await desvincularPropiedad(item);
                           setState(() {
-                            _data.removeWhere((Edificio currentItem) =>
-                                edificio == currentItem);
+                            _data.removeWhere(
+                                (Item currentItem) => item == currentItem);
                           });
                           Navigator.pop(context, 'OK');
                         },
@@ -158,7 +148,7 @@ class _ListaEdificios extends State<ListaEdificios> {
               ),
             ],
           ),
-          isExpanded: edificio.isExpanded,
+          isExpanded: item.isExpanded,
         );
       }).toList(),
     );
@@ -178,7 +168,7 @@ class _ListaEdificios extends State<ListaEdificios> {
                 top: 10,
               ),
               child: const Text(
-                'Edificios',
+                'Propiedades',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
@@ -189,7 +179,7 @@ class _ListaEdificios extends State<ListaEdificios> {
                 bottom: 50,
               ),
               child: const Text(
-                'Cartera de edificios',
+                'Cartera de propiedades',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
@@ -198,9 +188,9 @@ class _ListaEdificios extends State<ListaEdificios> {
             ),
             const Padding(padding: EdgeInsets.all(5)),
             GeneralButton(
-                title: "Añadir edificio",
+                title: "Vincular propiedad",
                 textColor: Colors.white,
-                action: newBuilding),
+                action: vincularPropiedad),
             const Padding(padding: EdgeInsets.only(bottom: 30))
           ]),
         ],
