@@ -43,6 +43,8 @@ Future<List<Edificio>> generateItems() async {
     },
   );
 
+  debugPrint(prefs.getString("_user_token").toString());
+
   final responseJson = jsonDecode(response.body);
   debugPrint(response.body);
   return List<Edificio>.generate(responseJson.length, (int index) {
@@ -65,7 +67,26 @@ class _ListaEdificios extends State<ListaEdificios> {
 
   openBuilding(Edificio edificio) {}
 
-  deleteBuilding(Edificio edificio) {}
+
+  Future <void> deleteBuilding(Edificio edificio) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _data.remove(edificio);
+    });
+    
+    final response = await http.delete(
+      Uri.parse(Constants.API_ROUTE+'/buildings/'),
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token")
+      },
+      body: <String, String> {
+        'uuid': edificio.uuid.toString(),
+      } 
+    );
+
+    debugPrint(response.body);
+
+  }
 
   Future<void> newBuilding() async {
     await Navigator.of(context).pushNamed('/new_building');
@@ -73,7 +94,7 @@ class _ListaEdificios extends State<ListaEdificios> {
     setState(() {});
   }
 
-  agregarPropiedad(Edificio edificio) {}
+  vincularPropiedad(Edificio edificio) {}
 
   desvincularPropiedad(Edificio edificio) {}
 
