@@ -50,7 +50,8 @@ Future<List<Item>> generateItems() async {
   debugPrint(response.body);
   return List<Item>.generate(responseJson.length, (int index) {
     final property = responseJson[index];
-    return Item(headerValue: property['address'], uuid: property['uuid']
+    return Item(headerValue: property['name'], uuid: property['uuid']
+
         //expandedValue: 'This is item number $index',
         );
   });
@@ -106,6 +107,10 @@ class _ListaPropiedades extends State<ListaPropiedades> {
         "property_type": "apt"
       },
     );
+
+    await Navigator.of(context).pushNamed('/new_property');
+    _data = await generateItems();
+    setState(() {});
   }
 
   Future<void> deleteProperty(Item item) async {
