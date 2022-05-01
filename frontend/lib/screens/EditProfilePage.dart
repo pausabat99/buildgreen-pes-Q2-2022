@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:buildgreen/screens/welcome_screen.dart';
@@ -12,23 +13,24 @@ import 'dart:io';
 
 import '../main.dart';
 import '../widgets/ProfileImageWidget.dart';
-import '../widgets/TextFieldProfileWidget.dart';
 import '../widgets/back_button.dart';
+import '../widgets/input_form.dart';
 import 'area_personal_cliente.dart';
+import 'package:buildgreen/constants.dart' as Constants;
 
 class EditProfilePage extends StatefulWidget {
-  static const route = "/user";
+  static const route = "/edit_profile";
 
   const EditProfilePage({Key? key}) : super(key: key);
 
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  State<EditProfilePage> createState() => _EditProfilePage();
 }
 
 class User {
   User({
     this.id = "",
-    this.username = "",
+    this.username = "hey",
     this.email = "",
     this.is_admin = false,
     this.license_num = "",
@@ -40,8 +42,45 @@ class User {
   String license_num;
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+Future<User> getUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  final response = await http.get(
+    Uri.parse(Constants.API_ROUTE + '/user/'),
+    headers: <String, String>{
+      HttpHeaders.authorizationHeader:
+          "Token " + prefs.getString("_user_token"),
+    },
+  );
+
+  final responseJson = jsonDecode(response.body);
+  User us = User();
+  us.id = responseJson['user_info']["id"].toString();
+  us.username = responseJson['user_info']["username"].toString();
+  us.email = responseJson['user_info']["email"].toString();
+  us.is_admin = responseJson['user_info']["is_admin"] as bool;
+  us.license_num = responseJson['user_info']["license_num"].toString();
+  debugPrint('1' + us.username);
+
+  return us;
+}
+
+class _EditProfilePage extends State<EditProfilePage> {
   late Locale lang = Localizations.localeOf(context);
+  User _u = User();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController mailController = TextEditingController();
+
+  TextEditingController directionController = TextEditingController();
+
+  _EditProfilePage() {
+    getUser().then((val) => setState(() {
+          _u = val;
+          nameController.text = _u.username;
+          mailController.text = _u.email;
+          directionController.text = "Calle Falsa 123";
+        }));
+  }
 
   _title(String val) {
     switch (val) {
@@ -98,7 +137,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 top: 10,
                 bottom: 30,
               ),
-              child: Text(
+              child: const Text(
                 'Perfil',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
@@ -111,17 +150,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
               onClicked: () async {},
             ),
             const SizedBox(height: 24),
-            Text(
-              'Idioma',
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+            const Text(
+              "Idioma",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
             DropdownButton<Locale>(
                 isExpanded: true,
                 value: lang,
-                underline: Container(
-                  height: 2,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
+                style: const TextStyle(color: Colors.white),
+                underline: Container(height: 2, color: Colors.white),
                 onChanged: (Locale? val) {
                   MyApp.of(context)?.setLocale(val!);
                   lang = val!;
@@ -136,23 +173,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ))
                     .toList()),
             const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Username',
-              text: 'Danifb',
-              onChanged: (name) {},
+            const Text(
+              "Nombre",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            InputForm(
+              controller: nameController,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              onChanged: (value) {
+                //_usernameCorrect = true;
+              },
+              validationFunction: (value) {},
             ),
             const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Email',
-              text: 'dani@gmail.com',
-              onChanged: (email) {},
+            const Text(
+              "Email",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            InputForm(
+              controller: mailController,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              onChanged: (value) {
+                //_usernameCorrect = true;
+              },
+              validationFunction: (value) {},
             ),
             const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Direccion',
-              text: 'Calle Falsa 123',
-              maxLines: 5,
-              onChanged: (about) {},
+            const Text(
+              "Direccion",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            InputForm(
+              controller: directionController,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              onChanged: (value) {
+                //_usernameCorrect = true;
+              },
+              validationFunction: (value) {},
             ),
             Container(
               padding: const EdgeInsets.only(
