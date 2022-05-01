@@ -1,4 +1,5 @@
 import 'package:buildgreen/screens/forms/new_appliance.dart';
+import 'package:buildgreen/screens/forms/new_building.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
@@ -64,6 +65,7 @@ class _MyAppState extends State<MyApp> {
         ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
         WelcomeScreen.route         :(context) => const WelcomeScreen(),
         NewProperty.route           :(context) => const NewProperty(),
+        NewBuilding.route           :(context) => const NewBuilding(),
         },
         theme: ThemeData(
           fontFamily: 'Arial',

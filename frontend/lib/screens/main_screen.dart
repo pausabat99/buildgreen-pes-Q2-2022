@@ -1,4 +1,5 @@
 import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'package:buildgreen/screens/lista_edificios.dart';
 import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,8 @@ class _MainScreenState extends State<MainScreen> {
                 controller: pageController,
                 children: const <Widget>[
                   AreaPersonalCliente(),
-                  ListaPropiedades(),
+                  //ListaPropiedades(),
+                  ListaEdificios(),
                   MapaScreen(),
                 ],
             ),

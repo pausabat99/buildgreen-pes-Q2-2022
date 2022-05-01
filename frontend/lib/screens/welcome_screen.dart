@@ -36,6 +36,7 @@ class WelcomeScreen extends StatelessWidget {
         Navigator.pushNamedAndRemoveUntil(
             context, '/index', ((route) => false));
         prefs.setString("_user_type", responseJson['user_info']['is_admin'].toString());
+        debugPrint(responseJson['user_info']['is_admin'].toString());
       } else {
         await prefs.remove("_user_token");
       }

@@ -13,22 +13,23 @@ import 'package:buildgreen/constants.dart' as Constants;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ListaEdificios extends StatefulWidget {
-  ListaEdificios({Key? key}) : super(key: key);
+  const ListaEdificios({Key? key}) : super(key: key);
 
   @override
-  State<ListaEdificios> createState() => _ListaEdificiosState();
+  State<ListaEdificios> createState() => _ListaEdificios();
 }
 
 class Edificio {
-  Edificio({
-    required this.address,
-    this.isExpanded = false,
-    required this.postalCode
-  });
+  Edificio(
+      {required this.address,
+      this.isExpanded = false,
+      required this.postalCode,
+      required this.uuid});
 
   String address;
   bool isExpanded;
   String postalCode;
+  String uuid;
 }
 
 Future<List<Edificio>> generateItems() async {
@@ -47,13 +48,13 @@ Future<List<Edificio>> generateItems() async {
   return List<Edificio>.generate(responseJson.length, (int index) {
     final building = responseJson[index];
     return Edificio(
-      address: building['address'],
-      postalCode: building['postal_code']
-    );
+        uuid: building['uuid'],
+        address: building['address'],
+        postalCode: building['postal_code']);
   });
 }
 
-class _ListaEdificiosState extends State<ListaEdificios> {
+class _ListaEdificios extends State<ListaEdificios> {
   List<Edificio> _data = [];
 
   _ListaEdificios() {
@@ -66,8 +67,15 @@ class _ListaEdificiosState extends State<ListaEdificios> {
 
   deleteBuilding(Edificio edificio) {}
 
-  newBuilding() {
+  Future<void> newBuilding() async {
+    await Navigator.of(context).pushNamed('/new_building');
+    _data = await generateItems();
+    setState(() {});
   }
+
+  agregarPropiedad(Edificio edificio) {}
+
+  desvincularPropiedad(Edificio edificio) {}
 
   Widget _buildPanel() {
     return ExpansionPanelList(
@@ -105,7 +113,7 @@ class _ListaEdificiosState extends State<ListaEdificios> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('¡ATENCIÓN!'),
-                    content: const Text('¿Quieres borrar esta propiedad?'),
+                    content: const Text('¿Quieres borrar este edificio?'),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancelar'),
@@ -115,8 +123,8 @@ class _ListaEdificiosState extends State<ListaEdificios> {
                         onPressed: () async {
                           await deleteBuilding(edificio);
                           setState(() {
-                            _data.removeWhere(
-                                (Edificio currentItem) => edificio == currentItem);
+                            _data.removeWhere((Edificio currentItem) =>
+                                edificio == currentItem);
                           });
                           Navigator.pop(context, 'OK');
                         },
