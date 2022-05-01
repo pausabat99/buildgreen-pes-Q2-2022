@@ -15,7 +15,6 @@ import 'dart:io';
 import 'package:buildgreen/widgets/general_buttom.dart';
 
 class NewProperty extends StatefulWidget {
-
   static const route = "/new_property";
 
   const NewProperty({Key? key}) : super(key: key);
@@ -40,7 +39,6 @@ class _NewPropertyState extends State<NewProperty> {
 
   final backendtranslate = <String, String>{
     "Apartamento": "apt",
-    "Edificio": "building",
     "Casa": "house",
   };
   String dropdownValue = 'Apartamento';
@@ -63,22 +61,10 @@ class _NewPropertyState extends State<NewProperty> {
     Navigator.pop(context);
   }
 
-  Future<bool> userIsAdministrator() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    bool isAdmin = prefs.getBool("_user_type");
-    if (isAdmin == true) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     final applicationBloc = Provider.of<ApplicationBloc>(context);
-    final isAdmin = userIsAdministrator();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -105,14 +91,13 @@ class _NewPropertyState extends State<NewProperty> {
                       applicationBloc.searchPlaces(value);
                     }),
                 if (applicationBloc.searchResults.isNotEmpty)
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      decoration: BoxDecoration(
                           color: Colors.black.withOpacity(.6),
-                          backgroundBlendMode: BlendMode.darken
-                          ),
-                        child: ListView.builder(
+                          backgroundBlendMode: BlendMode.darken),
+                      child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: applicationBloc.searchResults.length,
                           itemBuilder: (context, index) => ListTile(
@@ -121,33 +106,26 @@ class _NewPropertyState extends State<NewProperty> {
                                     applicationBloc
                                         .searchResults[index].description
                                         .toString(),
-                                    style: const TextStyle(color: Colors.white)),
+                                    style:
+                                        const TextStyle(color: Colors.white)),
                                 onTap: () async {
                                   await applicationBloc.setSelectedLocation(
                                       applicationBloc
                                           .searchResults[index].placeId);
                                   addressController.text =
                                       applicationBloc.getSelectedLocation();
-                                  cPostalController.text =
-                                      applicationBloc.getSelectedLocationPCode();
+                                  cPostalController.text = applicationBloc
+                                      .getSelectedLocationPCode();
                                 },
                               ))),
-                      ),
-                    ),  
+                    ),
+                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InputForm(
                         controller: nombreController, hintLabel: 'Nombre'),
-                    FutureBuilder<bool>(
-                        future:
-                            isAdmin, // a previously-obtained Future<String> or null
-                        builder: (BuildContext context,
-                            AsyncSnapshot<bool> snapshot) {
-                          Widget children = const Text('cargando...');
-                          if (snapshot.hasData) {
-                            if (snapshot.data == false) {
-                              children = DropdownButton<String>(
+                    DropdownButton<String>(
                                 alignment: Alignment.topCenter,
                                 value: dropdownValue,
                                 icon: const Icon(
@@ -174,18 +152,9 @@ class _NewPropertyState extends State<NewProperty> {
                                   );
                                 }).toList(),
                                 dropdownColor: Colors.green,
-                              );
-                            } else if (snapshot.data == true) {
-                              children = const Text('Edificio');
-                            }
-                          }
-                          return children;
-                        }),
+                              ),
                   ],
                 ),
-                InputForm(
-                    controller: apartamentoController,
-                    hintLabel: 'Apartamento   ex: 3.1'),
                 InputForm(
                     controller: cPostalController, hintLabel: 'Codigo postal'),
                 GeneralButton(
