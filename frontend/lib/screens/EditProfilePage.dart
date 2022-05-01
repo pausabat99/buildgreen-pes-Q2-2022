@@ -172,7 +172,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                           child: _title(e.languageCode),
                         ))
                     .toList()),
-            const SizedBox(height: 24),
+            const SizedBox(height: 15),
             const Text(
               "Nombre",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -185,7 +185,6 @@ class _EditProfilePage extends State<EditProfilePage> {
               },
               validationFunction: (value) {},
             ),
-            const SizedBox(height: 24),
             const Text(
               "Email",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -198,7 +197,6 @@ class _EditProfilePage extends State<EditProfilePage> {
               },
               validationFunction: (value) {},
             ),
-            const SizedBox(height: 24),
             const Text(
               "Direccion",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -214,7 +212,7 @@ class _EditProfilePage extends State<EditProfilePage> {
             Container(
               padding: const EdgeInsets.only(
                 left: 20,
-                top: 40,
+                top: 20,
                 right: 20,
               ),
               child: GeneralButton(
@@ -223,7 +221,7 @@ class _EditProfilePage extends State<EditProfilePage> {
                 textColor: Colors.black,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
           ],
         ),
         decoration: const BoxDecoration(
