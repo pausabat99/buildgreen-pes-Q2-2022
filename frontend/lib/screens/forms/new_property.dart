@@ -66,8 +66,8 @@ class _NewPropertyState extends State<NewProperty> {
   Future<bool> userIsAdministrator() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String type = prefs.getString("_user_type");
-    if (type == "true") {
+    bool isAdmin = prefs.getBool("_user_type");
+    if (isAdmin == true) {
       return true;
     } else {
       return false;
@@ -146,7 +146,7 @@ class _NewPropertyState extends State<NewProperty> {
                             AsyncSnapshot<bool> snapshot) {
                           Widget children = const Text('cargando...');
                           if (snapshot.hasData) {
-                            if (snapshot.data.toString() == "false") {
+                            if (snapshot.data == false) {
                               children = DropdownButton<String>(
                                 alignment: Alignment.topCenter,
                                 value: dropdownValue,
@@ -175,7 +175,7 @@ class _NewPropertyState extends State<NewProperty> {
                                 }).toList(),
                                 dropdownColor: Colors.green,
                               );
-                            } else if (snapshot.data.toString() == "true") {
+                            } else if (snapshot.data == true) {
                               children = const Text('Edificio');
                             }
                           }
