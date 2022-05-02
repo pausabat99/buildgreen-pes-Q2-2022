@@ -1,4 +1,5 @@
 import 'package:buildgreen/screens/building_view.dart';
+import 'package:buildgreen/screens/forms/new_admin_property.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_building.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
@@ -68,6 +69,7 @@ class _MyAppState extends State<MyApp> {
         NewProperty.route           :(context) => const NewProperty(),
         NewBuilding.route           :(context) => const NewBuilding(),
         BuildingView.route          :(context) => const BuildingView(),
+        NewAdminProperty.route      :(context) => const NewAdminProperty(),
         },
         theme: ThemeData(
           fontFamily: 'Arial',
