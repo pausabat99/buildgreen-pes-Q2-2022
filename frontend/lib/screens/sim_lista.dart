@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe, unnecessary_new
 
 import 'dart:convert';
 //import 'dart:ffi';
@@ -19,9 +19,8 @@ import '../widgets/general_buttom.dart';
 import 'package:buildgreen/constants.dart' as Constants;
 
 class ListaSimulacion extends StatefulWidget {
-
   static const route = "/sim";
-  
+
   const ListaSimulacion({Key? key}) : super(key: key);
 
   @override
@@ -31,9 +30,8 @@ class ListaSimulacion extends StatefulWidget {
 Future<void> deleteAppliance(Item item) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  await 
-  http.delete(
-    Uri.parse(Constants.API_ROUTE+'/appliances/'),
+  await http.delete(
+    Uri.parse(Constants.API_ROUTE + '/appliances/'),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -43,7 +41,6 @@ Future<void> deleteAppliance(Item item) async {
     },
   );
 }
-
 
 // Clase item electrodoméstico
 class Item {
@@ -59,7 +56,6 @@ class Item {
     this.activeMorning = false,
     this.activeAfternoon = false,
     this.activeNight = false,
-    
   });
 
   String id;
@@ -80,8 +76,7 @@ Future<List<Item>> generateItems() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final String property = prefs.getString('_actual_property');
   final response = await http.get(
-    Uri.parse(
-        Constants.API_ROUTE+'/appliances?property=' + property),
+    Uri.parse(Constants.API_ROUTE + '/appliances?property=' + property),
     headers: <String, String>{
       HttpHeaders.authorizationHeader:
           "Token " + prefs.getString("_user_token"),
@@ -112,8 +107,8 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   _ListaSimulacion() {
     generateItems().then(
-      (val) => setState(() 
-        {
+      (val) => setState(
+        () {
           _data = val;
         },
       ),
@@ -121,11 +116,10 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   Future<void> newAppliance() async {
-    await Navigator.of(context).pushNamed('/all_appliances').then((_) async{
+    await Navigator.of(context).pushNamed('/all_appliances').then((_) async {
       _data = await generateItems(); // UPDATING List after comming back
       setState(() {});
     });
-    
   }
 
   Future<void> changeAppliance(Item startItem) async {
@@ -136,22 +130,20 @@ class _ListaSimulacion extends State<ListaSimulacion> {
       ),
     ).then((value) async {
       _data = await generateItems(); // UPDATING List after comming back
-      for (var name in _data){
-        if (name.id == value){
+      for (var name in _data) {
+        if (name.id == value) {
           name.isExpanded = true;
         }
       }
-      setState(() {});}
-    );
-  
+      setState(() {});
+    });
   }
 
   Future<void> updateSchedule(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await http.patch(
-        Uri.parse(Constants.API_ROUTE + '/appliances/' +
-            item.id.toString() +
-            '/'),
+        Uri.parse(
+            Constants.API_ROUTE + '/appliances/' + item.id.toString() + '/'),
         headers: <String, String>{
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString("_user_token"),
@@ -168,128 +160,210 @@ class _ListaSimulacion extends State<ListaSimulacion> {
   }
 
   Widget _buildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        for (var tItem in _data ) {
-          if(_data[index] != tItem) tItem.isExpanded = false; 
-        }
-        setState(() {
-          _data[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-
-            return ListTile(
-              leading: const Image(
-                image: AssetImage("assets/images/electrodomestico.png"),
-                height: 100,
-                width: 100,
-              ),
-              title: Text(item.headerValue),
-            );
-          },
-          body: ListView(
-            shrinkWrap: true,
-            children: [
-              ListTile(
-                title: Column(
-                  children: [
-                    Text('Marca: ' + item.brand, textAlign: TextAlign.left),
-                    Text('Modelo: ' + item.model, textAlign: TextAlign.left),
-                    Text('Precio: ' + item.price, textAlign: TextAlign.left),
-                    Text('Consumo: ' + item.cons, textAlign: TextAlign.left),
-                  ],
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: ExpansionPanelList(
+        expansionCallback: (int index, bool isExpanded) {
+          for (var tItem in _data) {
+            if (_data[index] != tItem) tItem.isExpanded = false;
+          }
+          setState(() {
+            _data[index].isExpanded = !isExpanded;
+          });
+        },
+        children: _data.map<ExpansionPanel>((Item item) {
+          return ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                leading: const Image(
+                  image: AssetImage("assets/images/electrodomestico.png"),
+                  height: 100,
+                  width: 100,
                 ),
-              ),
-              ListTile(
-                  title: Text('Selecciona el horario de uso:'),
-                  trailing: SizedBox(
-                    width: 150,
-                    child: Row(children: [
-                      IconButton(
-                          icon: Icon(Icons.wb_sunny),
-                          color: item.activeMorning ? Colors.green : Colors.black,
-                          onPressed: () async {
-                            setState(() {
-                              item.activeMorning = !item.activeMorning;
-                            });
-                            await updateSchedule(item);
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.brightness_4),
-                          color:
-                              item.activeAfternoon ? Colors.green : Colors.black,
-                          onPressed: () async {
-                            setState(() {
-                              item.activeAfternoon = !item.activeAfternoon;
-                            });
-                            await updateSchedule(item);
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.brightness_2),
-                          color: item.activeNight ? Colors.green : Colors.black,
-                          onPressed: () async {
-                            setState(() {
-                              item.activeNight = !item.activeNight;
-                            });
-                            await updateSchedule(item);
-                          }),
-                    ]),
-                  )),
-              ListTile(
-                title: Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                title: Text(item.headerValue),
+              );
+            },
+            body: ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  title: SizedBox(
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: RichText(
+                            text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: '· Marca: ',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: item.brand)
+                                ]),
                           ),
                         ),
-                      child: Text('Borrar'),
-                      onPressed: () => showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: const Text('¡ATENCIÓN!'),
-                          content: const Text(
-                              '¿Quieres borrar este electrodoméstico de tu propiedad?'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'Cancelar'),
-                              child: const Text('Cancelar'),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: RichText(
+                            text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: '· Modelo: ',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: item.model)
+                                ]),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: RichText(
+                            text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: '· Precio: ',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: item.price)
+                                ]),
+                          ),
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: RichText(
+                            text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text: '· Consumo: ',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  TextSpan(text: item.cons)
+                                ]),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                ListTile(
+                    title: RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
                             ),
-                            TextButton(
-                              onPressed: () async {
-                                await deleteAppliance(item);
-                                setState(() {
-                                  _data.removeWhere(
-                                      (Item currentItem) => item == currentItem);
-                                });
-                                Navigator.pop(context, 'OK');
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
+                            children: <TextSpan>[
+                          TextSpan(text: 'Selecciona el horario de uso:')
+                        ])),
+                    trailing: SizedBox(
+                      width: 150,
+                      child: Row(children: [
+                        IconButton(
+                            icon: Icon(Icons.wb_sunny),
+                            color: item.activeMorning
+                                ? Colors.green
+                                : Colors.black,
+                            onPressed: () async {
+                              setState(() {
+                                item.activeMorning = !item.activeMorning;
+                              });
+                              await updateSchedule(item);
+                            }),
+                        IconButton(
+                            icon: Icon(Icons.brightness_4),
+                            color: item.activeAfternoon
+                                ? Colors.green
+                                : Colors.black,
+                            onPressed: () async {
+                              setState(() {
+                                item.activeAfternoon = !item.activeAfternoon;
+                              });
+                              await updateSchedule(item);
+                            }),
+                        IconButton(
+                            icon: Icon(Icons.brightness_2),
+                            color:
+                                item.activeNight ? Colors.green : Colors.black,
+                            onPressed: () async {
+                              setState(() {
+                                item.activeNight = !item.activeNight;
+                              });
+                              await updateSchedule(item);
+                            }),
+                      ]),
+                    )),
+                ListTile(
+                  title: Row(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: Text('Borrar'),
+                        onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('¡ATENCIÓN!'),
+                            content: const Text(
+                                '¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancelar'),
+                                child: const Text('Cancelar'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await deleteAppliance(item);
+                                  setState(() {
+                                    _data.removeWhere((Item currentItem) =>
+                                        item == currentItem);
+                                  });
+                                  Navigator.pop(context, 'OK');
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(child: Container()),
-                    ElevatedButton.icon(
-                      icon: Icon(Icons.settings_suggest_rounded),
-                      style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-                      label: Text('Cambiar'),
-                      onPressed: () => { changeAppliance(item) }
-                    ),
-                  ],
+                      Expanded(child: Container()),
+                      ElevatedButton.icon(
+                          icon: Icon(Icons.settings_suggest_rounded),
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30))),
+                          label: Text('Cambiar'),
+                          onPressed: () => {changeAppliance(item)}),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
+              ],
+            ),
+            isExpanded: item.isExpanded,
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -348,19 +422,18 @@ class _ListaSimulacion extends State<ListaSimulacion> {
                 ],
               ),
               child: ListView(
-
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  children: [
-                    _buildPanel(),
-                    const Padding(padding: EdgeInsets.all(5)),
-                    GeneralButton(
-                      title: AppLocalizations.of(context)!.anelectrodomestico,
-                      textColor: Colors.white,
-                      action: newAppliance,
-                    ),
-                    Padding(padding: EdgeInsets.all(15))
-                  ],
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  _buildPanel(),
+                  const Padding(padding: EdgeInsets.all(5)),
+                  GeneralButton(
+                    title: AppLocalizations.of(context)!.anelectrodomestico,
+                    textColor: Colors.white,
+                    action: newAppliance,
+                  ),
+                  Padding(padding: EdgeInsets.all(15))
+                ],
               ),
             ),
             Expanded(child: Text("")),

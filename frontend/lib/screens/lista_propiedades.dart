@@ -156,42 +156,46 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                 title: Text(item.headerValue),
               );
             },
-            body: ListView(
-              shrinkWrap: true,
-              children: [
-                ListTile(
-                    title: const Text("Abrir Propiedad"),
-                    onTap: () async {
-                      moveToAppliances(item);
-                    }),
-                ListTile(
-                  title: const Text("Eliminar Propiedad"),
-                  onTap: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('¡ATENCIÓN!'),
-                      content: const Text('¿Quieres borrar esta propiedad?'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancelar'),
-                          child: const Text('Cancelar'),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await deleteProperty(item);
-                            setState(() {
-                              _data.removeWhere(
-                                  (Item currentItem) => item == currentItem);
-                            });
-                            Navigator.pop(context, 'OK');
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
+            body: Container(
+              //padding: const EdgeInsets.all(10),
+              //margin: const EdgeInsets.all(10),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  ListTile(
+                      title: const Text("Abrir Propiedad"),
+                      onTap: () async {
+                        moveToAppliances(item);
+                      }),
+                  ListTile(
+                    title: const Text("Eliminar Propiedad"),
+                    onTap: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('¡ATENCIÓN!'),
+                        content: const Text('¿Quieres borrar esta propiedad?'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancelar'),
+                            child: const Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await deleteProperty(item);
+                              setState(() {
+                                _data.removeWhere(
+                                    (Item currentItem) => item == currentItem);
+                              });
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             isExpanded: item.isExpanded,
           );
