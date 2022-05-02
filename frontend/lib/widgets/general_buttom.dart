@@ -21,7 +21,7 @@ class GeneralButton extends StatelessWidget{
 
         style: ElevatedButton.styleFrom(
           
-          primary: Color.fromARGB(255, 143, 181, 98),
+          primary: Color.fromARGB(255, 158, 195, 112),
           onPrimary: Colors.white.withAlpha(0),
           shadowColor: Colors.black,
           shape: RoundedRectangleBorder(

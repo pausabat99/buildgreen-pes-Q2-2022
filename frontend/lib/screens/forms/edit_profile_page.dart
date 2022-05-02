@@ -4,8 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:buildgreen/main.dart';
-import 'package:buildgreen/screens/area_personal_cliente.dart';
-import 'package:buildgreen/widgets/ProfileImageWidget.dart';
+import 'package:buildgreen/widgets/profile_image_widget.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:buildgreen/widgets/input_form.dart';
@@ -200,7 +199,6 @@ class _EditProfilePage extends State<EditProfilePage> {
               onChanged: (value) {
                 //_usernameCorrect = true;
               },
-              validationFunction: (value) {},
             ),
             Container(
               padding: const EdgeInsets.only(
