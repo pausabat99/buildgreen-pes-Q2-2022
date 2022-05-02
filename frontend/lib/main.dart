@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> {
         EditProfilePage.route       :(context) => const EditProfilePage(),
         },
         theme: ThemeData(
+          primarySwatch: Colors.green,
           fontFamily: 'Arial',
           textTheme: const TextTheme(
             headline1: TextStyle(
@@ -94,6 +95,7 @@ class _MyAppState extends State<MyApp> {
         ],
         home: const WelcomeScreen(),
         builder: EasyLoading.init(),
+        
       ),
     );
   }
