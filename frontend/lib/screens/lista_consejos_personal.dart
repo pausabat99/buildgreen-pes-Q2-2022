@@ -40,9 +40,9 @@ Future<List<Advice>> generateItems(String param) async{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
   );
-
-  final responseJson = jsonDecode(response.body);
   EasyLoading.dismiss();
+  final responseJson = jsonDecode(response.body);
+  
   debugPrint(response.body);
 
   return List<Advice>.generate(responseJson.length, (int index) {
