@@ -69,9 +69,10 @@ class _ListaEdificios extends State<ListaEdificios> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("current_building", edificio.uuid);
 
-    await Navigator.of(context).pushNamed('/building_view');
-    _data = await generateItems();
-    setState(() {});
+    await Navigator.of(context).pushNamed('/building_view').then((_) async{
+      _data = await generateItems(); // UPDATING List after comming back
+      setState(() {});
+    });
   }
 
   Future<void> deleteBuilding(Edificio edificio) async {
