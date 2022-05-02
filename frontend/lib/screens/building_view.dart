@@ -12,6 +12,8 @@ import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/back_button.dart';
+
 class BuildingView extends StatefulWidget {
   static const route = "/building_view";
 
@@ -31,7 +33,7 @@ class Item {
     required this.propertyType,
     required this.size,
     this.isExpanded = false,
-    this.uuid,
+    required this.uuid,
   });
 
   String name;
@@ -42,7 +44,7 @@ class Item {
   String propertyType;
   String size;
   bool isExpanded;
-  String? uuid;
+  String uuid;
 }
 
 Future<List<Item>> generateItems() async {
@@ -60,19 +62,18 @@ Future<List<Item>> generateItems() async {
 
   final responseJson = jsonDecode(response.body);
   debugPrint(response.body);
-  debugPrint(response.body);
 
-  return List<Item>.generate(responseJson.length, (int index) {
+  return List<Item>.generate(responseJson['properties'].length, (int index) {
     final property = responseJson['properties'];
     return Item(
-      name: property['name'],
-      address: property['address'],
-      user: property['user'],
-      apt: property['apt'],
-      postalCode: property['postal_code'],
-      propertyType: property['property_type'],
-      uuid: property['uuid'],
-      size: property['property_size'],
+      name: property[index]['name'],
+      address: property[index]['address'],
+      user: property[index]['user'],
+      apt: property[index]['apt'],
+      postalCode: property[index]['postal_code'],
+      propertyType: property[index]['property_type'],
+      uuid: property[index]['uuid'],
+      size: property[index]['property_size'],
     );
   });
 }
@@ -80,9 +81,27 @@ Future<List<Item>> generateItems() async {
 class _BuildingView extends State<BuildingView> {
   List<Item> _data = [];
 
-  vincularPropiedad() {}
+  Future<void>vincularPropiedad() async {
+    await Navigator.of(context).pushNamed('/new_admin_property').then((_) async{
+      _data = await generateItems(); // UPDATING List after comming back
+      setState(() {});
+    });
+  }
 
-  desvincularPropiedad(Item item) {}
+
+  Future<void> desvincularPropiedad(Item item) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _data.remove(item);
+    });
+
+    await http.patch(
+        Uri.parse(Constants.API_ROUTE + '/properties/' + item.uuid + '/?remove_from_building'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token")
+        });
+  }
 
   _BuildingView() {
     generateItems().then((val) => setState(() {
@@ -115,8 +134,16 @@ class _BuildingView extends State<BuildingView> {
           body: ListView(
             shrinkWrap: true,
             children: [
-              const ListTile(
-                title: Text("Nombre de la propiedad"),
+              ListTile(
+                subtitle: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Text('Número: ' + item.apt, textAlign: TextAlign.left),
+                  Text('C. Postal: ' + item.postalCode, textAlign: TextAlign.left),
+                  Text('Tipo: ' + item.propertyType, textAlign: TextAlign.left),
+                  Text('Tamaño: ' + item.size, textAlign: TextAlign.left),
+                ]),
+
               ),
               ListTile(
                 title: const Text("Desvincular Propiedad"),
@@ -157,10 +184,22 @@ class _BuildingView extends State<BuildingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: ListView(
-        children: [
-          Column(children: <Widget>[
+      body: Container(
+        child: Column(
+          children: [
+            /// BACK BUTTON
+            Container(
+              alignment: Alignment.topLeft,
+              padding: const EdgeInsets.only(
+                left: 50,
+                top: 30,
+              ),
+              child: const CustomBackButton(
+                buttonColor: Colors.black,
+              ),
+            ),
+
+            /// TITLE
             Container(
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.only(
@@ -172,28 +211,42 @@ class _BuildingView extends State<BuildingView> {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
               ),
             ),
+
             Container(
-              alignment: Alignment.topLeft,
-              padding: const EdgeInsets.only(
-                left: 50,
-                bottom: 50,
+              height: MediaQuery.of(context).size.height - 300,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: <Color>[Colors.green, Colors.lightGreen]),
+                boxShadow: [
+                  BoxShadow(blurRadius: 3, blurStyle: BlurStyle.normal),
+                ],
               ),
-              child: const Text(
-                'Cartera de propiedades',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                children: [
+                  _buildPanel(),
+                  const Padding(padding: EdgeInsets.all(5)),
+                  GeneralButton(
+                    title: 'Vincular Propiedad',
+                    textColor: Colors.white,
+                    action: vincularPropiedad,
+                  ),
+                  const Padding(padding: EdgeInsets.all(15))
+                ],
               ),
             ),
-            Container(
-              child: _buildPanel(),
-            ),
-            const Padding(padding: EdgeInsets.all(5)),
-            GeneralButton(
-                title: "Vincular propiedad",
-                textColor: Colors.white,
-                action: vincularPropiedad),
-            const Padding(padding: EdgeInsets.only(bottom: 30))
-          ]),
-        ],
+          ],
+        ),
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.white,
+            Colors.lightGreen,
+          ],
+        )),
       ),
     );
   }
