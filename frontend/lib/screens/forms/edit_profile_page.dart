@@ -1,21 +1,20 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:buildgreen/screens/welcome_screen.dart';
+import 'package:buildgreen/main.dart';
+import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'package:buildgreen/widgets/ProfileImageWidget.dart';
+import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
+import 'package:buildgreen/widgets/input_form.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:io';
 
-import '../main.dart';
-import '../widgets/ProfileImageWidget.dart';
-import '../widgets/back_button.dart';
-import '../widgets/input_form.dart';
-import 'area_personal_cliente.dart';
 import 'package:buildgreen/constants.dart' as Constants;
 
 class EditProfilePage extends StatefulWidget {
@@ -32,14 +31,14 @@ class User {
     this.id = "",
     this.username = "hey",
     this.email = "",
-    this.is_admin = false,
-    this.license_num = "",
+    this.isAdmin = false,
+    this.licenseNumber = "",
   });
   String id;
   String username;
   String email;
-  bool is_admin;
-  String license_num;
+  bool isAdmin;
+  String licenseNumber;
 }
 
 Future<User> getUser() async {
@@ -58,8 +57,8 @@ Future<User> getUser() async {
   us.id = responseJson['user_info']["id"].toString();
   us.username = responseJson['user_info']["username"].toString();
   us.email = responseJson['user_info']["email"].toString();
-  us.is_admin = responseJson['user_info']["is_admin"] as bool;
-  us.license_num = responseJson['user_info']["license_num"].toString();
+  us.isAdmin = responseJson['user_info']["isAdmin"] as bool;
+  us.licenseNumber = responseJson['user_info']["licenseNumber"].toString();
   debugPrint('1' + us.username);
 
   return us;
@@ -105,12 +104,7 @@ class _EditProfilePage extends State<EditProfilePage> {
   }
 
   Future<void> onPressedUpdateProfile() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => AreaPersonalCliente(),
-      ),
-    );
+    Navigator.pop(context);
   }
 
   @override
@@ -118,7 +112,7 @@ class _EditProfilePage extends State<EditProfilePage> {
     return Scaffold(
       body: Container(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 50),
           children: [
             Container(
               alignment: Alignment.topLeft,
@@ -183,7 +177,7 @@ class _EditProfilePage extends State<EditProfilePage> {
               onChanged: (value) {
                 //_usernameCorrect = true;
               },
-              validationFunction: (value) {},
+
             ),
             const Text(
               "Email",
@@ -195,7 +189,6 @@ class _EditProfilePage extends State<EditProfilePage> {
               onChanged: (value) {
                 //_usernameCorrect = true;
               },
-              validationFunction: (value) {},
             ),
             const Text(
               "Direccion",

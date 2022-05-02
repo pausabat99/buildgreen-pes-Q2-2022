@@ -20,17 +20,18 @@ class GeneralButton extends StatelessWidget{
       child: ElevatedButton(
 
         style: ElevatedButton.styleFrom(
-          primary: Colors.teal.withAlpha(0),
+          
+          primary: Color.fromARGB(255, 143, 181, 98),
           onPrimary: Colors.white.withAlpha(0),
-          shadowColor: Colors.black.withOpacity(0.15),
+          shadowColor: Colors.black,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(10),
           ),
           side: BorderSide(
             color: textColor,
             width: 3,
           ),
-          elevation: 1
+          elevation: 5
         ),
         onPressed: action,
         child: Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: textColor,),),

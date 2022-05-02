@@ -1,11 +1,11 @@
-import 'package:buildgreen/screens/edit_profile_page.dart';
+import 'package:buildgreen/screens/forms/edit_profile_page.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
+import 'package:buildgreen/screens/lista_consejos.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
 import 'package:buildgreen/service_subscriber.dart';
 
@@ -66,6 +66,7 @@ class _MyAppState extends State<MyApp> {
         WelcomeScreen.route         :(context) => const WelcomeScreen(),
         NewProperty.route           :(context) => const NewProperty(),
         EditProfilePage.route       :(context) => const EditProfilePage(),
+        ConsejosList.route          :(context) => const ConsejosList(),
         },
         theme: ThemeData(
           primarySwatch: Colors.green,
