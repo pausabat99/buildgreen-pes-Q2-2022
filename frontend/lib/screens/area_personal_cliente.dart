@@ -43,12 +43,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   }
 
   Future<void> onPressedProfile() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => EditProfilePage(),
-      ),
-    );
+    Navigator.pushNamed(context, EditProfilePage.route);
   }
 
   Widget createbox() {

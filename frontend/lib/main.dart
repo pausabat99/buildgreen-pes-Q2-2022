@@ -1,3 +1,4 @@
+import 'package:buildgreen/screens/EditProfilePage.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
@@ -64,6 +65,7 @@ class _MyAppState extends State<MyApp> {
         ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
         WelcomeScreen.route         :(context) => const WelcomeScreen(),
         NewProperty.route           :(context) => const NewProperty(),
+        EditProfilePage.route       :(context) => const EditProfilePage(),
         },
         theme: ThemeData(
           fontFamily: 'Arial',
