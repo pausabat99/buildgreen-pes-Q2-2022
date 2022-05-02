@@ -155,6 +155,9 @@ class _NewPropertyState extends State<NewProperty> {
                               ),
                   ],
                 ),
+                if (dropdownValue == "Apartamento")
+                  InputForm(
+                      controller: apartamentoController, hintLabel: 'Apartamento ex: 3.1'),
                 InputForm(
                     controller: cPostalController, hintLabel: 'Codigo postal'),
                 GeneralButton(
