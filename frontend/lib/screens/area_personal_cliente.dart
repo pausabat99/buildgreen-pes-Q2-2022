@@ -1,6 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:buildgreen/screens/EditProfilePage.dart';
+import 'package:buildgreen/screens/edit_profile_page.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
-import '../main.dart';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);

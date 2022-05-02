@@ -1,4 +1,4 @@
-import 'package:buildgreen/screens/EditProfilePage.dart';
+import 'package:buildgreen/screens/edit_profile_page.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
