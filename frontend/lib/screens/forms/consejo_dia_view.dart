@@ -1,7 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:buildgreen/screens/arguments/advice_detail_argument.dart';
-import 'package:buildgreen/screens/classes/advice.dart';
+import 'package:buildgreen/arguments/advice_detail_argument.dart';
+import 'package:buildgreen/classes/advice.dart';
 import 'package:buildgreen/widgets/general_background.dart';
 import 'package:flutter/material.dart';
 import 'package:buildgreen/screens/appliance_compare_screen.dart';

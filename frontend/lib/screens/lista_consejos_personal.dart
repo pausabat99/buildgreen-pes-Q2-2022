@@ -3,8 +3,8 @@
 
 import 'dart:convert';
 
-import 'package:buildgreen/screens/arguments/advice_detail_argument.dart';
-import 'package:buildgreen/screens/classes/advice.dart';
+import 'package:buildgreen/arguments/advice_detail_argument.dart';
+import 'package:buildgreen/classes/advice.dart';
 import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
