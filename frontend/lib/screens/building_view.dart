@@ -135,15 +135,92 @@ class _BuildingView extends State<BuildingView> {
             shrinkWrap: true,
             children: [
               ListTile(
-                subtitle: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                  Text('Número: ' + item.apt, textAlign: TextAlign.left),
-                  Text('C. Postal: ' + item.postalCode, textAlign: TextAlign.left),
-                  Text('Tipo: ' + item.propertyType, textAlign: TextAlign.left),
-                  Text('Tamaño: ' + item.size, textAlign: TextAlign.left),
-                ]),
-
+                title: SizedBox(
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan> [
+                              const TextSpan(
+                                text: 'Número: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                              TextSpan(text: item.apt)
+                            ]
+                          ),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan> [
+                              const TextSpan(
+                                text: 'C. Postal: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                              TextSpan(text: item.postalCode)
+                            ]
+                          ),
+                        ),
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan> [
+                              const TextSpan(
+                                text: 'Tipo: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                              TextSpan(text: item.propertyType)
+                            ]
+                          ),
+                        ),
+                    ),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                            children: <TextSpan> [
+                              const TextSpan(
+                                text: 'Tamaño: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                )
+                              ),
+                              TextSpan(text: item.size)
+                            ]
+                          ),
+                        ),
+                    )
+                    ],
+                  ),
+                ),
               ),
               ListTile(
                 title: const Text("Desvincular Propiedad"),
