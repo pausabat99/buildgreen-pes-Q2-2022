@@ -44,7 +44,6 @@ dependencies:
   provider: ^6.0.2
   lint: ^1.8.2
   flutter_html: ^2.2.1
-  round_spot: ^0.3.1
   google_maps_flutter_heatmap: ^0.1.1+2
   get_it: ^7.2.0
   expandable_fab_menu: ^0.0.1

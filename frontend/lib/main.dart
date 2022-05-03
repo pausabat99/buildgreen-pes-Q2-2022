@@ -1,8 +1,9 @@
+import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
 import 'package:buildgreen/screens/forms/edit_profile_page.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
-import 'package:buildgreen/screens/lista_consejos.dart';
+import 'package:buildgreen/screens/lista_consejos_personal.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
@@ -54,19 +55,18 @@ class _MyAppState extends State<MyApp> {
         title: 'Flutter Demo',
         initialRoute: '/',
         routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        LogInScreen.route           :(context) => const LogInScreen(),
-        SignUpScreen.route          :(context) => const SignUpScreen(),
-        MainScreen.route            :(context) => const MainScreen(),
-        ListaSimulacion.route       :(context) => const ListaSimulacion(),
-        ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
-        NewAppliance.route          :(context) => const NewAppliance(),
-        ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
-        WelcomeScreen.route         :(context) => const WelcomeScreen(),
-        NewProperty.route           :(context) => const NewProperty(),
-        EditProfilePage.route       :(context) => const EditProfilePage(),
-        ConsejosList.route          :(context) => const ConsejosList(),
+          LogInScreen.route           :(context) => const LogInScreen(),
+          SignUpScreen.route          :(context) => const SignUpScreen(),
+          MainScreen.route            :(context) => const MainScreen(),
+          ListaSimulacion.route       :(context) => const ListaSimulacion(),
+          ElectrodomesticoList.route  :(context) => const ElectrodomesticoList(),
+          NewAppliance.route          :(context) => const NewAppliance(),
+          ResultadosSimulacion.route  :(context) => const ResultadosSimulacion(), 
+          WelcomeScreen.route         :(context) => const WelcomeScreen(),
+          NewProperty.route           :(context) => const NewProperty(),
+          EditProfilePage.route       :(context) => const EditProfilePage(),
+          ConsejosList.route          :(context) => const ConsejosList(),
+          ConsejoDetalle.route        :(context) => const ConsejoDetalle(),
         },
         theme: ThemeData(
           primarySwatch: Colors.green,

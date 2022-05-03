@@ -1,7 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:buildgreen/screens/forms/edit_profile_page.dart';
-import 'package:buildgreen/screens/lista_consejos.dart';
+import 'package:buildgreen/screens/lista_consejos_personal.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
