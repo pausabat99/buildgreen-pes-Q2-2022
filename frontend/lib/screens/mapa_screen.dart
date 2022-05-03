@@ -35,8 +35,7 @@ class _MapaScreenState extends State<MapaScreen> {
 
   static const CameraPosition _kBarcelona = CameraPosition(
     target: LatLng(41.4026556, 2.1587003),
-    zoom: 15,
-    bearing: 45,
+    zoom: 17,
     tilt: 45,
   );
 
@@ -62,15 +61,16 @@ class _MapaScreenState extends State<MapaScreen> {
     for (var result in responseJson){
       final latitude = double.parse(result['latitud']);
       final longitude = double.parse(result['longitud']);
-      final emissions = result["emissions_de_co2"];
+      final emissions = result["value"];
       locations.add(LatLng(latitude, longitude));
       weights.add(double.parse(emissions).round());
     }
     debugPrint("alg");
     setState(() {
+      _heatmaps.clear();
       _heatmaps.add(
         Heatmap(
-          heatmapId: HeatmapId(_heatmapLocation.toString()),
+          heatmapId: HeatmapId("0"),
           points: _createPointsList(locations, weights),
           radius: 50,
           visible: true,
@@ -79,13 +79,13 @@ class _MapaScreenState extends State<MapaScreen> {
           )
         )
       );
-      
-    });
+    },
+  );
     
     EasyLoading.dismiss();    
   }
 
-
+ 
   @override
   void dispose(){
     super.dispose();
@@ -128,7 +128,9 @@ class _MapaScreenState extends State<MapaScreen> {
               ]
             ),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: (){setState(() {
+                _heatmaps.clear();
+              });},
               icon: const Icon(Icons.location_off_rounded),
               color: Colors.white,
               
@@ -147,7 +149,7 @@ class _MapaScreenState extends State<MapaScreen> {
               ]
             ),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: (){getHeatMap('/qualificationMap');},
               icon: const Icon(Icons.power),
               color: Colors.white,
             ),
@@ -165,7 +167,7 @@ class _MapaScreenState extends State<MapaScreen> {
               ]
             ),
             child: IconButton(
-              onPressed: () => {},
+              onPressed: (){getHeatMap('/co2map');},
               iconSize: 40,
               icon: const Icon(Icons.co2),
               color: Colors.white,
@@ -200,8 +202,7 @@ class _MapaScreenState extends State<MapaScreen> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-              
+                    boxShadow: const [
                       BoxShadow(color: Colors.black26, offset: Offset(3, 3), blurRadius: 5)
                     ]
                   ),
@@ -211,16 +212,18 @@ class _MapaScreenState extends State<MapaScreen> {
                     clipBehavior: Clip.hardEdge,
                     borderRadius: BorderRadius.circular(20),
                     child: GoogleMap(
-                      initialCameraPosition: _kGooglePlex,
+                      initialCameraPosition: _kBarcelona,
                       heatmaps: _heatmaps,
                       compassEnabled: true,
-                      mapType: MapType.normal,
+                      rotateGesturesEnabled: false,
+                      mapType: MapType.hybrid,
                       buildingsEnabled: true,
                       mapToolbarEnabled: true,
                       cameraTargetBounds: CameraTargetBounds.unbounded,
                       myLocationButtonEnabled: true,
                       myLocationEnabled: true,
                       zoomGesturesEnabled: true,
+                      markers: allMarkers.toSet(),
                       onMapCreated: (GoogleMapController controller) {
                         _controller.complete(controller);
                       },

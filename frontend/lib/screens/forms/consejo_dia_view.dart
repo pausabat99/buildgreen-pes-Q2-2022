@@ -196,7 +196,10 @@ class _ConsejoDetalleState extends State<ConsejoDetalle> {
                         ),
                       ),
                     ),
-
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: const Text("Next remainder:"),
+                    ),
                     // NEXT TIME 
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),

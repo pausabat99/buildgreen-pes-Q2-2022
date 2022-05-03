@@ -7,6 +7,7 @@ import 'package:buildgreen/arguments/advice_detail_argument.dart';
 import 'package:buildgreen/classes/advice.dart';
 import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
 import 'package:buildgreen/widgets/back_button.dart';
+import 'package:buildgreen/widgets/rounded_expansion_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -104,7 +105,7 @@ class _ConsejosList extends State<ConsejosList> {
   }
 
   Widget _buildPanel()  {
-    return ExpansionPanelList(
+    return CustomExpansionPanelList(
 
           expansionCallback: (int index, bool isExpanded) {
             var list = List<int>.generate(_expanded.length-1, (i) => i + 1);
