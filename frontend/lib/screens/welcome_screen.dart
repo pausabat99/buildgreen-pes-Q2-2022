@@ -1,5 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'package:buildgreen/screens/arguments/user_type_argument.dart';
 import 'package:buildgreen/screens/main_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -35,9 +36,7 @@ class WelcomeScreen extends StatelessWidget {
       EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
         Navigator.pushNamedAndRemoveUntil(
-            context, MainScreen.route, ((route) => false));
-        prefs.setString(
-            "_user_type", responseJson['user_info']['is_admin'].toString());
+            context, MainScreen.route, ((route) => false), arguments: UserTypeArgument(responseJson['user_info']['is_admin'].toString()));
         debugPrint(responseJson['user_info']['is_admin'].toString());
       } else {
         await prefs.remove("_user_token");
