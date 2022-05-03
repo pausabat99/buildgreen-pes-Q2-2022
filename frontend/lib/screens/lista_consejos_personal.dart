@@ -3,7 +3,9 @@
 
 import 'dart:convert';
 
+import 'package:buildgreen/screens/arguments/advice_detail_argument.dart';
 import 'package:buildgreen/screens/classes/advice.dart';
+import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:flutter/material.dart';
 
@@ -33,9 +35,9 @@ Future<List<Advice>> generateItems(String param) async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   EasyLoading.show(status: 'Carg',maskType: EasyLoadingMaskType.black);
-
+  String uri = Constants.API_ROUTE + '/advices_all/'; //Constants.API_ROUTE+'/advices_user/'+param;
   final response = await http.get(
-      Uri.parse(Constants.API_ROUTE+'/advices_user/'+param),
+      Uri.parse(uri),
       headers: <String, String>{
         HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
       },
@@ -65,6 +67,8 @@ class _ConsejosList extends State<ConsejosList> {
   List<Advice> _unCompletedAdvices =  [];
   List<Advice> _completedAdvices =  [];
   
+  List<bool> _expanded = [false, false];
+  
   TextEditingController nameController = TextEditingController();
 
   _ConsejosList() {
@@ -79,47 +83,46 @@ class _ConsejosList extends State<ConsejosList> {
         },
       ),
     );
-
   }
-
   
   Future<void> allAdvices() async {
     setState(() {
       Navigator.pushNamed(context, '/all_advices');  
     });
-    
   }
 
   Widget _buildPanel()  {
     return ExpansionPanelList(
+
           expansionCallback: (int index, bool isExpanded) {
             for (var tItem in _unCompletedAdvices ) {
-              if(_unCompletedAdvices[index] != tItem) {
+              if(_expanded[index] != tItem) {
                 tItem.isExpanded = false;
               } 
             }
             setState(() {
-              _unCompletedAdvices[index].isExpanded = !isExpanded;
+              _expanded[index] = !_expanded[index];
             });
           },
-          children: _unCompletedAdvices.map<ExpansionPanel>((Advice item) {
-            return ExpansionPanel(
+          children: [
+            ExpansionPanel(
+              isExpanded: _expanded[0],
               headerBuilder: (BuildContext context, bool isExpanded) {
-            return const ListTile(
-              title: Text("Uncompleted advices"),
-            );
-          },
-          body: ListTile(
-            title: Column(
+                return const ListTile(
+                  title: Text("Uncompleted advices"),
+                );
+              },
+              body: Column(
                 children: [
-                  Row (
+                  for (var item in _unCompletedAdvices)
+                    Row (
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text('Marca: '+item.title, textAlign: TextAlign.left),
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            Navigator.pushNamed(context, '/advice_detail', arguments: item);
+                            Navigator.pushNamed(context, ConsejoDetalle.route, arguments: AdviceDetailArgument(item));
                           });
                         }, 
                         icon: const Icon(Icons.arrow_forward_ios),
@@ -127,30 +130,27 @@ class _ConsejosList extends State<ConsejosList> {
                     ],
                   )
                 ],
-              ),
+              )
             ),
-            isExpanded: item.isExpanded,
-          );
-        }
-      ).toList()..addAll(
-        _completedAdvices.map<ExpansionPanel>((Advice item) {
-            return ExpansionPanel(
+            
+            ExpansionPanel(
+              isExpanded: _expanded[1],
               headerBuilder: (BuildContext context, bool isExpanded) {
-            return const ListTile(
-              title: Text("Uncompleted advices"),
-            );
-          },
-          body: ListTile(
-            title: Column(
+                return const ListTile(
+                  title: Text("Completed advices"),
+                );
+              },
+              body: Column(
                 children: [
-                  Row (
+                  for (var item in _completedAdvices)
+                    Row (
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text('Marca: '+item.title, textAlign: TextAlign.left),
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            Navigator.pushNamed(context, '/advice_detail', arguments: item);
+                            Navigator.pushNamed(context, ConsejoDetalle.route, arguments: AdviceDetailArgument(item));
                           });
                         }, 
                         icon: const Icon(Icons.arrow_forward_ios),
@@ -158,13 +158,10 @@ class _ConsejosList extends State<ConsejosList> {
                     ],
                   )
                 ],
-              ),
+              )
             ),
-            isExpanded: item.isExpanded,
-          );
-        }
-      )
-      ),
+          
+          ]
     );
   }
 
