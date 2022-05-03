@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:buildgreen/screens/arguments/user_type_argument.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
@@ -52,7 +53,7 @@ class _LogInScreenState extends State<LogInScreen> {
     final responseJson = jsonDecode(response.body);
     if (responseJson['token'] != null){
       await prefs.setString('_user_token', responseJson['token']);
-      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false, arguments: UserTypeArgument(responseJson['user_info']['is_admin'].toString()));
     }
     else{
       showDialog<String>(
