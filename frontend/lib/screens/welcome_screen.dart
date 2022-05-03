@@ -1,5 +1,6 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
+import 'package:buildgreen/screens/main_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -14,19 +15,19 @@ import 'package:buildgreen/constants.dart' as Constants;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class WelcomeScreen extends StatelessWidget {
-
   static const route = '/welcome_screen';
 
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString("_user_token") != null){
-     EasyLoading.show(status: 'Detected account\nLogging in');
-     final http.Response response = await http.get(
-      Uri.parse(Constants.API_ROUTE+'/user/'),
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: "Token " + prefs.getString("_user_token"),
+    if (prefs.getString("_user_token") != null) {
+      EasyLoading.show(status: 'Detected account\nLogging in');
+      final http.Response response = await http.get(
+        Uri.parse(Constants.API_ROUTE + '/user/'),
+        headers: <String, String>{
+          HttpHeaders.authorizationHeader:
+              "Token " + prefs.getString("_user_token"),
         },
       );
 
@@ -34,8 +35,9 @@ class WelcomeScreen extends StatelessWidget {
       EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
         Navigator.pushNamedAndRemoveUntil(
-            context, '/index', ((route) => false));
-        prefs.setString("_user_type", responseJson['user_info']['is_admin'].toString());
+            context, MainScreen.route, ((route) => false));
+        prefs.setString(
+            "_user_type", responseJson['user_info']['is_admin'].toString());
         debugPrint(responseJson['user_info']['is_admin'].toString());
       } else {
         await prefs.remove("_user_token");
@@ -47,64 +49,57 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     logInReqAccount(context);
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Container(
-            decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.white,
-                Colors.lightGreen,
-                ],
-              )
-            ),
-          ),
-
-          Column(
-            
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                        // background profilePic start
-                    Container(
-                      padding: const EdgeInsets.only(top: 100, left: 50, right: 50),
-                      child: const Image(
-                        image: AssetImage("assets/images/build_green_logo.png"),
-                      ),
-                    ),
-
-                    Expanded(child: Container()),
-
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                      alignment: Alignment.bottomCenter,
-                        child : GeneralButton(
-                          title: 'Entrar', 
-                          textColor: Colors.white , 
-                          action: () => {Navigator.pushNamed(context, '/login')}
-                        ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(25, 25, 25, 50),
-                      alignment: Alignment.bottomCenter,
-                      child : GeneralButton(
-                          
-                          title: 'Registrarse', 
-                          textColor: Colors.white , 
-                          action: () => {Navigator.pushNamed(context, '/register')}
-                        ),
-                    ),
-                    // background profilePic end
-                  ]),
-              )
+        body: Stack(
+      children: <Widget>[
+        Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
             ],
-          ),
+          )),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Column(children: [
+                // background profilePic start
+                Container(
+                  padding: const EdgeInsets.only(top: 100, left: 50, right: 50),
+                  child: const Image(
+                    image: AssetImage("assets/images/build_green_logo.png"),
+                  ),
+                ),
+
+                Expanded(child: Container()),
+
+                Container(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                  alignment: Alignment.bottomCenter,
+                  child: GeneralButton(
+                      title: 'Entrar',
+                      textColor: Colors.white,
+                      action: () => {Navigator.pushNamed(context, '/login')}),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(25, 25, 25, 50),
+                  alignment: Alignment.bottomCenter,
+                  child: GeneralButton(
+                      title: 'Registrarse',
+                      textColor: Colors.white,
+                      action: () =>
+                          {Navigator.pushNamed(context, '/register')}),
+                ),
+                // background profilePic end
+              ]),
+            )
+          ],
+        ),
       ],
     ));
   }
