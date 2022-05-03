@@ -4,18 +4,19 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:buildgreen/screens/request_permission/request_permission_controller.dart';
+import 'package:buildgreen/widgets/expandable_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_heatmap/google_maps_flutter_heatmap.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
-
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
 // ignore: library_prefixes
 import 'package:buildgreen/constants.dart' as Constants;
+import 'package:buildgreen/classes/place_model.dart';
+
+
 class MapaScreen extends StatefulWidget {
   const MapaScreen({Key? key}) : super(key: key);
 
@@ -29,17 +30,20 @@ class _MapaScreenState extends State<MapaScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   final _lController = RequestPermissionController();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
+  List<Marker> allMarkers = [];
+
+
+  static const CameraPosition _kBarcelona = CameraPosition(
     target: LatLng(41.4026556, 2.1587003),
-    zoom: 14.4746,
+    zoom: 15,
+    bearing: 45,
+    tilt: 45,
   );
 
   final Set<Heatmap> _heatmaps = {};
 
-  final LatLng _heatmapLocation = const LatLng(37.42796133580664, -122.085749655962);
-
   TextEditingController filterController = TextEditingController();
-
+  
   Future<void> getHeatMap(String endpoint) async{
     EasyLoading.show(status: 'Loading map...');
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -81,18 +85,93 @@ class _MapaScreenState extends State<MapaScreen> {
     EasyLoading.dismiss();    
   }
 
+
   @override
   void dispose(){
     super.dispose();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    for (var element in placeList) {
+      allMarkers.add(
+        Marker(
+          markerId: MarkerId(element.placeName),
+          draggable: false,
+          infoWindow: InfoWindow(
+            title: element.placeName,
+            snippet: element.placeAddress
+          ),
+          position: element.locationCords
+        )
+      );
+    }
   }
   @override
   Widget build(BuildContext context) {
     _lController.request();
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => {getHeatMap('/co2map')},
-        label: const Text('Add Heatmap'),
-        icon: const Icon(Icons.add_box),
+      floatingActionButton: ExpandableFab(
+        distance: 112.0,
+        children: [
+          Container(
+            decoration:  const ShapeDecoration(
+              color: Colors.orangeAccent,
+              shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(3, 3),
+                  blurRadius: 5
+                )
+              ]
+            ),
+            child: IconButton(
+              onPressed: () => {},
+              icon: const Icon(Icons.location_off_rounded),
+              color: Colors.white,
+              
+            ),
+          ),
+          Container(
+            decoration:  const ShapeDecoration(
+              color: Colors.lightBlueAccent,
+              shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(3, 3),
+                  blurRadius: 5
+                )
+              ]
+            ),
+            child: IconButton(
+              onPressed: () => {},
+              icon: const Icon(Icons.power),
+              color: Colors.white,
+            ),
+          ),
+          Container(
+            decoration:  const ShapeDecoration(
+              color: Colors.green,
+              shape: CircleBorder(),
+              shadows: [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(3, 3),
+                  blurRadius: 5
+                )
+              ]
+            ),
+            child: IconButton(
+              onPressed: () => {},
+              iconSize: 40,
+              icon: const Icon(Icons.co2),
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
@@ -145,7 +224,6 @@ class _MapaScreenState extends State<MapaScreen> {
                       onMapCreated: (GoogleMapController controller) {
                         _controller.complete(controller);
                       },
-                      
                     ),
                   ),
                 ),
@@ -156,8 +234,6 @@ class _MapaScreenState extends State<MapaScreen> {
       ),
     );
   }
-
-
   List<WeightedLatLng> _createPointsList(List<LatLng> locationList, List<int> wheights) {
     final List<WeightedLatLng> points = <WeightedLatLng>[];
     var index = 0;

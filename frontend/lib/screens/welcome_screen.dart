@@ -20,7 +20,6 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   Future<void> logInReqAccount(BuildContext context) async {
-    
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if(prefs.getString("_user_token") != null){
      EasyLoading.show(status: 'Detected account\nLogging in');
@@ -34,13 +33,14 @@ class WelcomeScreen extends StatelessWidget {
       final responseJson = jsonDecode(response.body);
       EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
-        Navigator.pushNamedAndRemoveUntil(context, '/index', ((route) => false));
-      }
-      else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/index', ((route) => false));
+        prefs.setString("_user_type", responseJson['user_info']['is_admin'].toString());
+      } else {
         await prefs.remove("_user_token");
       }
     }
-  }   
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,12 +99,12 @@ class WelcomeScreen extends StatelessWidget {
                           action: () => {Navigator.pushNamed(context, '/register')}
                         ),
                     ),
-                  ],
-                ),
-              ),  
+                    // background profilePic end
+                  ]),
+              )
             ],
           ),
-        ],)
-    );
+      ],
+    ));
   }
 }
