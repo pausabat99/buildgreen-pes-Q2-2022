@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:buildgreen/widgets/general_buttom.dart';
+import 'package:buildgreen/widgets/rounded_expansion_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -135,7 +136,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   Widget _buildPanel() {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: ExpansionPanelList(
+      child: CustomExpansionPanelList(
         expansionCallback: (int index, bool isExpanded) {
           for (var foo in _data) {
             if (_data[index] != foo) foo.isExpanded = false;

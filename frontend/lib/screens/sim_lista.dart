@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:buildgreen/widgets/back_button.dart';
+import 'package:buildgreen/widgets/rounded_expansion_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -161,210 +162,213 @@ class _ListaSimulacion extends State<ListaSimulacion> {
 
   Widget _buildPanel() {
     return Container(
-      padding: EdgeInsets.all(20),
-      child: ExpansionPanelList(
-        expansionCallback: (int index, bool isExpanded) {
-          for (var tItem in _data) {
-            if (_data[index] != tItem) tItem.isExpanded = false;
-          }
-          setState(() {
-            _data[index].isExpanded = !isExpanded;
-          });
-        },
-        children: _data.map<ExpansionPanel>((Item item) {
-          return ExpansionPanel(
-            headerBuilder: (BuildContext context, bool isExpanded) {
-              return ListTile(
-                leading: const Image(
-                  image: AssetImage("assets/images/electrodomestico.png"),
-                  height: 100,
-                  width: 100,
-                ),
-                title: Text(item.headerValue),
-              );
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: CustomExpansionPanelList(
+            expansionCallback: (int index, bool isExpanded) {
+              for (var tItem in _data) {
+                if (_data[index] != tItem) tItem.isExpanded = false;
+              }
+              setState(() {
+                _data[index].isExpanded = !isExpanded;
+              });
             },
-            body: ListView(
-              shrinkWrap: true,
-              children: [
-                ListTile(
-                  title: SizedBox(
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '· Marca: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(text: item.brand)
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '· Modelo: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(text: item.model)
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '· Precio: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(text: item.price)
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: RichText(
-                            text: TextSpan(
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.black,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: '· Consumo: ',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  TextSpan(text: item.cons)
-                                ]),
-                          ),
-                        )
-                      ],
+            children: _data.map<ExpansionPanel>((Item item) {
+              return ExpansionPanel(
+                headerBuilder: (BuildContext context, bool isExpanded) {
+                  return ListTile(
+                    leading: const Image(
+                      image: AssetImage("assets/images/electrodomestico.png"),
+                      height: 100,
+                      width: 100,
                     ),
-                  ),
-                ),
-                ListTile(
-                    title: RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
+                    title: Text(item.headerValue),
+                  );
+                },
+                body: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ListTile(
+                      title: SizedBox(
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: '· Marca: ',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: item.brand)
+                                    ]),
+                              ),
                             ),
-                            children: <TextSpan>[
-                          TextSpan(text: 'Selecciona el horario de uso:')
-                        ])),
-                    trailing: SizedBox(
-                      width: 150,
-                      child: Row(children: [
-                        IconButton(
-                            icon: Icon(Icons.wb_sunny),
-                            color: item.activeMorning
-                                ? Colors.green
-                                : Colors.black,
-                            onPressed: () async {
-                              setState(() {
-                                item.activeMorning = !item.activeMorning;
-                              });
-                              await updateSchedule(item);
-                            }),
-                        IconButton(
-                            icon: Icon(Icons.brightness_4),
-                            color: item.activeAfternoon
-                                ? Colors.green
-                                : Colors.black,
-                            onPressed: () async {
-                              setState(() {
-                                item.activeAfternoon = !item.activeAfternoon;
-                              });
-                              await updateSchedule(item);
-                            }),
-                        IconButton(
-                            icon: Icon(Icons.brightness_2),
-                            color:
-                                item.activeNight ? Colors.green : Colors.black,
-                            onPressed: () async {
-                              setState(() {
-                                item.activeNight = !item.activeNight;
-                              });
-                              await updateSchedule(item);
-                            }),
-                      ]),
-                    )),
-                ListTile(
-                  title: Row(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                        ),
-                        child: Text('Borrar'),
-                        onPressed: () => showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('¡ATENCIÓN!'),
-                            content: const Text(
-                                '¿Quieres borrar este electrodoméstico de tu propiedad?'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Cancelar'),
-                                child: const Text('Cancelar'),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: '· Modelo: ',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: item.model)
+                                    ]),
                               ),
-                              TextButton(
-                                onPressed: () async {
-                                  await deleteAppliance(item);
-                                  setState(() {
-                                    _data.removeWhere((Item currentItem) =>
-                                        item == currentItem);
-                                  });
-                                  Navigator.pop(context, 'OK');
-                                },
-                                child: const Text('OK'),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: '· Precio: ',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: item.price)
+                                    ]),
                               ),
-                            ],
-                          ),
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: '· Consumo: ',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(text: item.cons)
+                                    ]),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      Expanded(child: Container()),
-                      ElevatedButton.icon(
-                          icon: Icon(Icons.settings_suggest_rounded),
-                          style: ElevatedButton.styleFrom(
+                    ),
+                    ListTile(
+                        title: RichText(
+                            text: TextSpan(
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),
+                                children: <TextSpan>[
+                              TextSpan(text: 'Selecciona el horario de uso:')
+                            ])),
+                        trailing: SizedBox(
+                          width: 150,
+                          child: Row(children: [
+                            IconButton(
+                                icon: Icon(Icons.wb_sunny),
+                                color: item.activeMorning
+                                    ? Colors.green
+                                    : Colors.black,
+                                onPressed: () async {
+                                  setState(() {
+                                    item.activeMorning = !item.activeMorning;
+                                  });
+                                  await updateSchedule(item);
+                                }),
+                            IconButton(
+                                icon: Icon(Icons.brightness_4),
+                                color: item.activeAfternoon
+                                    ? Colors.green
+                                    : Colors.black,
+                                onPressed: () async {
+                                  setState(() {
+                                    item.activeAfternoon =
+                                        !item.activeAfternoon;
+                                  });
+                                  await updateSchedule(item);
+                                }),
+                            IconButton(
+                                icon: Icon(Icons.brightness_2),
+                                color: item.activeNight
+                                    ? Colors.green
+                                    : Colors.black,
+                                onPressed: () async {
+                                  setState(() {
+                                    item.activeNight = !item.activeNight;
+                                  });
+                                  await updateSchedule(item);
+                                }),
+                          ]),
+                        )),
+                    ListTile(
+                      title: Row(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
-                          label: Text('Cambiar'),
-                          onPressed: () => {changeAppliance(item)}),
-                    ],
-                  ),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Text('Borrar'),
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('¡ATENCIÓN!'),
+                                content: const Text(
+                                    '¿Quieres borrar este electrodoméstico de tu propiedad?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancelar'),
+                                    child: const Text('Cancelar'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await deleteAppliance(item);
+                                      setState(() {
+                                        _data.removeWhere((Item currentItem) =>
+                                            item == currentItem);
+                                      });
+                                      Navigator.pop(context, 'OK');
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Container()),
+                          ElevatedButton.icon(
+                              icon: Icon(Icons.settings_suggest_rounded),
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))),
+                              label: Text('Cambiar'),
+                              onPressed: () => {changeAppliance(item)}),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            isExpanded: item.isExpanded,
-          );
-        }).toList(),
-      ),
-    );
+                isExpanded: item.isExpanded,
+              );
+            }).toList(),
+          ),
+        ));
   }
 
   @override
