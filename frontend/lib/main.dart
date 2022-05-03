@@ -1,13 +1,15 @@
 import 'package:buildgreen/screens/building_view.dart';
 import 'package:buildgreen/screens/forms/new_admin_property.dart';
+import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
+import 'package:buildgreen/screens/forms/edit_profile_page.dart';
 import 'package:buildgreen/screens/forms/new_appliance.dart';
 import 'package:buildgreen/screens/forms/new_building.dart';
 import 'package:buildgreen/screens/forms/new_property.dart';
 import 'package:buildgreen/screens/forms/signup_screen.dart';
+import 'package:buildgreen/screens/lista_consejos_personal.dart';
 import 'package:buildgreen/screens/lista_electrodomesticos.dart';
 import 'package:buildgreen/screens/forms/login_screen.dart';
 import 'package:buildgreen/screens/main_screen.dart';
-import 'package:buildgreen/screens/mapa_screen.dart';
 import 'package:buildgreen/screens/resultados_simulacion.dart';
 import 'package:buildgreen/service_subscriber.dart';
 
@@ -70,8 +72,12 @@ class _MyAppState extends State<MyApp> {
         NewBuilding.route           :(context) => const NewBuilding(),
         BuildingView.route          :(context) => const BuildingView(),
         NewAdminProperty.route      :(context) => const NewAdminProperty(),
+        EditProfilePage.route       :(context) => const EditProfilePage(),
+        ConsejosList.route          :(context) => const ConsejosList(),
+        ConsejoDetalle.route        :(context) => const ConsejoDetalle(),
         },
         theme: ThemeData(
+          primarySwatch: Colors.green,
           fontFamily: 'Arial',
           textTheme: const TextTheme(
             headline1: TextStyle(
@@ -98,6 +104,7 @@ class _MyAppState extends State<MyApp> {
         ],
         home: const WelcomeScreen(),
         builder: EasyLoading.init(),
+        
       ),
     );
   }

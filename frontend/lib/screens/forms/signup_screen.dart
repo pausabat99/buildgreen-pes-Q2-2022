@@ -175,12 +175,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   Row(
                     children: <Widget>[
-                      InputForm(
-                          controller: nameController,
+                      Flexible(
+                        child: InputForm(
+                            controller: nameController,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            onChanged: (value) {
+                              _usernameCorrect = true;
+                            },
+                            validationFunction: (value) {
+                              if (value.toString().isEmpty) {
+                                return "Enter some text";
+                              }
+                              if (!_usernameCorrect) {
+                                return "Username ya usado";
+                              }
+                              return null;
+                            },
+                            hintLabel: 'Nombre'),
+                      ),
+                      Flexible(
+                        child: InputForm(
+                          controller: apellidoController,
+                          hintLabel: "Apellidos",
                           autoValidateMode: AutovalidateMode.onUserInteraction,
-                          onChanged: (value) {
-                            _usernameCorrect = true;
-                          },
                           validationFunction: (value) {
                             if (value.toString().isEmpty) {
                               return "Enter some text";
@@ -190,60 +208,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             }
                             return null;
                           },
-                          hintLabel: 'Nombre'),
-                      InputForm(
-                        controller: apellidoController,
-                        hintLabel: "Apellidos",
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        validationFunction: (value) {
-                          if (value.toString().isEmpty) {
-                            return "Enter some text";
-                          }
-                          return null;
-                        },
+                        ),
                       ),
                     ],
                   ),
-                  InputForm(
-                    controller: emailController,
-                    hintLabel: "Email",
-                    autoValidateMode: AutovalidateMode.onUserInteraction,
-                    onChanged: (value) {
-                      _emailCorrect = true;
-                    },
-                    validationFunction: (value) {
-                      if (!EmailValidator.validate(value.toString())) {
-                        return "Incorrect e-mail";
-                      }
-                      if (!_emailCorrect) {
-                        return "e-mail ya en uso";
-                      }
-                      return null;
-                    },
+                  Flexible(
+                    child: InputForm(
+                      controller: emailController,
+                      hintLabel: "Email",
+                      autoValidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (value) {
+                        _emailCorrect = true;
+                      },
+                      validationFunction: (value) {
+                        if (!EmailValidator.validate(value.toString())) {
+                          return "Incorrect e-mail";
+                        }
+                        if (!_emailCorrect) {
+                          return "e-mail ya en uso";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                  InputForm(
-                    controller: passwordController,
-                    hintLabel: "Password",
-                    obscureText: true,
-                    autoValidateMode: AutovalidateMode.always,
-                    validationFunction: (value) {
-                      if (value.toString() != passwordController2.text) {
-                        return "Passwords don't match";
-                      }
-                      return null;
-                    },
+                  Flexible(
+                    child: InputForm(
+                      controller: passwordController,
+                      hintLabel: "Password",
+                      obscureText: true,
+                      autoValidateMode: AutovalidateMode.always,
+                      validationFunction: (value) {
+                        if (value.toString() != passwordController2.text) {
+                          return "Passwords don't match";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                  InputForm(
-                    controller: passwordController2,
-                    hintLabel: "Confirm Password",
-                    obscureText: true,
-                    autoValidateMode: AutovalidateMode.always,
-                    validationFunction: (value) {
-                      if (value.toString() != passwordController.text) {
-                        return "Passwords don't match";
-                      }
-                      return null;
-                    },
+                  Flexible(
+                    child: InputForm(
+                      controller: passwordController2,
+                      hintLabel: "Confirm Password",
+                      obscureText: true,
+                      autoValidateMode: AutovalidateMode.always,
+                      validationFunction: (value) {
+                        if (value.toString() != passwordController.text) {
+                          return "Passwords don't match";
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 10)),
                   ListTile(

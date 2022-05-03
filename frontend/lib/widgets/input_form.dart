@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class InputForm extends StatelessWidget {
-  const InputForm({Key? key, 
+  const InputForm({
+    Key? key,
     required this.controller,
     this.hintLabel,
     this.obscureText = false,
@@ -19,7 +20,7 @@ class InputForm extends StatelessWidget {
   final String? Function(String? value)? validationFunction;
   final void Function(String? value)? onChanged;
 
-  UnderlineInputBorder getBorder(Color? color){
+  UnderlineInputBorder getBorder(Color? color) {
     return UnderlineInputBorder(
       borderSide: BorderSide(
         color: color ?? Colors.white,
@@ -27,34 +28,33 @@ class InputForm extends StatelessWidget {
       ),
     );
   }
-  
+
   @override
-  Widget build(BuildContext context){
-    return Flexible(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(5,0,5,0),
-        child: TextFormField(
-          maxLines: 1,
-          onChanged: onChanged,
-          maxLength: 50,
-          autovalidateMode: autoValidateMode ?? AutovalidateMode.disabled,
-          validator: validationFunction ?? (value) {return null;},
-          obscureText: obscureText,
-          controller: controller,
-          style: Theme.of(context).textTheme.bodyText1,
-          decoration: InputDecoration(
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: TextFormField(
+        maxLines: 1,
+        onChanged: onChanged,
+        maxLength: 50,
+        autovalidateMode: autoValidateMode ?? AutovalidateMode.disabled,
+        validator: validationFunction ??
+            (value) {
+              return null;
+            },
+        obscureText: obscureText,
+        controller: controller,
+        style: Theme.of(context).textTheme.bodyText1,
+        decoration: InputDecoration(
             enabledBorder: getBorder(textColor),
             errorBorder: getBorder(Colors.red),
-
             helperText: "",
             labelText: hintLabel,
-            labelStyle:  TextStyle(
+            labelStyle: TextStyle(
               color: textColor ?? Colors.white70,
               fontSize: 15,
             ),
-            counterText: ""
-          ),
-        ),
+            counterText: ""),
       ),
     );
   }

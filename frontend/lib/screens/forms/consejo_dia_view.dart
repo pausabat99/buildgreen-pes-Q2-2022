@@ -1,16 +1,21 @@
+import 'package:buildgreen/screens/arguments/advice_detail_argument.dart';
+import 'package:buildgreen/screens/classes/advice.dart';
 import 'package:buildgreen/widgets/general_background.dart';
 import 'package:flutter/material.dart';
 import 'package:buildgreen/screens/appliance_compare_screen.dart';
 import 'package:flutter_html/flutter_html.dart';
 
-class ListaConsejosDia extends StatefulWidget {
-  const ListaConsejosDia({ Key? key }) : super(key: key);
+class ConsejoDetalle extends StatefulWidget {
+
+  static const route = '/advice_detail';
+
+  const ConsejoDetalle({ Key? key }) : super(key: key);
 
   @override
-  State<ListaConsejosDia> createState() => _ListaConsejosDiaState();
+  State<ConsejoDetalle> createState() => _ConsejoDetalleState();
 }
 
-class _ListaConsejosDiaState extends State<ListaConsejosDia> {
+class _ConsejoDetalleState extends State<ConsejoDetalle> {
   int value = 0;
 
   BorderRadius bRadius(String position, double radius){
@@ -64,6 +69,9 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as AdviceDetailArgument;
+    Advice advice = args.advice;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -109,7 +117,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                                 ),
                                 
                                 Expanded(
-                                  child: Text("<Consejo del día awddwwd>",
+                                  child: Text(advice.title,
                                     style: Theme.of(context).textTheme.displayLarge,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -158,32 +166,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                           borderRadius: BorderRadius.circular(10),
                           child: SingleChildScrollView(
                             child: Html(
-                              data: """<div>Follow<a class='sup'><sup>pl</sup></a> 
-                                Below hr
-                                  <b>Bold</b>
-                              <h1>what was sent down to you from your Lord</h1>, 
-                              and do not follow other guardians apart from Him. Little do 
-                              <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
-                              <div>Follow<a class='sup'><sup>pl</sup></a> 
-                                Below hr
-                                  <b>Bold</b>
-                              <h1>what was sent down to you from your Lord</h1>, 
-                              and do not follow other guardians apart from Him. Little do 
-                              <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
-                              <div>Follow<a class='sup'><sup>pl</sup></a> 
-                                Below hr
-                                  <b>Bold</b>
-                              <h1>what was sent down to you from your Lord</h1>, 
-                              and do not follow other guardians apart from Him. Little do 
-                              <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
-                              <div>Follow<a class='sup'><sup>pl</sup></a> 
-                                Below hr
-                                  <b>Bold</b>
-                              <h1>what was sent down to you from your Lord</h1>, 
-                              and do not follow other guardians apart from Him. Little do 
-                              <span class='h'>you remind yourselves</span><a class='f'><sup f=2437>1</sup></a></div>
-                              """,
-                              
+                              data: advice.description,
                             ),
                           ),
                         ),
@@ -198,7 +181,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                           CustomRadioButton("1 day", 1, "left"),
                           CustomRadioButton("1 week", 2, "middle"),
                           CustomRadioButton("2 weeks", 3, "middle"),
-                          CustomRadioButton("1 month", 4, "right")
+                          CustomRadioButton("Never", 4, "right")
                         ],
                       ),
                     ),
@@ -208,7 +191,7 @@ class _ListaConsejosDiaState extends State<ListaConsejosDia> {
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: const Text("COMPLETAR RETO: 500 xp"),
+                        child: Text("COMPLETAR RETO:"+ advice.xps.toString() +"xp"),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                         ),
