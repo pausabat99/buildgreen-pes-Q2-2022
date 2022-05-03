@@ -1,5 +1,5 @@
 class UserTypeArgument {
-  final String user_type;
+  final String isAdmin;
 
-  UserTypeArgument(this.user_type);
+  UserTypeArgument(this.isAdmin);
 }

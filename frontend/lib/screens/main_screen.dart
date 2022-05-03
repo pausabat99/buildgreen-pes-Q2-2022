@@ -1,4 +1,5 @@
 import 'package:buildgreen/screens/area_personal_cliente.dart';
+import 'package:buildgreen/screens/arguments/user_type_argument.dart';
 import 'package:buildgreen/screens/lista_edificios.dart';
 import 'package:buildgreen/screens/lista_propiedades.dart';
 import 'package:buildgreen/screens/mapa_screen.dart';
@@ -32,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
   
   @override
   Widget build(BuildContext context) {
+    final isAdmin = ModalRoute.of(context)!.settings.arguments as UserTypeArgument;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       
@@ -45,10 +47,11 @@ class _MainScreenState extends State<MainScreen> {
                   });
                 },
                 controller: pageController,
-                children: const <Widget>[
+                children: <Widget>[
                   AreaPersonalCliente(),
-                  //ListaPropiedades(),
-                  ListaEdificios(),
+                  if (isAdmin.isAdmin == "true")
+                    ListaEdificios()
+                  else ListaPropiedades(),
                   MapaScreen(),
                 ],
             ),
