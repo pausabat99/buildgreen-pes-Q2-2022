@@ -164,6 +164,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   ListView(
                     shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.all(10),
@@ -307,18 +308,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.all(5)),
-                      GeneralButton(
+                      //const Padding(padding: EdgeInsets.all(5)),
+                      
+                    ],
+                  ),
+                  GeneralButton(
                         title: "Crear Cuenta",
                         action: (formCorrect()) ? createAccount : () {},
                         textColor:
                             (formCorrect()) ? Colors.white : Colors.white24,
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
                 ],
               ),
             ),
