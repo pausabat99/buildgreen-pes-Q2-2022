@@ -3,10 +3,11 @@
 
 import 'dart:convert';
 
-import 'package:buildgreen/screens/arguments/advice_detail_argument.dart';
-import 'package:buildgreen/screens/classes/advice.dart';
+import 'package:buildgreen/arguments/advice_detail_argument.dart';
+import 'package:buildgreen/classes/advice.dart';
 import 'package:buildgreen/screens/forms/consejo_dia_view.dart';
 import 'package:buildgreen/widgets/back_button.dart';
+import 'package:buildgreen/widgets/rounded_expansion_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -35,7 +36,7 @@ Future<List<Advice>> generateItems(String param) async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   EasyLoading.show(status: 'Carg',maskType: EasyLoadingMaskType.black);
-  String uri = Constants.API_ROUTE + '/advices_all/'; //Constants.API_ROUTE+'/advices_user/'+param;
+  String uri = Constants.API_ROUTE+'/advices_user/?'+param;//Constants.API_ROUTE + '/advices_all/'; //
   final response = await http.get(
       Uri.parse(uri),
       headers: <String, String>{
@@ -48,7 +49,12 @@ Future<List<Advice>> generateItems(String param) async{
   debugPrint(response.body);
 
   return List<Advice>.generate(responseJson.length, (int index) {
-    final property = responseJson[index];
+    var property = responseJson[index];
+
+    if (property['advice'] != null) {
+      property = property['advice'];
+    }
+
     final timeSlots = property['time_options'].split(" ");
     final timeOptions = List<int>.generate(timeSlots.length, (int index) {
       return int.parse(timeSlots[index]);
@@ -66,13 +72,14 @@ class _ConsejosList extends State<ConsejosList> {
   //Se rellena  la lista de propiedades
   List<Advice> _unCompletedAdvices =  [];
   List<Advice> _completedAdvices =  [];
+  List<Advice> _neverCompletedAdvices =  [];
   
-  List<bool> _expanded = [false, false];
+  List<bool> _expanded = [false, false, false];
   
   TextEditingController nameController = TextEditingController();
 
   _ConsejosList() {
-    generateItems('to_complete').then((val) => setState(() {
+    generateItems('to_complete_again').then((val) => setState(() {
           _unCompletedAdvices = val;
         },
       ),
@@ -80,6 +87,12 @@ class _ConsejosList extends State<ConsejosList> {
 
     generateItems('completed').then((val) => setState(() {
           _completedAdvices = val;
+        },
+      ),
+    );
+
+    generateItems('never_completed').then((val) => setState(() {
+          _neverCompletedAdvices = val;
         },
       ),
     );
@@ -92,13 +105,15 @@ class _ConsejosList extends State<ConsejosList> {
   }
 
   Widget _buildPanel()  {
-    return ExpansionPanelList(
+    return CustomExpansionPanelList(
 
           expansionCallback: (int index, bool isExpanded) {
-            for (var tItem in _unCompletedAdvices ) {
-              if(_expanded[index] != tItem) {
-                tItem.isExpanded = false;
-              } 
+            var list = List<int>.generate(_expanded.length-1, (i) => i + 1);
+            for (var indice in list ) {
+              if (indice != index) {
+                _expanded[indice] = false;
+              }
+              
             }
             setState(() {
               _expanded[index] = !_expanded[index];
@@ -143,6 +158,34 @@ class _ConsejosList extends State<ConsejosList> {
               body: Column(
                 children: [
                   for (var item in _completedAdvices)
+                    Row (
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text('Marca: '+item.title, textAlign: TextAlign.left),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            Navigator.pushNamed(context, ConsejoDetalle.route, arguments: AdviceDetailArgument(item));
+                          });
+                        }, 
+                        icon: const Icon(Icons.arrow_forward_ios),
+                      )
+                    ],
+                  )
+                ],
+              )
+            ),
+
+            ExpansionPanel(
+              isExpanded: _expanded[2],
+              headerBuilder: (BuildContext context, bool isExpanded) {
+                return const ListTile(
+                  title: Text("Completed advices"),
+                );
+              },
+              body: Column(
+                children: [
+                  for (var item in _neverCompletedAdvices)
                     Row (
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

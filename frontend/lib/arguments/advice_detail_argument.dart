@@ -1,4 +1,4 @@
-import 'package:buildgreen/screens/classes/advice.dart';
+import 'package:buildgreen/classes/advice.dart';
 
 class AdviceDetailArgument {
   final Advice advice;
