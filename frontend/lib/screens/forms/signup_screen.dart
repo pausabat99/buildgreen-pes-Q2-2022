@@ -18,6 +18,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 // ignore: library_prefixes
 import 'package:buildgreen/constants.dart' as Constants;
 
+import '../arguments/user_type_argument.dart';
+
 class SignUpScreen extends StatefulWidget {
   static const route = '/register';
 
@@ -84,11 +86,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       debugPrint(response.body);
 
       final responseJson = jsonDecode(response.body);
+      var isAdmin =responseJson['user_info']['is_admin'].toString();
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('_user_token', responseJson['token']);
       EasyLoading.dismiss();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const MainScreen()));
+      Navigator.pushNamed(
+          context, MainScreen.route, arguments: UserTypeArgument(isAdmin));
     } else {
       showDialog<String>(
         context: context,
