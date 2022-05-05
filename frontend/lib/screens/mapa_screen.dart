@@ -28,6 +28,7 @@ List<Marker> markersFromPlaces(List<Place> places) {
       infoWindow: InfoWindow(
         title: place.name,
         snippet: place.number,
+
       ),
     ));
   }
@@ -247,6 +248,8 @@ class _MapaScreenState extends State<MapaScreen> {
                       myLocationEnabled: true,
                       zoomGesturesEnabled: true,
                       markers: markersFromPlaces(allMarkers).toSet(),
+                      indoorViewEnabled: false,
+
                       onMapCreated: (GoogleMapController controller) {
                         _controller.complete(controller);
                       },
