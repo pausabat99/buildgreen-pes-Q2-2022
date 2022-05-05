@@ -58,15 +58,6 @@ Future<List<Item>> generateItems() async {
   });
 }
 
-List<Item> generateItems2(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(headerValue: 'Calle Falsa 123'
-
-        //expandedValue: 'This is item number $index',
-        );
-  });
-}
-
 class _ListaPropiedades extends State<ListaPropiedades> {
   //Se rellena  la lista de propiedades
   List<Item> _data = [];
@@ -156,6 +147,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                 ),
                 title: Text(item.headerValue??"Null"),
               );
+
             },
             body: ListView(
                 shrinkWrap: true,
