@@ -222,39 +222,25 @@ class _MapaScreenState extends State<MapaScreen> {
             /// MAPS
             Expanded(              
               child: Container(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black26, offset: Offset(3, 3), blurRadius: 5)
-                    ]
-                  ),
-                  
-                  
-                  child: ClipRRect(
-                    clipBehavior: Clip.hardEdge,
-                    borderRadius: BorderRadius.circular(20),
-                    child: GoogleMap(
-                      initialCameraPosition: _kBarcelona,
-                      heatmaps: _heatmaps,
-                      compassEnabled: true,
-                      rotateGesturesEnabled: false,
-                      mapType: MapType.hybrid,
-                      buildingsEnabled: true,
-                      mapToolbarEnabled: true,
-                      cameraTargetBounds: CameraTargetBounds.unbounded,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      markers: markersFromPlaces(allMarkers).toSet(),
-                      indoorViewEnabled: false,
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 00),
+                child: GoogleMap(
+                  initialCameraPosition: _kBarcelona,
+                  heatmaps: _heatmaps,
+                  compassEnabled: true,
+                  rotateGesturesEnabled: false,
+                  mapType: MapType.hybrid,
+                  buildingsEnabled: true,
+                  mapToolbarEnabled: true,
+                  cameraTargetBounds: CameraTargetBounds.unbounded,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
+                  zoomGesturesEnabled: true,
+                  markers: markersFromPlaces(allMarkers).toSet(),
+                  indoorViewEnabled: false,
 
-                      onMapCreated: (GoogleMapController controller) {
-                        _controller.complete(controller);
-                      },
-                    ),
-                  ),
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
                 ),
               ),
             ),
