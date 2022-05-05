@@ -165,7 +165,9 @@ class _NewPropertyState extends State<NewProperty> {
                   action: moveToPropiedades,
                   textColor: Colors.white,
                 ),
-              ]))
+              ],
+            ),
+          ),
         ],
       ),
     );

@@ -48,11 +48,9 @@ class _MainScreenState extends State<MainScreen> {
                 },
                 controller: pageController,
                 children: <Widget>[
-                  AreaPersonalCliente(),
-                  if (isAdmin.isAdmin == "true")
-                    ListaEdificios()
-                  else ListaPropiedades(),
-                  MapaScreen(),
+                  const AreaPersonalCliente(),
+                  (isAdmin.isAdmin == "true")? const ListaEdificios(): const ListaPropiedades(),
+                  MapaScreen(isAdmin: isAdmin.isAdmin),
                 ],
             ),
           decoration: const BoxDecoration(
