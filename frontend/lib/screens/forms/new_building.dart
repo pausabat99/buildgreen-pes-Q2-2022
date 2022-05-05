@@ -1,4 +1,4 @@
-// ignore_for_file: import_of_legacy_library_into_null_safe
+import 'dart:convert';
 
 import 'package:buildgreen/service_subscriber.dart';
 import 'package:flutter/material.dart';
@@ -14,48 +14,30 @@ import 'dart:io';
 
 import 'package:buildgreen/widgets/general_buttom.dart';
 
-class NewProperty extends StatefulWidget {
-  static const route = "/new_property";
+class NewBuilding extends StatefulWidget {
+  static const route = "/new_building";
 
-  const NewProperty({Key? key}) : super(key: key);
+  const NewBuilding({Key? key}) : super(key: key);
 
   @override
-  State<NewProperty> createState() => _NewPropertyState();
+  State<NewBuilding> createState() => _NewBuildingState();
 }
 
-class _NewPropertyState extends State<NewProperty> {
-  TextEditingController nombreController = TextEditingController();
-  TextEditingController apartamentoController = TextEditingController();
+class _NewBuildingState extends State<NewBuilding> {
+
   TextEditingController cPostalController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  /*@override
-  void dispose() {
-    final applicationBloc =
-        Provider.of<ApplicationBloc>(context, listen: false);
-    applicationBloc.dispose();
-    super.dispose();
-  }*/
-
-  final backendtranslate = <String, String>{
-    "Apartamento": "apt",
-    "Casa": "house",
-  };
-  String dropdownValue = 'Apartamento';
-
-  Future<void> moveToPropiedades() async {
+  Future<void> createBuilding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    await http.post(Uri.parse('https://buildgreen.herokuapp.com/properties/'),
+    await http.post(Uri.parse('https://buildgreen.herokuapp.com/buildings/'),
         headers: <String, String>{
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString('_user_token'),
         },
         body: <String, String>{
           "address": addressController.text,
-          "name": nombreController.text,
-          "property_type": backendtranslate[dropdownValue].toString(),
-          "apt": apartamentoController.text,
           "postal_code": cPostalController.text,
         });
     Navigator.pop(context);
@@ -120,49 +102,11 @@ class _NewPropertyState extends State<NewProperty> {
                               ))),
                     ),
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InputForm(
-                        controller: nombreController, hintLabel: 'Nombre'),
-                    DropdownButton<String>(
-                                alignment: Alignment.topCenter,
-                                value: dropdownValue,
-                                icon: const Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.white,
-                                ),
-                                style: Theme.of(context).textTheme.bodyText1,
-                                underline: Container(
-                                  height: 3,
-                                  color: Colors.white,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                  });
-                                },
-                                items: <String>[
-                                  'Apartamento',
-                                  'Casa'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                dropdownColor: Colors.green,
-                              ),
-                  ],
-                ),
-                if (dropdownValue == "Apartamento")
-                  InputForm(
-                      controller: apartamentoController, hintLabel: 'Apartamento ex: 3.1'),
                 InputForm(
                     controller: cPostalController, hintLabel: 'Codigo postal'),
                 GeneralButton(
                   title: "Agregar nuevo",
-                  action: moveToPropiedades,
+                  action: createBuilding,
                   textColor: Colors.white,
                 ),
               ]))

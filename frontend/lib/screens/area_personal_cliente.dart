@@ -1,6 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'package:buildgreen/screens/EditProfilePage.dart';
+import 'package:buildgreen/screens/forms/edit_profile_page.dart';
+import 'package:buildgreen/screens/lista_consejos_personal.dart';
 import 'package:buildgreen/screens/welcome_screen.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:io';
 
-import '../main.dart';
 
 class AreaPersonalCliente extends StatefulWidget {
   const AreaPersonalCliente({Key? key}) : super(key: key);
@@ -43,12 +43,11 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
   }
 
   Future<void> onPressedProfile() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => EditProfilePage(),
-      ),
-    );
+    Navigator.pushNamed(context, EditProfilePage.route);
+  }
+
+  Future<void> onPressedConsejos() async {
+    Navigator.pushNamed(context, ConsejosList.route);
   }
 
   Widget createbox() {
@@ -74,6 +73,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: ListView(
+
         children: [
           Container(
             alignment: Alignment.topLeft,
@@ -152,11 +152,12 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                         width: 50,
                       ),
                       const Icon(Icons.arrow_forward_ios,
-                          color: Color.fromARGB(255, 94, 95, 94)),
+                          color: Colors.green,
+                      ),
                     ],
                   ),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 255, 255),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
@@ -188,16 +189,20 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
                   "assets/images/cual_es_el_gasto_en_electricidad2.png"),
             ),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 255, 255),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(12),
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 40,
-              right: 20,
+            padding: const  EdgeInsets.all(10),
+            child: GeneralButton(
+              title: "Vida sostenible",
+              action: onPressedConsejos,
+              textColor: Colors.black,
             ),
+          ),
+          Container(
+            padding: const  EdgeInsets.all(10),
             child: GeneralButton(
               title: "Acceder al Perfil",
               action: onPressedProfile,
@@ -205,12 +210,7 @@ class _AreaPersonalCliente extends State<AreaPersonalCliente> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(
-              left: 20,
-              top: 20,
-              right: 20,
-              bottom: 20,
-            ),
+            padding: const EdgeInsets.all(10),
             child: GeneralButton(
               title: "Cerrar Session",
               action: onPressedLogOut,

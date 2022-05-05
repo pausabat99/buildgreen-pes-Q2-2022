@@ -452,14 +452,15 @@ class _ListaSimulacion extends State<ListaSimulacion> {
           ],
         ),
         decoration: const BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Colors.white,
-            Colors.lightGreen,
-          ],
-        )),
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              Colors.white,
+              Colors.lightGreen,
+            ],
+          ),
+        ),
       ),
     );
   }

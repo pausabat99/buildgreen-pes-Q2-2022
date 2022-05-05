@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:buildgreen/screens/arguments/user_type_argument.dart';
 import 'package:buildgreen/widgets/back_button.dart';
 import 'package:buildgreen/widgets/build_green_form_background.dart';
 import 'package:buildgreen/widgets/general_buttom.dart';
@@ -15,25 +16,20 @@ import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LogInScreen extends StatefulWidget {
-  
   static const String route = "/login";
-  
-  const LogInScreen({ Key? key }) : super(key: key);
+
+  const LogInScreen({Key? key}) : super(key: key);
 
   @override
   State<LogInScreen> createState() => _LogInScreenState();
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
 
   Future<void> logInAccount() async {
     EasyLoading.show(status: 'Logging in...');
@@ -41,18 +37,18 @@ class _LogInScreenState extends State<LogInScreen> {
     debugPrint("RRequesting");
     debugPrint(prefs.getString('_user_token'));
     final response = await http.post(
-      Uri.parse(Constants.API_ROUTE+'/login/'),
+      Uri.parse(Constants.API_ROUTE + '/login/'),
       body: {
         'username': emailController.text,
         'password': passwordController.text,
       },
     );
     EasyLoading.dismiss();
-    
+
     final responseJson = jsonDecode(response.body);
-    if (responseJson['token'] != null){
+    if (responseJson['token'] != null) {
       await prefs.setString('_user_token', responseJson['token']);
-      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, '/index', (route) => false, arguments: UserTypeArgument(responseJson['user_info']['is_admin'].toString()));
     }
     else{
       showDialog<String>(
@@ -74,14 +70,14 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-      return Material (
-        child: Stack(
-          children: [
-            // background colors start
-            BackgroundForm(
-              screenHeight: screenHeight,
-              backColor: const Color.fromARGB(255, 39, 170, 83),
-            ),
+    return Material(
+      child: Stack(
+        children: [
+          // background colors start
+          BackgroundForm(
+            screenHeight: screenHeight,
+            backColor: const Color.fromARGB(255, 39, 170, 83),
+          ),
           // background colors end
           // form start
           Container(
@@ -91,52 +87,50 @@ class _LogInScreenState extends State<LogInScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   alignment: Alignment.topLeft,
-                  child: Row(
-                    
-                    children: [
-                      const CustomBackButton(),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(10, 0 , 10, 0),
-                        child: Text("Log in",
-                          textAlign: TextAlign.left, 
-                          style: Theme.of(context).textTheme.headline1,
-                          
-                        ),
+                  child: Row(children: [
+                    const CustomBackButton(),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Text(
+                        "Log in",
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.headline1,
                       ),
-                    ]
+                    ),
+                  ]),
+                ),
+                Flexible(
+                  child: InputForm(
+                    controller: emailController,
+                    hintLabel: "Email",
                   ),
                 ),
-                
-                InputForm(
-                  controller: emailController,
-                  hintLabel: "Email",
+                Flexible(
+                  child: InputForm(
+                    controller: passwordController,
+                    hintLabel: "Password",
+                    obscureText: true,
+                  ),
                 ),
-                
-                InputForm(
-                  controller: passwordController,
-                  hintLabel: "Password",
-                  obscureText: true,
-                ),
-                
                 const Padding(padding: EdgeInsets.only(top: 20)),
-                
                 GeneralButton(
-                    title: "Entrar",
-                    action: logInAccount,
-                    textColor: Colors.white,
+                  title: "Entrar",
+                  action: logInAccount,
+                  textColor: Colors.white,
                 ),
-
                 const Padding(padding: EdgeInsets.all(10)),
-                Text("o", style: Theme.of(context).textTheme.bodyText1,),
+                Text(
+                  "o",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 const Padding(padding: EdgeInsets.all(10)),
                 TextButton(
-                  onPressed: () => {Navigator.pushReplacementNamed(context, '/register')},
+                  onPressed: () =>
+                      {Navigator.pushReplacementNamed(context, '/register')},
                   child: Text(
                     "Registrarse",
                     style: TextStyle(
-                      color: Colors.lightGreen.shade100,
-                      fontSize: 18
-                    ),
+                        color: Colors.lightGreen.shade100, fontSize: 18),
                   ),
                 ),
               ],
@@ -148,4 +142,3 @@ class _LogInScreenState extends State<LogInScreen> {
     );
   }
 }
-
