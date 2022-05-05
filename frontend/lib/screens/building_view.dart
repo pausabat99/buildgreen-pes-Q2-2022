@@ -13,6 +13,7 @@ import 'package:buildgreen/constants.dart' as Constants;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/back_button.dart';
+import '../widgets/rounded_expansion_panel.dart';
 
 class BuildingView extends StatefulWidget {
   static const route = "/building_view";
@@ -81,13 +82,14 @@ Future<List<Item>> generateItems() async {
 class _BuildingView extends State<BuildingView> {
   List<Item> _data = [];
 
-  Future<void>vincularPropiedad() async {
-    await Navigator.of(context).pushNamed('/new_admin_property').then((_) async{
+  Future<void> vincularPropiedad() async {
+    await Navigator.of(context)
+        .pushNamed('/new_admin_property')
+        .then((_) async {
       _data = await generateItems(); // UPDATING List after comming back
       setState(() {});
     });
   }
-
 
   Future<void> desvincularPropiedad(Item item) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -96,7 +98,10 @@ class _BuildingView extends State<BuildingView> {
     });
 
     await http.patch(
-        Uri.parse(Constants.API_ROUTE + '/properties/' + item.uuid + '/?remove_from_building'),
+        Uri.parse(Constants.API_ROUTE +
+            '/properties/' +
+            item.uuid +
+            '/?remove_from_building'),
         headers: <String, String>{
           HttpHeaders.authorizationHeader:
               "Token " + prefs.getString("_user_token")
@@ -110,7 +115,7 @@ class _BuildingView extends State<BuildingView> {
   }
 
   Widget _buildPanel() {
-    return ExpansionPanelList(
+    return CustomExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         for (var foo in _data) {
           if (_data[index] != foo) foo.isExpanded = false;
@@ -142,82 +147,74 @@ class _BuildingView extends State<BuildingView> {
                         alignment: Alignment.centerLeft,
                         child: RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan> [
-                              const TextSpan(
-                                text: 'Número: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
                               ),
-                              TextSpan(text: item.apt)
-                            ]
-                          ),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: 'Número: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                TextSpan(text: item.apt)
+                              ]),
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         child: RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan> [
-                              const TextSpan(
-                                text: 'C. Postal: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
                               ),
-                              TextSpan(text: item.postalCode)
-                            ]
-                          ),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: 'C. Postal: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                TextSpan(text: item.postalCode)
+                              ]),
                         ),
-                    ),
-                    Container(
+                      ),
+                      Container(
                         alignment: Alignment.centerLeft,
                         child: RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan> [
-                              const TextSpan(
-                                text: 'Tipo: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
                               ),
-                              TextSpan(text: item.propertyType)
-                            ]
-                          ),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: 'Tipo: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                TextSpan(text: item.propertyType)
+                              ]),
                         ),
-                    ),
-                    Container(
+                      ),
+                      Container(
                         alignment: Alignment.centerLeft,
                         child: RichText(
                           text: TextSpan(
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.black,
-                            ),
-                            children: <TextSpan> [
-                              const TextSpan(
-                                text: 'Tamaño: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                )
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
                               ),
-                              TextSpan(text: item.size)
-                            ]
-                          ),
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: 'Tamaño: ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                                TextSpan(text: item.size)
+                              ]),
                         ),
-                    )
+                      )
                     ],
                   ),
                 ),

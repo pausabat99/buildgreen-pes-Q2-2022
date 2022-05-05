@@ -136,7 +136,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
   Widget _buildPanel() {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: ExpansionPanelList(
+      child: CustomExpansionPanelList(
         expansionCallback: (int index, bool isExpanded) {
           for (var foo in _data) {
             if (_data[index] != foo) foo.isExpanded = false;
@@ -154,7 +154,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                   height: 100,
                   width: 100,
                 ),
-                title: Text(item.headerValue),
+                title: Text(item.headerValue ?? "Null"),
               );
             },
             body: Container(

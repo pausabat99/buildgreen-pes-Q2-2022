@@ -12,6 +12,8 @@ import 'package:buildgreen/constants.dart' as Constants;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/rounded_expansion_panel.dart';
+
 class ListaEdificios extends StatefulWidget {
   const ListaEdificios({Key? key}) : super(key: key);
 
@@ -69,7 +71,7 @@ class _ListaEdificios extends State<ListaEdificios> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("current_building", edificio.uuid);
 
-    await Navigator.of(context).pushNamed('/building_view').then((_) async{
+    await Navigator.of(context).pushNamed('/building_view').then((_) async {
       _data = await generateItems(); // UPDATING List after comming back
       setState(() {});
     });
@@ -101,7 +103,7 @@ class _ListaEdificios extends State<ListaEdificios> {
   }
 
   Widget _buildPanel() {
-    return ExpansionPanelList(
+    return CustomExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         for (var foo in _data) {
           if (_data[index] != foo) foo.isExpanded = false;
