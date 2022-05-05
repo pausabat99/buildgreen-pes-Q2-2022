@@ -123,43 +123,49 @@ class _NewPropertyState extends State<NewProperty> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    InputForm(
-                        controller: nombreController, hintLabel: 'Nombre'),
+                    Flexible(
+                      child: InputForm(
+                          controller: nombreController, hintLabel: 'Nombre'),
+                    ),
                     DropdownButton<String>(
-                                alignment: Alignment.topCenter,
-                                value: dropdownValue,
-                                icon: const Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.white,
-                                ),
-                                style: Theme.of(context).textTheme.bodyText1,
-                                underline: Container(
-                                  height: 3,
-                                  color: Colors.white,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                  });
-                                },
-                                items: <String>[
-                                  'Apartamento',
-                                  'Casa'
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                dropdownColor: Colors.green,
-                              ),
+                      alignment: Alignment.topCenter,
+                      value: dropdownValue,
+                      icon: const Icon(
+                        Icons.arrow_downward,
+                        color: Colors.white,
+                      ),
+                      style: Theme.of(context).textTheme.bodyText1,
+                      underline: Container(
+                        height: 3,
+                        color: Colors.white,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      items: <String>['Apartamento', 'Casa']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      dropdownColor: Colors.green,
+                    ),
                   ],
                 ),
                 if (dropdownValue == "Apartamento")
-                  InputForm(
-                      controller: apartamentoController, hintLabel: 'Apartamento ex: 3.1'),
-                InputForm(
-                    controller: cPostalController, hintLabel: 'Codigo postal'),
+                  Flexible(
+                    child: InputForm(
+                        controller: apartamentoController,
+                        hintLabel: 'Apartamento ex: 3.1'),
+                  ),
+                Flexible(
+                  child: InputForm(
+                      controller: cPostalController,
+                      hintLabel: 'Codigo postal'),
+                ),
                 GeneralButton(
                   title: "Agregar nuevo",
                   action: moveToPropiedades,
