@@ -154,10 +154,13 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                   height: 100,
                   width: 100,
                 ),
-                title: Text(item.headerValue??"Null"),
+                title: Text(item.headerValue),
               );
             },
-            body: ListView(
+            body: Container(
+              //padding: const EdgeInsets.all(10),
+              //margin: const EdgeInsets.all(10),
+              child: ListView(
                 shrinkWrap: true,
                 children: [
                   ListTile(
@@ -194,6 +197,7 @@ class _ListaPropiedades extends State<ListaPropiedades> {
                   ),
                 ],
               ),
+            ),
             isExpanded: item.isExpanded,
           );
         }).toList(),
