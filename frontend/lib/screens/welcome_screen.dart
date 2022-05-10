@@ -35,8 +35,9 @@ class WelcomeScreen extends StatelessWidget {
       final responseJson = jsonDecode(response.body);
       EasyLoading.dismiss();
       if (responseJson['user_info'] != null) {
+        final userType = responseJson['user_info']['is_admin'].toString();
         Navigator.pushNamedAndRemoveUntil(
-            context, MainScreen.route, ((route) => false), arguments: UserTypeArgument(responseJson['user_info']['is_admin'].toString()));
+            context, MainScreen.route, ((route) => false), arguments: UserTypeArgument(userType));
       } else {
         await prefs.remove("_user_token");
       }

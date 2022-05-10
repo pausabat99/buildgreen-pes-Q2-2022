@@ -2,7 +2,7 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   animated_flip_counter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: animated_flip_counter
       url: "https://pub.dartlang.org"
@@ -100,7 +100,7 @@ packages:
     source: hosted
     version: "4.0.4"
   email_validator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: email_validator
       url: "https://pub.dartlang.org"
@@ -147,14 +147,14 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_easyloading:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_easyloading
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.3"
   flutter_google_places_hoc081098:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_google_places_hoc081098
       url: "https://pub.dartlang.org"
@@ -175,7 +175,7 @@ packages:
     source: hosted
     version: "1.0.6"
   flutter_lints:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_lints
       url: "https://pub.dartlang.org"
@@ -267,7 +267,7 @@ packages:
     source: hosted
     version: "0.0.20-nullsafety.5"
   google_places_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: google_places_flutter
       url: "https://pub.dartlang.org"
@@ -337,14 +337,14 @@ packages:
     source: hosted
     version: "1.1.0"
   loader_overlay:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: loader_overlay
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
   location_permission_handler:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: location_permission_handler
       url: "https://pub.dartlang.org"
@@ -442,7 +442,7 @@ packages:
     source: hosted
     version: "0.0.5"
   permission_handler:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: permission_handler
       url: "https://pub.dartlang.org"
@@ -498,7 +498,7 @@ packages:
     source: hosted
     version: "3.0.1+1"
   restart_app:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: restart_app
       url: "https://pub.dartlang.org"

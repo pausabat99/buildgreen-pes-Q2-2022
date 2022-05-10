@@ -27,4 +27,13 @@ class PlacesService {
     var jsonResult = json['result'] as Map<String, dynamic>;
     return Place.fromJSON(jsonResult); 
   }
+
+  Future<Place> getPlaceByName(String placeName) async {
+    var url =
+        "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$placeName&inputtype=textquery&fields=formatted_address,geometry&key=$kGoogleApiKey"; //revisar url
+    var response = await http.get(Uri.parse(url));
+    var json = convert.jsonDecode(response.body);
+    var jsonResult = (json['candidates'])[0] as Map<String, dynamic>;
+    return Place.fromSearch(jsonResult);
+  }
 }
