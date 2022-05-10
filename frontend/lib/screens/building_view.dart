@@ -153,7 +153,7 @@ class _BuildingView extends State<BuildingView> {
                               ),
                               children: <TextSpan>[
                                 const TextSpan(
-                                    text: 'Número: ',
+                                    text: '· Número: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -171,7 +171,7 @@ class _BuildingView extends State<BuildingView> {
                               ),
                               children: <TextSpan>[
                                 const TextSpan(
-                                    text: 'C. Postal: ',
+                                    text: '· C. Postal: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -189,7 +189,7 @@ class _BuildingView extends State<BuildingView> {
                               ),
                               children: <TextSpan>[
                                 const TextSpan(
-                                    text: 'Tipo: ',
+                                    text: '· Tipo: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
@@ -207,7 +207,7 @@ class _BuildingView extends State<BuildingView> {
                               ),
                               children: <TextSpan>[
                                 const TextSpan(
-                                    text: 'Tamaño: ',
+                                    text: '· Tamaño: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
